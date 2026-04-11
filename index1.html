@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Militia Inc.</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet"/>
+</head>
+
+<script>
+    const faders = document.querySelectorAll('.fade-in');
+  
+    const appearOptions = {
+      threshold: 0.3,
+      rootMargin: "0px 0px -100px 0px"
+    };
+  
+    const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('appear');
+        observer.unobserve(entry.target);
+      });
+    }, appearOptions);
+  
+    faders.forEach(fader => {
+      appearOnScroll.observe(fader);
+    });
+  </script>
+
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#biografia">BIOGRAFÍA</a></li>
+        <li><a href="#fechas">FECHAS</a></li>
+        <li><a href="#galeria">GALERÍA</a></li>
+        <li><a href="#contacto">CONTACTO</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="inicio" class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <img src="images/logo.png" alt="Militia Inc. Logo" class="logo"/>
+      <h1>MILITIA INC.</h1>
+      <p>¡Bienvenid@ a la página oficial de Militia Inc.! Con riffs pesados, alma de escenario y energía desbordante, llevamos más de 20 años haciendo vibrar el rock.</p>
+    </div>
+  </main>
+
+  <section id="biografia" class="biografia-section fade-section">
+    <h2 class="fade-in">Biografía</h2>
+    <p class="bio-text fade-in">
+      Militia Inc. nace de la pasión por el rock y la hermandad entre cuatro músicos que llevan más de 20 años compartiendo escenarios, riffs, sueños y una sola misión: <strong>hacer vibrar a la audiencia</strong> con clásicos del rock en inglés y español.
+
+      Nuestra trayectoria está marcada por la energía de bandas como <em>Metallica, U2, Héroes del Silencio, Caifanes, Iron Maiden, Guns N’ Roses, Soda Stereo, The Doors, Black Sabbath</em> y <em>Deep Purple</em>.
+
+      A lo largo de estas dos décadas, hemos compartido escenario con amigos y colegas que han dejado huella en cada acorde, en cada grito, en cada nota. Militia Inc. no solo es una banda: es una familia sonora que sigue creciendo.
+    </p>
+
+    <div class="integrantes">
+      <div class="miembro fade-in">
+        <img src="images/fernando.jpg" alt="Fernando López Salazar - Bajista">
+        <h3>Fernando López Salazar</h3>
+        <p>Bajo eléctrico</p>
+      </div>
+      <div class="miembro fade-in">
+        <img src="images/marco.jpg" alt="Marco Antonio Aguado Acosta - Baterista">
+        <h3>Marco Antonio Aguado Acosta</h3>
+        <p>Batería</p>
+      </div>
+      <div class="miembro fade-in">
+        <img src="images/alfonso.jpg" alt="Alfonso Aguado Acosta - Guitarrista y cantante">
+        <h3>Alfonso Aguado Acosta</h3>
+        <p>Guitarra y voz</p>
+      </div>
+      <div class="miembro fade-in">
+        <img src="images/felipe.jpg" alt="Felipe López Salazar - Guitarrista y cantante">
+        <h3>Felipe López Salazar</h3>
+        <p>Guitarra y voz</p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

@@ -5,10 +5,10 @@
 'use strict';
 
 /* --- Navbar: scroll effect + active link --- */
-const navbar    = document.getElementById('navbar');
+const navbar = document.getElementById('navbar');
 const navToggle = document.getElementById('navToggle');
-const navMenu   = document.getElementById('navMenu');
-const navLinks  = document.querySelectorAll('.nav-link');
+const navMenu = document.getElementById('navMenu');
+const navLinks = document.querySelectorAll('.nav-link');
 
 function onScroll() {
   /* Scrolled class for background blur */
@@ -81,9 +81,9 @@ if (contactForm) {
   contactForm.addEventListener('submit', e => {
     e.preventDefault();
 
-    const name    = (document.getElementById('name')?.value    || '').trim();
-    const email   = (document.getElementById('email')?.value   || '').trim();
-    const phone   = (document.getElementById('phone')?.value   || '').trim();
+    const name = (document.getElementById('name')?.value || '').trim();
+    const email = (document.getElementById('email')?.value || '').trim();
+    const phone = (document.getElementById('phone')?.value || '').trim();
     const subject = (document.getElementById('subject')?.value || '');
     const message = (document.getElementById('message')?.value || '').trim();
 
@@ -116,8 +116,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     if (!target) return;
     e.preventDefault();
     const top = target.getBoundingClientRect().top + window.scrollY
-               - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10)
-               - 12;
+      - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10)
+      - 12;
     window.scrollTo({ top, behavior: 'smooth' });
   });
 });
@@ -147,7 +147,7 @@ eventsTabs.forEach(tab => {
 });
 
 // Google Calendar API config
-const GOOGLE_CALENDAR_API_KEY = ''; // TODO: Agrega tu API Key aquí
+const GOOGLE_CALENDAR_API_KEY = 'AIzaSyB87y9zVnuzmNjLucm2THTWJlZN027fG1A'; // TODO: Agrega tu API Key aquí
 const CALENDAR_ID = '0lncu26mmc32cf8rtoagmtmg4v3aokqh@import.calendar.google.com';
 
 // Render event cards
@@ -155,21 +155,21 @@ function renderEventCards(events) {
   const container = document.getElementById('events-container');
   const loading = document.getElementById('events-loading');
   const empty = document.getElementById('events-empty');
-  
+
   loading.style.display = 'none';
-  
+
   if (!events || events.length === 0) {
     empty.style.display = 'block';
     return;
   }
-  
+
   const formatterMes = new Intl.DateTimeFormat('es-MX', { month: 'short' });
-  
+
   const cardsHtml = events.map(ev => {
     const d = new Date(ev.start);
     const day = d.getDate();
     const month = formatterMes.format(d);
-    
+
     const time = d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
     const title = ev.summary || 'Evento Militia Inc.';
     const location = ev.location || 'Pachuca, Hidalgo';
@@ -199,7 +199,7 @@ function renderEventCards(events) {
       </div>
     `;
   }).join('');
-  
+
   container.innerHTML = cardsHtml;
 }
 
@@ -235,7 +235,7 @@ async function fetchEvents() {
     const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events?key=${GOOGLE_CALENDAR_API_KEY}&timeMin=${timeMin}&singleEvents=true&orderBy=startTime&maxResults=5`;
     const response = await fetch(url);
     const data = await response.json();
-    
+
     if (data.items) {
       // Map API items to our object format
       const events = data.items.map(item => ({

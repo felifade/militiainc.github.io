@@ -232,7 +232,7 @@ async function fetchEvents() {
   // Real fetch implementation (will be active once API KEY is set)
   try {
     const timeMin = new Date().toISOString();
-    const url = \`https://www.googleapis.com/calendar/v3/calendars/\${encodeURIComponent(CALENDAR_ID)}/events?key=\${GOOGLE_CALENDAR_API_KEY}&timeMin=\${timeMin}&singleEvents=true&orderBy=startTime&maxResults=5\`;
+    const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events?key=${GOOGLE_CALENDAR_API_KEY}&timeMin=${timeMin}&singleEvents=true&orderBy=startTime&maxResults=5`;
     const response = await fetch(url);
     const data = await response.json();
     

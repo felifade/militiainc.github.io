@@ -81,12 +81,22 @@ const DEFAULT_EVENTS = {
 };
 
 function getLocalData(key, defaultVal) {
-  const data = localStorage.getItem(key);
-  if (!data) {
-    localStorage.setItem(key, JSON.stringify(defaultVal));
+  try {
+    const data = localStorage.getItem(key);
+    if (!data) {
+      localStorage.setItem(key, JSON.stringify(defaultVal));
+      return defaultVal;
+    }
+    return JSON.parse(data);
+  } catch (e) {
+    console.warn("LocalStorage corrupto detectado para la clave '" + key + "'. Reestableciendo valores por defecto.", e);
+    try {
+      localStorage.setItem(key, JSON.stringify(defaultVal));
+    } catch (err) {
+      console.error("No se pudo escribir en LocalStorage:", err);
+    }
     return defaultVal;
   }
-  return JSON.parse(data);
 }
 
 function saveLocalData(key, data) {

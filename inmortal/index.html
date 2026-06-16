@@ -11,6 +11,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   
+  <!-- Firebase Compat UMD SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  
+  <!-- Configuración -->
+  <script src="../js/firebase-config.js"></script>
+
   <!-- Estilos -->
   <link rel="stylesheet" href="../css/inmortal.css">
 </head>
@@ -163,13 +171,13 @@
   </footer>
 
   <!-- Lógica de Enrutamiento y Firebase -->
-  <script type="module">
-    import { 
+  <script>
+    const { 
       getActiveEvent, 
       getEventBySlug, 
       voteForSong, 
       subscribeToResults 
-    } from '../js/firebase-config.js';
+    } = window.MilitiaDb;
 
     // Elementos DOM
     const loadingView = document.getElementById('loading-view');

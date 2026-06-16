@@ -1,16 +1,7 @@
 // ========================================================
-// MILITIA INC. — firebase-config.js
+// MILITIA INC. — firebase-config.js (Compat UMD Version)
 // Configuración híbrida (Firebase real + fallback de pruebas local)
 // ========================================================
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { 
-  getFirestore, doc, getDoc, setDoc, addDoc, collection, 
-  updateDoc, onSnapshot, query, where, getDocs, limit, orderBy 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { 
-  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 // Configura aquí tus credenciales de Firebase en producción
 const firebaseConfig = {
@@ -25,14 +16,15 @@ const firebaseConfig = {
 // Determinar si Firebase está configurado correctamente
 const isConfigured = firebaseConfig.projectId && firebaseConfig.projectId !== "TU_PROJECT_ID";
 
-let app, db, auth;
+let db, auth;
 let isMock = true;
 
-if (isConfigured) {
+// Solo inicializar Firebase si el objeto 'firebase' global está disponible
+if (isConfigured && typeof firebase !== 'undefined') {
   try {
-    app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    auth = getAuth(app);
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    auth = firebase.auth();
     isMock = false;
     console.log("🔥 Firebase inicializado correctamente en producción.");
   } catch (error) {
@@ -40,8 +32,7 @@ if (isConfigured) {
     isMock = true;
   }
 } else {
-  console.log("ℹ️ Firebase no configurado. Cargando modo demostración local (LocalStorage).");
-  console.log("👉 Para producción: edita js/firebase-config.js con tus credenciales.");
+  console.log("ℹ️ Firebase no configurado (o cargado localmente). Modo demostración local (LocalStorage).");
   isMock = true;
 }
 
@@ -55,7 +46,7 @@ const DEFAULT_EVENTS = {
     name: "La Curandera",
     date: "2026-06-20",
     location: "Pachuca, Hidalgo",
-    flyerUrl: "../images/galeria1.jpg", // Usa una imagen local de la galería
+    flyerUrl: "../images/galeria1.jpg",
     songs: [
       { id: "song1", title: "Persiana Americana", artist: "Soda Stereo", votes: 42 },
       { id: "song2", title: "Entre Dos Tierras", artist: "Héroes del Silencio", votes: 35 },
@@ -114,23 +105,19 @@ if (isMock) {
 // ========================================================
 
 // 1. Obtener Evento Activo / Vigente
-export async function getActiveEvent() {
+async function getActiveEvent() {
   if (isMock) {
     const events = getLocalData("militia_events", DEFAULT_EVENTS);
     const active = Object.values(events).find(e => e.isCurrent && e.active);
     if (active) return active;
-    // Si no hay ninguno marcado como vigente, retornar el primero activo
     return Object.values(events).find(e => e.active) || Object.values(events)[0] || null;
   } else {
     try {
-      const q = query(collection(db, "events"), where("isCurrent", "==", true), limit(1));
-      const querySnapshot = await getDocs(q);
+      const querySnapshot = await db.collection("events").where("isCurrent", "==", true).limit(1).get();
       if (!querySnapshot.empty) {
         return { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
       }
-      // Buscar cualquier evento activo si no hay current
-      const qActive = query(collection(db, "events"), where("active", "==", true), limit(1));
-      const snapActive = await getDocs(qActive);
+      const snapActive = await db.collection("events").where("active", "==", true).limit(1).get();
       if (!snapActive.empty) {
         return { id: snapActive.docs[0].id, ...snapActive.docs[0].data() };
       }
@@ -143,15 +130,14 @@ export async function getActiveEvent() {
 }
 
 // 2. Obtener Evento por ID/Slug
-export async function getEventBySlug(slug) {
+async function getEventBySlug(slug) {
   if (isMock) {
     const events = getLocalData("militia_events", DEFAULT_EVENTS);
     return events[slug] || null;
   } else {
     try {
-      const docRef = doc(db, "events", slug);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
+      const docSnap = await db.collection("events").doc(slug).get();
+      if (docSnap.exists) {
         return { id: docSnap.id, ...docSnap.data() };
       }
       return null;
@@ -163,14 +149,13 @@ export async function getEventBySlug(slug) {
 }
 
 // 3. Emitir Voto
-export async function voteForSong(eventSlug, songId, leadData = null) {
+async function voteForSong(eventSlug, songId, leadData = null) {
   if (isMock) {
     const events = getLocalData("militia_events", DEFAULT_EVENTS);
     const event = events[eventSlug];
     if (!event) throw new Error("El evento no existe.");
     if (event.closed || !event.active) throw new Error("La votación está cerrada.");
 
-    // Incrementar voto de la canción
     const songIndex = event.songs.findIndex(s => s.id === songId);
     if (songIndex === -1) throw new Error("Canción no encontrada.");
 
@@ -179,7 +164,6 @@ export async function voteForSong(eventSlug, songId, leadData = null) {
     events[eventSlug] = event;
     saveLocalData("militia_events", events);
 
-    // Registrar participante si proporcionó datos
     if (leadData && (leadData.name || leadData.email || leadData.whatsapp)) {
       const participants = getLocalData("militia_participants", []);
       participants.push({
@@ -193,47 +177,44 @@ export async function voteForSong(eventSlug, songId, leadData = null) {
       saveLocalData("militia_participants", participants);
     }
     
-    // Guardar marca de voto en localStorage local para evitar duplicados
     localStorage.setItem(`voted_${eventSlug}`, "true");
-    
-    // Disparar evento de actualización mock local para tiempo real
     window.dispatchEvent(new CustomEvent("mockDbUpdate", { detail: { slug: eventSlug } }));
     return true;
   } else {
     try {
-      // Usar transacción para incrementar de forma segura
-      const eventRef = doc(db, "events", eventSlug);
-      const eventSnap = await getDoc(eventRef);
-      if (!eventSnap.exists()) throw new Error("El evento no existe.");
-      const event = eventSnap.data();
-      if (event.closed || !event.active) throw new Error("La votación está cerrada.");
+      const eventRef = db.collection("events").doc(eventSlug);
+      
+      // Transacción de Firebase Compat
+      return db.runTransaction(async (transaction) => {
+        const docSnap = await transaction.get(eventRef);
+        if (!docSnap.exists) throw new Error("El evento no existe.");
+        const event = docSnap.data();
+        if (event.closed || !event.active) throw new Error("La votación está cerrada.");
 
-      const songs = event.songs.map(song => {
-        if (song.id === songId) {
-          return { ...song, votes: (song.votes || 0) + 1 };
-        }
-        return song;
+        const songs = event.songs.map(song => {
+          if (song.id === songId) {
+            return { ...song, votes: (song.votes || 0) + 1 };
+          }
+          return song;
+        });
+
+        transaction.update(eventRef, {
+          songs: songs,
+          totalVotes: (event.totalVotes || 0) + 1
+        });
+
+        const voteRef = db.collection("votes").doc();
+        transaction.set(voteRef, {
+          eventId: eventSlug,
+          songId: songId,
+          timestamp: new Date().toISOString(),
+          voterName: leadData?.name || "",
+          voterEmail: leadData?.email || "",
+          voterPhone: leadData?.whatsapp || ""
+        });
+
+        localStorage.setItem(`voted_${eventSlug}`, "true");
       });
-
-      await updateDoc(eventRef, {
-        songs: songs,
-        totalVotes: (event.totalVotes || 0) + 1
-      });
-
-      // Crear registro en colección de votos/participantes
-      const voteRef = doc(collection(db, "votes"));
-      const voteDoc = {
-        eventId: eventSlug,
-        songId: songId,
-        timestamp: new Date().toISOString(),
-        voterName: leadData?.name || "",
-        voterEmail: leadData?.email || "",
-        voterPhone: leadData?.whatsapp || ""
-      };
-      await setDoc(voteRef, voteDoc);
-
-      localStorage.setItem(`voted_${eventSlug}`, "true");
-      return true;
     } catch (e) {
       console.error("Error al registrar voto:", e);
       throw e;
@@ -242,7 +223,7 @@ export async function voteForSong(eventSlug, songId, leadData = null) {
 }
 
 // 4. Suscribirse a los resultados de un Evento en Tiempo Real
-export function subscribeToResults(eventSlug, callback) {
+function subscribeToResults(eventSlug, callback) {
   if (isMock) {
     const handler = (e) => {
       if (e.detail && e.detail.slug === eventSlug) {
@@ -252,16 +233,14 @@ export function subscribeToResults(eventSlug, callback) {
     };
     window.addEventListener("mockDbUpdate", handler);
     
-    // Ejecución inicial inmediata
     const events = getLocalData("militia_events", DEFAULT_EVENTS);
     callback(events[eventSlug]);
     
-    // Retornar función para desuscribirse
     return () => window.removeEventListener("mockDbUpdate", handler);
   } else {
-    const docRef = doc(db, "events", eventSlug);
-    return onSnapshot(docRef, (docSnap) => {
-      if (docSnap.exists()) {
+    const docRef = db.collection("events").doc(eventSlug);
+    return docRef.onSnapshot((docSnap) => {
+      if (docSnap.exists) {
         callback({ id: docSnap.id, ...docSnap.data() });
       }
     });
@@ -269,14 +248,13 @@ export function subscribeToResults(eventSlug, callback) {
 }
 
 // 5. Obtener todos los eventos (Públicos e Históricos)
-export async function getAllEvents() {
+async function getAllEvents() {
   if (isMock) {
     const events = getLocalData("militia_events", DEFAULT_EVENTS);
     return Object.values(events).sort((a, b) => new Date(b.date) - new Date(a.date));
   } else {
     try {
-      const q = query(collection(db, "events"), orderBy("date", "desc"));
-      const querySnapshot = await getDocs(q);
+      const querySnapshot = await db.collection("events").orderBy("date", "desc").get();
       const events = [];
       querySnapshot.forEach((doc) => {
         events.push({ id: doc.id, ...doc.data() });
@@ -290,7 +268,7 @@ export async function getAllEvents() {
 }
 
 // 6. Suscribirse a todos los eventos (Admin)
-export function subscribeToAllEvents(callback) {
+function subscribeToAllEvents(callback) {
   if (isMock) {
     const handler = () => {
       const events = getLocalData("militia_events", DEFAULT_EVENTS);
@@ -298,14 +276,13 @@ export function subscribeToAllEvents(callback) {
     };
     window.addEventListener("mockDbUpdate", handler);
     
-    // Ejecución inicial
     const events = getLocalData("militia_events", DEFAULT_EVENTS);
     callback(Object.values(events).sort((a, b) => new Date(b.date) - new Date(a.date)));
     
     return () => window.removeEventListener("mockDbUpdate", handler);
   } else {
-    const q = query(collection(db, "events"), orderBy("date", "desc"));
-    return onSnapshot(q, (querySnapshot) => {
+    const q = db.collection("events").orderBy("date", "desc");
+    return q.onSnapshot((querySnapshot) => {
       const events = [];
       querySnapshot.forEach((doc) => {
         events.push({ id: doc.id, ...doc.data() });
@@ -316,7 +293,7 @@ export function subscribeToAllEvents(callback) {
 }
 
 // 7. Crear o Editar Evento (Admin)
-export async function saveEvent(eventData) {
+async function saveEvent(eventData) {
   const slug = eventData.id || eventData.name.toLowerCase()
     .replace(/[^\w\s-]/g, '')
     .trim()
@@ -325,7 +302,6 @@ export async function saveEvent(eventData) {
   if (isMock) {
     const events = getLocalData("militia_events", DEFAULT_EVENTS);
     
-    // Si se marca este evento como vigente (isCurrent), desmarcar los demás
     if (eventData.isCurrent) {
       Object.keys(events).forEach(key => {
         events[key].isCurrent = false;
@@ -334,7 +310,6 @@ export async function saveEvent(eventData) {
 
     const existing = events[slug] || { songs: [], totalVotes: 0, closed: false, winnerSongId: "" };
     
-    // Mapear canciones preservando votos si ya existían
     const updatedSongs = eventData.songs.map((song, i) => {
       const match = existing.songs.find(s => s.title.toLowerCase() === song.title.toLowerCase());
       return {
@@ -360,23 +335,20 @@ export async function saveEvent(eventData) {
     return slug;
   } else {
     try {
-      const eventRef = doc(db, "events", slug);
+      const eventRef = db.collection("events").doc(slug);
       
-      // Si se marca como current, primero desmarcar otros events
       if (eventData.isCurrent) {
-        const q = query(collection(db, "events"), where("isCurrent", "==", true));
-        const currentSnaps = await getDocs(q);
+        const currentSnaps = await db.collection("events").where("isCurrent", "==", true).get();
         for (const d of currentSnaps.docs) {
           if (d.id !== slug) {
-            await updateDoc(doc(db, "events", d.id), { isCurrent: false });
+            await db.collection("events").doc(d.id).update({ isCurrent: false });
           }
         }
       }
 
-      // Comprobar si ya existe
-      const docSnap = await getDoc(eventRef);
+      const docSnap = await eventRef.get();
       let existing = { songs: [], totalVotes: 0, closed: false, winnerSongId: "" };
-      if (docSnap.exists()) {
+      if (docSnap.exists) {
         existing = docSnap.data();
       }
 
@@ -405,7 +377,7 @@ export async function saveEvent(eventData) {
         totalVotes: totalVotes
       };
 
-      await setDoc(eventRef, toSave, { merge: true });
+      await eventRef.set(toSave, { merge: true });
       return slug;
     } catch (e) {
       console.error("Error guardando evento:", e);
@@ -415,7 +387,7 @@ export async function saveEvent(eventData) {
 }
 
 // 8. Cerrar votación y declarar ganadora (Admin)
-export async function closeVoting(eventSlug, winnerSongId) {
+async function closeVoting(eventSlug, winnerSongId) {
   if (isMock) {
     const events = getLocalData("militia_events", DEFAULT_EVENTS);
     const event = events[eventSlug];
@@ -431,8 +403,8 @@ export async function closeVoting(eventSlug, winnerSongId) {
     return true;
   } else {
     try {
-      const eventRef = doc(db, "events", eventSlug);
-      await updateDoc(eventRef, {
+      const eventRef = db.collection("events").doc(eventSlug);
+      await eventRef.update({
         closed: true,
         active: false,
         winnerSongId: winnerSongId
@@ -446,7 +418,7 @@ export async function closeVoting(eventSlug, winnerSongId) {
 }
 
 // 9. Eliminar Evento (Admin)
-export async function deleteEvent(eventSlug) {
+async function deleteEvent(eventSlug) {
   if (isMock) {
     const events = getLocalData("militia_events", DEFAULT_EVENTS);
     delete events[eventSlug];
@@ -454,21 +426,19 @@ export async function deleteEvent(eventSlug) {
     window.dispatchEvent(new CustomEvent("mockDbUpdate", { detail: { slug: eventSlug } }));
     return true;
   } else {
-    // Nota: Generalmente es mejor desactivarlo, pero implementamos delete si es necesario.
-    console.warn("Borrado directo en Firebase no implementado en este wrapper por seguridad. Usa desactivar.");
+    console.warn("Borrado directo en Firebase no implementado.");
     return false;
   }
 }
 
 // 10. Obtener lista de participantes registrados (Admin)
-export async function getParticipantsForEvent(eventSlug) {
+async function getParticipantsForEvent(eventSlug) {
   if (isMock) {
     const participants = getLocalData("militia_participants", []);
     return participants.filter(p => p.eventId === eventSlug);
   } else {
     try {
-      const q = query(collection(db, "votes"), where("eventId", "==", eventSlug));
-      const querySnapshot = await getDocs(q);
+      const querySnapshot = await db.collection("votes").where("eventId", "==", eventSlug).get();
       const list = [];
       querySnapshot.forEach((doc) => {
         const data = doc.data();
@@ -495,9 +465,8 @@ export async function getParticipantsForEvent(eventSlug) {
 // SERVICIO DE AUTENTICACIÓN ADMIN (MOCK + FIREBASE AUTH)
 // ========================================================
 
-export async function loginAdmin(email, password) {
+async function loginAdmin(email, password) {
   if (isMock) {
-    // Para el entorno de simulación, la contraseña por defecto es "militia123"
     if (password === "militia123" && email === "admin@militiainc.com.mx") {
       sessionStorage.setItem("militia_admin_logged", "true");
       return { email: email, uid: "mock_admin" };
@@ -506,7 +475,7 @@ export async function loginAdmin(email, password) {
     }
   } else {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await auth.signInWithEmailAndPassword(email, password);
       return userCredential.user;
     } catch (e) {
       console.error("Error en login:", e);
@@ -515,13 +484,13 @@ export async function loginAdmin(email, password) {
   }
 }
 
-export async function logoutAdmin() {
+async function logoutAdmin() {
   if (isMock) {
     sessionStorage.removeItem("militia_admin_logged");
     return true;
   } else {
     try {
-      await signOut(auth);
+      await auth.signOut();
       return true;
     } catch (e) {
       console.error("Error en logout:", e);
@@ -530,13 +499,30 @@ export async function logoutAdmin() {
   }
 }
 
-export function checkAuthState(callback) {
+function checkAuthState(callback) {
   if (isMock) {
     const isLogged = sessionStorage.getItem("militia_admin_logged") === "true";
     callback(isLogged ? { email: "admin@militiainc.com.mx", uid: "mock_admin" } : null);
-    // Retornar un unsubscriber vacío
     return () => {};
   } else {
-    return onAuthStateChanged(auth, callback);
+    return auth.onAuthStateChanged(callback);
   }
 }
+
+// Exponer la interfaz globalmente
+window.MilitiaDb = {
+  isMock: isMock,
+  getActiveEvent: getActiveEvent,
+  getEventBySlug: getEventBySlug,
+  voteForSong: voteForSong,
+  subscribeToResults: subscribeToResults,
+  getAllEvents: getAllEvents,
+  subscribeToAllEvents: subscribeToAllEvents,
+  saveEvent: saveEvent,
+  closeVoting: closeVoting,
+  deleteEvent: deleteEvent,
+  getParticipantsForEvent: getParticipantsForEvent,
+  loginAdmin: loginAdmin,
+  logoutAdmin: logoutAdmin,
+  checkAuthState: checkAuthState
+};

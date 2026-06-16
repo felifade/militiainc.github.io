@@ -10,6 +10,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   
+  <!-- Firebase Compat UMD SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  
+  <!-- Configuración -->
+  <script src="../js/firebase-config.js"></script>
+
   <!-- Estilos -->
   <link rel="stylesheet" href="../css/inmortal.css">
   
@@ -222,9 +230,9 @@
     <p>&copy; 2026 Militia Inc. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- Admin JavaScript Module -->
-  <script type="module">
-    import {
+  <!-- Admin JavaScript -->
+  <script>
+    const {
       checkAuthState,
       loginAdmin,
       logoutAdmin,
@@ -232,7 +240,7 @@
       saveEvent,
       closeVoting,
       getParticipantsForEvent
-    } from '../js/firebase-config.js';
+    } = window.MilitiaDb;
 
     // Elementos DOM Auth
     const loginView = document.getElementById('login-view');

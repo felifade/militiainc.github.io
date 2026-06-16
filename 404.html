@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Militia Inc. | Cargando...</title>
+  <script type="text/javascript">
+    // Enrutador para Single Page App en GitHub Pages
+    // Evita el error 404 al usar rutas limpias como /inmortal/la-curandera-junio-2026
+    var path = window.location.pathname;
+    var search = window.location.search;
+    var hash = window.location.hash;
+
+    // Verificar si el path es de la sección 'inmortal'
+    if (path.indexOf('/inmortal/') === 0) {
+      // Extrae la parte posterior a /inmortal/ (el slug del evento)
+      var slug = path.substring('/inmortal/'.length);
+      // Redirige a /inmortal/index.html pasando el slug en la consulta '?p='
+      window.location.replace(
+        window.location.protocol + '//' + window.location.host + '/inmortal/index.html?p=' + encodeURIComponent(slug) + search + hash
+      );
+    } else if (path === '/inmortal') {
+      // Si entra a /inmortal directamente, carga la página base
+      window.location.replace(
+        window.location.protocol + '//' + window.location.host + '/inmortal/index.html' + search + hash
+      );
+    } else if (path.indexOf('/canciones-inmortales') === 0 && path !== '/canciones-inmortales/index.html' && path !== '/canciones-inmortales/') {
+      // Redirige al historial si entran por rutas alternas
+      window.location.replace(
+        window.location.protocol + '//' + window.location.host + '/canciones-inmortales/index.html' + search + hash
+      );
+    } else if (path.indexOf('/admin') === 0 && path !== '/admin/index.html' && path !== '/admin/') {
+      // Redirige al admin si entran por rutas alternas
+      window.location.replace(
+        window.location.protocol + '//' + window.location.host + '/admin/index.html' + search + hash
+      );
+    } else {
+      // Si es cualquier otro 404, redirige a la página principal con parámetro de retorno
+      window.location.replace(
+        window.location.protocol + '//' + window.location.host + '/index.html'
+      );
+    }
+  </script>
+</head>
+<body>
+  <p style="text-align:center; font-family:sans-serif; margin-top:100px; color:#888;">Cargando experiencia Militia Inc...</p>
+</body>
+</html>

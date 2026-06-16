@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Administrativo | Militia Inc.</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../css/inmortal.css">
+  
+  <!-- QR Code Library via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+<body class="inmortal-body">
+
+  <!-- Header -->
+  <header class="inmortal-header">
+    <a href="../index.html">
+      <img src="../images/logo.png" alt="Militia Inc. Logo" class="logo-img">
+    </a>
+    <h1>PANEL <span>ADMINISTRATIVO</span></h1>
+  </header>
+
+  <!-- Main Container -->
+  <main class="inmortal-container" style="max-width: 1100px;">
+    
+    <!-- Login Card -->
+    <div id="login-view" class="inmortal-card login-card" style="display: none;">
+      <div class="login-title-box">
+        <h2>INICIAR SESIÓN</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Acceso exclusivo para administradores de Militia Inc.</p>
+      </div>
+      
+      <div id="login-error" class="status-msg error"></div>
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Usuario / Correo</label>
+          <input type="email" id="login-email" class="form-control" placeholder="admin@militiainc.com.mx" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="login-password">Contraseña</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px; text-align: center;">
+          Pista del demo: usa <strong>admin@militiainc.com.mx</strong> y contraseña <strong>militia123</strong>
+        </p>
+
+        <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+      </form>
+    </div>
+
+    <!-- Admin Dashboard View -->
+    <div id="dashboard-view" style="display: none;">
+      
+      <!-- User Info Header -->
+      <div class="admin-header">
+        <div>
+          <h2>Panel de Control</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin: 5px 0 0 0;" id="user-display">Conectado como Administrador</p>
+        </div>
+        <button id="logout-btn" class="btn btn-ghost" style="padding: 8px 16px; font-size: 0.75rem;">Cerrar Sesión</button>
+      </div>
+
+      <div id="admin-status" class="status-msg"></div>
+
+      <!-- Dashboard Layout Grid -->
+      <div class="admin-grid">
+        
+        <!-- Left Column: Events Manager -->
+        <section>
+          
+          <!-- Event List -->
+          <div class="inmortal-card" style="margin-bottom: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <h3 class="admin-section-title" style="margin: 0;">Conciertos y Eventos</h3>
+              <button id="new-event-btn" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.75rem;">+ Crear Nuevo</button>
+            </div>
+            
+            <div class="event-list-admin" id="event-list-admin">
+              <!-- Dinámico -->
+            </div>
+          </div>
+
+          <!-- Event Creation/Editing Form -->
+          <div class="admin-form-box" id="event-form-box" style="display: none;">
+            <h3 class="admin-section-title" id="form-title">Crear Concierto</h3>
+            
+            <form id="event-form">
+              <input type="hidden" id="form-event-id">
+              
+              <div class="form-group">
+                <label for="event-name-input">Nombre del Concierto / Lugar</label>
+                <input type="text" id="event-name-input" class="form-control" placeholder="Ej. La Curandera Junio 2026" required>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group">
+                  <label for="event-date-input">Fecha</label>
+                  <input type="date" id="event-date-input" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="event-location-input">Ubicación</label>
+                  <input type="text" id="event-location-input" class="form-control" placeholder="Ej. Pachuca, Hidalgo" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="event-flyer-input">URL del Flyer Oficial (Imagen)</label>
+                <input type="url" id="event-flyer-input" class="form-control" placeholder="Ej. https://militiainc.com.mx/images/flyer.jpg">
+              </div>
+
+              <div class="form-group" style="margin-bottom: 10px;">
+                <label>Canciones Participantes (Mínimo 4, máximo 6)</label>
+                <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: -5px; margin-bottom: 12px;">Ingresa el título de la canción y el artista original.</p>
+                
+                <div class="songs-input-list" id="songs-input-list">
+                  <!-- Generado dinámicamente (4 a 6 inputs) -->
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 20px; margin-bottom: 25px;">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem;">
+                  <input type="checkbox" id="event-active-input" checked style="width: 16px; height: 16px; accent-color: var(--color-red);">
+                  Habilitar Votaciones
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem;">
+                  <input type="checkbox" id="event-current-input" style="width: 16px; height: 16px; accent-color: var(--color-red);">
+                  Establecer como Concierto Activo (/inmortal)
+                </label>
+              </div>
+
+              <div class="form-actions-row" style="margin-top: 0;">
+                <button type="button" id="cancel-form-btn" class="btn btn-ghost">Cancelar</button>
+                <button type="submit" class="btn btn-primary" id="save-event-btn">Guardar Concierto</button>
+              </div>
+            </form>
+          </div>
+
+        </section>
+
+        <!-- Right Column: Real-Time Results & QR -->
+        <section id="results-sidebar" style="display: none;">
+          
+          <!-- Real-Time Statistics -->
+          <div class="results-card" style="margin-bottom: 30px;">
+            <h3 class="admin-section-title" id="results-title">Resultados del Concierto</h3>
+            
+            <div class="total-votes-count">
+              <span class="number" id="results-total-votes">0</span>
+              <span class="label">Votos Recibidos</span>
+            </div>
+
+            <!-- CSS Bar Chart -->
+            <div class="results-chart-container" id="results-chart-container">
+              <!-- Dinámico -->
+            </div>
+
+            <div style="margin-top: 30px; display: flex; gap: 10px; flex-direction: column;">
+              <button id="close-voting-btn" class="btn btn-primary btn-block glow">
+                Cerrar Votación y Elegir Ganadora
+              </button>
+              <div id="voting-closed-badge" class="status-msg info" style="text-align: center; font-weight: bold; margin-bottom: 0;">
+                🔒 Esta votación está cerrada
+              </div>
+            </div>
+          </div>
+
+          <!-- QR Generator -->
+          <div class="results-card" style="margin-bottom: 30px;">
+            <h3 class="admin-section-title">Código QR del Evento</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: -10px; margin-bottom: 15px;">Imprime o proyecta este código QR para que los asistentes escaneen y voten en tiempo real.</p>
+            
+            <div class="qr-container">
+              <div class="qr-code-box">
+                <canvas id="qr-canvas"></canvas>
+              </div>
+              <div class="qr-link" id="qr-link-text">URL del evento</div>
+              <button id="download-qr-btn" class="btn btn-ghost btn-block" style="padding: 8px; font-size: 0.8rem;">Descargar QR (PNG)</button>
+            </div>
+          </div>
+
+          <!-- Registered Leads -->
+          <div class="results-card">
+            <h3 class="admin-section-title">Participantes Registrados</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: -10px; margin-bottom: 15px;">Integrantes que se han unido a la comunidad Militia Inc. desde este evento.</p>
+            
+            <div id="no-participants" style="text-align: center; color: var(--text-muted); font-size: 0.9rem; padding: 15px;">
+              Ningún participante registrado todavía.
+            </div>
+            
+            <div class="participant-table-wrapper" id="participant-table-wrapper" style="display: none;">
+              <table class="participant-table">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Contacto</th>
+                    <th>Voto</th>
+                  </tr>
+                </thead>
+                <tbody id="participant-rows">
+                  <!-- Dinámico -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer style="text-align: center; padding: 25px 20px; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color); margin-top: 50px;">
+    <p>&copy; 2026 Militia Inc. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Admin JavaScript Module -->
+  <script type="module">
+    import {
+      checkAuthState,
+      loginAdmin,
+      logoutAdmin,
+      subscribeToAllEvents,
+      saveEvent,
+      closeVoting,
+      getParticipantsForEvent
+    } from '../js/firebase-config.js';
+
+    // Elementos DOM Auth
+    const loginView = document.getElementById('login-view');
+    const dashboardView = document.getElementById('dashboard-view');
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const logoutBtn = document.getElementById('logout-btn');
+    const userDisplay = document.getElementById('user-display');
+
+    // Elementos DOM Dashboard
+    const eventListAdmin = document.getElementById('event-list-admin');
+    const newEventBtn = document.getElementById('new-event-btn');
+    const eventFormBox = document.getElementById('event-form-box');
+    const eventForm = document.getElementById('event-form');
+    const formTitle = document.getElementById('form-title');
+    const cancelFormBtn = document.getElementById('cancel-form-btn');
+    const adminStatus = document.getElementById('admin-status');
+
+    // Elementos Formulario
+    const formEventId = document.getElementById('form-event-id');
+    const eventNameInput = document.getElementById('event-name-input');
+    const eventDateInput = document.getElementById('event-date-input');
+    const eventLocationInput = document.getElementById('event-location-input');
+    const eventFlyerInput = document.getElementById('event-flyer-input');
+    const songsInputList = document.getElementById('songs-input-list');
+    const eventActiveInput = document.getElementById('event-active-input');
+    const eventCurrentInput = document.getElementById('event-current-input');
+
+    // Elementos Resultados
+    const resultsSidebar = document.getElementById('results-sidebar');
+    const resultsTitle = document.getElementById('results-title');
+    const resultsTotalVotes = document.getElementById('results-total-votes');
+    const resultsChartContainer = document.getElementById('results-chart-container');
+    const closeVotingBtn = document.getElementById('close-voting-btn');
+    const votingClosedBadge = document.getElementById('voting-closed-badge');
+
+    // Elementos QR
+    const qrCanvas = document.getElementById('qr-canvas');
+    const qrLinkText = document.getElementById('qr-link-text');
+    const downloadQrBtn = document.getElementById('download-qr-btn');
+
+    // Elementos Participantes
+    const noParticipants = document.getElementById('no-participants');
+    const participantTableWrapper = document.getElementById('participant-table-wrapper');
+    const participantRows = document.getElementById('participant-rows');
+
+    let allEvents = [];
+    let selectedEventSlug = null;
+    let unsubEvents = null;
+    let currentQRUrl = "";
+
+    // 1. Manejo de Autenticación
+    checkAuthState(user => {
+      if (user) {
+        // Usuario autenticado
+        loginView.style.display = 'none';
+        dashboardView.style.display = 'block';
+        userDisplay.textContent = `Conectado como: ${user.email}`;
+        initDashboard();
+      } else {
+        // Usuario no autenticado
+        loginView.style.display = 'block';
+        dashboardView.style.display = 'none';
+        if (unsubEvents) unsubEvents();
+      }
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginError.style.display = 'none';
+      
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      try {
+        await loginAdmin(email, password);
+      } catch (err) {
+        loginError.textContent = err.message || "Error al iniciar sesión.";
+        loginError.style.display = 'block';
+      }
+    });
+
+    logoutBtn.addEventListener('click', async () => {
+      await logoutAdmin();
+      window.location.reload();
+    });
+
+    // 2. Inicializar Dashboard
+    function initDashboard() {
+      // Suscribirse a todos los eventos en tiempo real
+      unsubEvents = subscribeToAllEvents((events) => {
+        allEvents = events;
+        renderEventsList(events);
+        
+        // Mantener actualizado el evento seleccionado en el panel derecho si hay uno
+        if (selectedEventSlug) {
+          const updatedSelected = events.find(e => e.id === selectedEventSlug);
+          if (updatedSelected) {
+            renderEventResults(updatedSelected);
+          }
+        } else if (events.length > 0) {
+          // Seleccionar por defecto el evento corriente (current) o el primero de la lista
+          const current = events.find(e => e.isCurrent) || events[0];
+          selectEvent(current.id);
+        }
+      });
+
+      // Crear inputs de canciones en el formulario (mínimo 4, máximo 6)
+      setupSongInputs();
+    }
+
+    // Generar inputs de canciones para el formulario
+    function setupSongInputs() {
+      songsInputList.innerHTML = '';
+      for (let i = 1; i <= 6; i++) {
+        const row = document.createElement('div');
+        row.className = 'song-input-row';
+        row.innerHTML = `
+          <input type="text" class="form-control song-title-input" placeholder="Canción ${i}" ${i <= 4 ? 'required' : ''}>
+          <input type="text" class="form-control song-artist-input" placeholder="Artista ${i}" ${i <= 4 ? 'required' : ''}>
+        `;
+        songsInputList.appendChild(row);
+      }
+    }
+
+    // 3. Renderizar Lista de Eventos
+    function renderEventsList(events) {
+      eventListAdmin.innerHTML = '';
+      
+      if (events.length === 0) {
+        eventListAdmin.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">No hay conciertos creados todavía.</p>';
+        return;
+      }
+
+      events.forEach(event => {
+        const item = document.createElement('div');
+        item.className = `event-item-admin ${event.id === selectedEventSlug ? 'active-event' : ''}`;
+        
+        const badgeHtml = event.active 
+          ? `<span class="admin-badge badge-active">Activo</span>`
+          : `<span class="admin-badge badge-inactive">Cerrado</span>`;
+          
+        const currentHtml = event.isCurrent
+          ? `<span class="admin-badge badge-current">Vigente</span>`
+          : ``;
+
+        item.innerHTML = `
+          <div class="admin-item-details" style="cursor:pointer; flex: 1;">
+            <h4>${event.name}</h4>
+            <p>${event.location} &mdash; ${event.date}</p>
+            <div>${badgeHtml}${currentHtml}</div>
+          </div>
+          <div class="admin-item-actions">
+            <button class="btn btn-ghost edit-btn" style="padding: 6px 12px; font-size: 0.7rem;">Editar</button>
+          </div>
+        `;
+
+        // Click en el detalle del evento selecciona para ver estadísticas
+        item.querySelector('.admin-item-details').addEventListener('click', () => {
+          selectEvent(event.id);
+        });
+
+        // Click en editar abre el formulario
+        item.querySelector('.edit-btn').addEventListener('click', (e) => {
+          e.stopPropagation();
+          openEditForm(event);
+        });
+
+        eventListAdmin.appendChild(item);
+      });
+    }
+
+    // Seleccionar evento para ver resultados
+    function selectEvent(slug) {
+      selectedEventSlug = slug;
+      
+      // Actualizar selección visual en la lista
+      document.querySelectorAll('.event-item-admin').forEach(item => {
+        item.classList.remove('active-event');
+      });
+      
+      const items = eventListAdmin.childNodes;
+      const index = allEvents.findIndex(e => e.id === slug);
+      if (index !== -1 && items[index]) {
+        items[index].classList.add('active-event');
+      }
+
+      const event = allEvents.find(e => e.id === slug);
+      if (event) {
+        renderEventResults(event);
+      }
+    }
+
+    // 4. Renderizar Resultados en Tiempo Real
+    async function renderEventResults(event) {
+      resultsSidebar.style.display = 'block';
+      resultsTitle.textContent = event.name;
+      resultsTotalVotes.textContent = event.totalVotes || 0;
+
+      // Generar Gráficas de Barras
+      resultsChartContainer.innerHTML = '';
+      
+      // Encontrar el puntaje máximo para calcular porcentajes visuales relativos
+      const maxVotes = Math.max(...event.songs.map(s => s.votes || 0), 1);
+      
+      // Encontrar canción con más votos para destacarla como líder actual si no está cerrado
+      let leadingSongId = "";
+      if (event.totalVotes > 0) {
+        const sorted = [...event.songs].sort((a,b) => b.votes - a.votes);
+        leadingSongId = sorted[0].id;
+      }
+
+      event.songs.forEach(song => {
+        const votes = song.votes || 0;
+        const pct = event.totalVotes > 0 ? Math.round((votes / event.totalVotes) * 100) : 0;
+        
+        const isWinner = event.closed ? (event.winnerSongId === song.id) : (song.id === leadingSongId && event.totalVotes > 0);
+
+        const row = document.createElement('div');
+        row.className = 'chart-bar-row';
+        row.innerHTML = `
+          <div class="chart-bar-labels">
+            <span class="chart-song-title">${song.title} <span style="font-size:0.8rem; font-weight:normal; color:var(--text-muted);">&mdash; ${song.artist}</span></span>
+            <span class="chart-song-pct">${votes} votos (${pct}%)</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill ${isWinner ? 'winner' : ''}" style="width: ${pct}%"></div>
+          </div>
+        `;
+        resultsChartContainer.appendChild(row);
+      });
+
+      // Habilitar/Deshabilitar botón de cierre
+      if (event.closed) {
+        closeVotingBtn.style.display = 'none';
+        votingClosedBadge.style.display = 'block';
+        
+        const winner = event.songs.find(s => s.id === event.winnerSongId);
+        if (winner) {
+          votingClosedBadge.innerHTML = `🔒 Votación Cerrada. Canción Inmortal: <strong>${winner.title} (${winner.artist})</strong>`;
+        }
+      } else {
+        closeVotingBtn.style.display = 'block';
+        votingClosedBadge.style.display = 'none';
+        
+        // Habilitar cierre de votación sólo si hay al menos 1 voto
+        closeVotingBtn.disabled = event.totalVotes === 0;
+      }
+
+      // Generar Código QR
+      generateQR(event.id);
+
+      // Cargar Participantes
+      loadParticipants(event.id);
+    }
+
+    // 5. Generar Código QR dinámico
+    function generateQR(slug) {
+      // Determinamos el host dinámicamente. 
+      // Si el sitio tiene un CNAME en producción será militiainc.com.mx
+      // De lo contrario usamos la ubicación actual
+      let host = window.location.host;
+      if (host.includes("localhost") || host.includes("127.0.0.1")) {
+        currentQRUrl = `${window.location.protocol}//${host}/inmortal/index.html?p=${slug}`;
+      } else {
+        currentQRUrl = `https://militiainc.com.mx/inmortal/${slug}`;
+      }
+      
+      qrLinkText.textContent = currentQRUrl;
+
+      // Renderizar a Canvas usando la librería QRCode
+      QRCode.toCanvas(qrCanvas, currentQRUrl, {
+        width: 180,
+        margin: 1,
+        color: {
+          dark: '#000000',
+          light: '#ffffff'
+        }
+      }, function (error) {
+        if (error) console.error("Error al generar QR:", error);
+      });
+    }
+
+    // Descargar código QR como PNG
+    downloadQrBtn.addEventListener('click', () => {
+      const dataUrl = qrCanvas.toDataURL("image/png");
+      const link = document.createElement('a');
+      link.download = `QR_MilitiaInc_${selectedEventSlug}.png`;
+      link.href = dataUrl;
+      link.click();
+    });
+
+    // 6. Cargar y Renderizar Participantes
+    async function loadParticipants(slug) {
+      try {
+        const list = await getParticipantsForEvent(slug);
+        
+        if (list.length === 0) {
+          noParticipants.style.display = 'block';
+          participantTableWrapper.style.display = 'none';
+          return;
+        }
+
+        noParticipants.style.display = 'none';
+        participantTableWrapper.style.display = 'block';
+        participantRows.innerHTML = '';
+
+        list.forEach(p => {
+          const row = document.createElement('tr');
+          
+          let contactInfo = "";
+          if (p.email) contactInfo += `<div>✉ ${p.email}</div>`;
+          if (p.whatsapp) contactInfo += `<div>☏ ${p.whatsapp}</div>`;
+          if (!contactInfo) contactInfo = '<span style="color:var(--text-muted)">Sin datos</span>';
+
+          row.innerHTML = `
+            <td><strong>${p.name || "Anonimo"}</strong></td>
+            <td><div style="font-size:0.8rem;">${contactInfo}</div></td>
+            <td style="font-size:0.8rem; color:var(--color-gold);">${p.songTitle || "Voto registrado"}</td>
+          `;
+          participantRows.appendChild(row);
+        });
+
+      } catch (err) {
+        console.error("Error al cargar participantes:", err);
+      }
+    }
+
+    // 7. Cerrar Votaciones
+    closeVotingBtn.addEventListener('click', async () => {
+      if (!selectedEventSlug) return;
+      
+      const event = allEvents.find(e => e.id === selectedEventSlug);
+      if (!event || event.totalVotes === 0) return;
+
+      // Encontrar la canción con más votos
+      const sorted = [...event.songs].sort((a,b) => b.votes - a.votes);
+      const winner = sorted[0];
+
+      const confirmText = `¿Estás seguro de cerrar la votación?\n\nLa canción ganadora actual es:\n"${winner.title}" de ${winner.artist} con ${winner.votes} votos.`;
+      
+      if (confirm(confirmText)) {
+        try {
+          await closeVoting(selectedEventSlug, winner.id);
+          showStatus("Votación cerrada con éxito. Canción ganadora registrada.", "success");
+        } catch (err) {
+          showStatus("Error al cerrar la votación: " + err.message, "error");
+        }
+      }
+    });
+
+    // 8. Crear y Editar Conciertos (Formulario)
+    newEventBtn.addEventListener('click', () => {
+      openCreateForm();
+    });
+
+    cancelFormBtn.addEventListener('click', () => {
+      eventFormBox.style.display = 'none';
+    });
+
+    function openCreateForm() {
+      formTitle.textContent = "Crear Concierto";
+      formEventId.value = "";
+      eventNameInput.value = "";
+      eventDateInput.value = new Date().toISOString().substring(0, 10);
+      eventLocationInput.value = "Pachuca, Hidalgo";
+      eventFlyerInput.value = "";
+      eventActiveInput.checked = true;
+      eventCurrentInput.checked = allEvents.length === 0; // Marcar current si es el primero
+
+      // Limpiar inputs de canciones
+      const titleInputs = document.querySelectorAll('.song-title-input');
+      const artistInputs = document.querySelectorAll('.song-artist-input');
+      
+      titleInputs.forEach(input => input.value = '');
+      artistInputs.forEach(input => input.value = '');
+
+      eventFormBox.style.display = 'block';
+      eventFormBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function openEditForm(event) {
+      formTitle.textContent = `Editar Concierto: ${event.name}`;
+      formEventId.value = event.id;
+      eventNameInput.value = event.name;
+      
+      // Formatear fecha para el input date (yyyy-MM-dd)
+      let formattedDate = "";
+      try {
+        formattedDate = new Date(event.date).toISOString().substring(0, 10);
+      } catch (e) {
+        formattedDate = event.date;
+      }
+      
+      eventDateInput.value = formattedDate;
+      eventLocationInput.value = event.location;
+      eventFlyerInput.value = event.flyerUrl || "";
+      eventActiveInput.checked = event.active;
+      eventCurrentInput.checked = event.isCurrent;
+
+      const titleInputs = document.querySelectorAll('.song-title-input');
+      const artistInputs = document.querySelectorAll('.song-artist-input');
+
+      // Limpiar todo primero
+      titleInputs.forEach(input => input.value = '');
+      artistInputs.forEach(input => input.value = '');
+
+      // Rellenar canciones existentes
+      event.songs.forEach((song, i) => {
+        if (titleInputs[i] && artistInputs[i]) {
+          titleInputs[i].value = song.title;
+          artistInputs[i].value = song.artist;
+        }
+      });
+
+      eventFormBox.style.display = 'block';
+      eventFormBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Submit del Formulario (Guardar)
+    eventForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const saveBtn = document.getElementById('save-event-btn');
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Guardando...';
+
+      // Capturar canciones de los inputs
+      const songs = [];
+      const titleInputs = document.querySelectorAll('.song-title-input');
+      const artistInputs = document.querySelectorAll('.song-artist-input');
+
+      titleInputs.forEach((input, i) => {
+        const title = input.value.trim();
+        const artist = artistInputs[i].value.trim();
+        if (title && artist) {
+          songs.push({
+            id: formEventId.value ? `song${i + 1}` : null, // Preservar ID si editamos
+            title: title,
+            artist: artist
+          });
+        }
+      });
+
+      // Validar canciones (mínimo 4)
+      if (songs.length < 4) {
+        alert("Debes configurar al menos 4 canciones para el concierto.");
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Guardar Concierto';
+        return;
+      }
+
+      const eventData = {
+        id: formEventId.value || null,
+        name: eventNameInput.value.trim(),
+        date: eventDateInput.value,
+        location: eventLocationInput.value.trim(),
+        flyerUrl: eventFlyerInput.value.trim(),
+        songs: songs,
+        active: eventActiveInput.checked,
+        isCurrent: eventCurrentInput.checked
+      };
+
+      try {
+        const slug = await saveEvent(eventData);
+        showStatus("Concierto guardado correctamente.", "success");
+        eventFormBox.style.display = 'none';
+        
+        // Seleccionar automáticamente el evento guardado
+        selectedEventSlug = slug;
+      } catch (err) {
+        showStatus("Error al guardar concierto: " + err.message, "error");
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Guardar Concierto';
+      }
+    });
+
+    // Mostrar barra de estatus en dashboard
+    function showStatus(msg, type) {
+      adminStatus.className = `status-msg ${type}`;
+      adminStatus.textContent = msg;
+      adminStatus.style.display = 'block';
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      setTimeout(() => {
+        adminStatus.style.display = 'none';
+      }, 5000);
+    }
+  </script>
+</body>
+</html>

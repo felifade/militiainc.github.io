@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Historial de las Canciones Inmortales de Militia Inc. — La bitácora en vivo donde el público decide la historia de la banda.">
+  <title>Canciones Inmortales | Militia Inc.</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../css/inmortal.css">
+</head>
+<body class="inmortal-body">
+
+  <div class="inmortal-lightning" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="inmortal-header">
+    <a href="../index.html">
+      <img src="../images/logo.png" alt="Militia Inc. Logo" class="logo-img">
+    </a>
+    <h1>CANCIONES <span>INMORTALES</span></h1>
+    <p style="color: var(--text-muted); font-size: 1rem; max-width: 600px; margin: 10px auto 0; font-family: var(--f-body); line-height: 1.5;">
+      El historial de los conciertos donde el público de Militia Inc. tomó el control de la noche y eligió el cierre perfecto.
+    </p>
+  </header>
+
+  <!-- Main Container -->
+  <main class="inmortal-container" style="max-width: 900px;">
+    
+    <!-- Loading State -->
+    <div id="loading-view" class="inmortal-card" style="text-align: center; padding: 40px;">
+      <p style="font-family: var(--f-display); color: var(--color-gold); font-size: 0.9rem; letter-spacing: 0.1em; margin: 0 0 10px;">Recuperando bitácora del rock...</p>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Estamos cargando el historial de canciones ganadoras.</p>
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-view" class="inmortal-card" style="display: none; text-align: center; padding: 40px;">
+      <div style="font-size: 3rem; color: var(--color-gold); margin-bottom: 15px;">🎸</div>
+      <h2 style="font-family: var(--f-head); font-size: 2rem; margin: 0 0 10px;">Comenzando la Historia</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px;">Aún no se han completado votaciones oficiales de "La Canción Inmortal". ¡Muy pronto verás los conciertos aquí!</p>
+      <a href="../index.html" class="btn btn-primary">Regresar al sitio</a>
+    </div>
+
+    <!-- Timeline Section -->
+    <section id="timeline-view" class="timeline-section" style="display: none;">
+      <div class="timeline" id="timeline-container">
+        <!-- Dinámico -->
+      </div>
+      
+      <div style="text-align: center; margin-top: 50px;">
+        <a href="../index.html" class="btn btn-ghost">Regresar al Inicio</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer style="text-align: center; padding: 25px 20px; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color); margin-top: 50px;">
+    <p>&copy; 2026 Militia Inc. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Timeline Loader Module -->
+  <script type="module">
+    import { getAllEvents } from '../js/firebase-config.js';
+
+    const loadingView = document.getElementById('loading-view');
+    const emptyView = document.getElementById('empty-view');
+    const timelineView = document.getElementById('timeline-view');
+    const timelineContainer = document.getElementById('timeline-container');
+
+    async function loadTimeline() {
+      try {
+        const events = await getAllEvents();
+        // Filtrar sólo eventos cerrados y que tengan una canción ganadora registrada
+        const closedEvents = events.filter(e => e.closed && e.winnerSongId);
+
+        if (closedEvents.length === 0) {
+          loadingView.style.display = 'none';
+          emptyView.style.display = 'block';
+          return;
+        }
+
+        renderTimeline(closedEvents);
+        
+        loadingView.style.display = 'none';
+        timelineView.style.display = 'block';
+      } catch (err) {
+        console.error("Error cargando el historial de votaciones:", err);
+        loadingView.style.display = 'none';
+        emptyView.querySelector('p').textContent = "Hubo un error de conexión al cargar la bitácora.";
+        emptyView.style.display = 'block';
+      }
+    }
+
+    function renderTimeline(events) {
+      timelineContainer.innerHTML = '';
+      
+      events.forEach((event, index) => {
+        const item = document.createElement('div');
+        // Alternar izquierda y derecha en la línea de tiempo
+        const sideClass = index % 2 === 0 ? 'left' : 'right';
+        item.className = `timeline-item ${sideClass}`;
+
+        // Obtener detalles de la canción ganadora
+        const winner = event.songs.find(s => s.id === event.winnerSongId);
+        const winnerTitle = winner ? winner.title : "Canción Desconocida";
+        const winnerArtist = winner ? winner.artist : "Artista Desconocido";
+
+        // Formatear Fecha
+        let displayDate = event.date;
+        try {
+          const dateObj = new Date(event.date);
+          if (!isNaN(dateObj)) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            displayDate = dateObj.toLocaleDateString('es-MX', options);
+          }
+        } catch (e) {
+          // Fallback
+        }
+
+        // Renderizar flyer si existe
+        const flyerHtml = event.flyerUrl 
+          ? `<img src="${event.flyerUrl}" alt="Flyer de ${event.name}" class="timeline-flyer-thumb">` 
+          : '';
+
+        item.innerHTML = `
+          <div class="timeline-content">
+            <span class="timeline-date">${displayDate}</span>
+            <h3 style="font-family: var(--f-head); font-size: 1.8rem; margin: 0 0 5px 0; color: #fff;">${event.name}</h3>
+            <div class="timeline-location">${event.location}</div>
+            
+            ${flyerHtml}
+
+            <div class="timeline-winner">
+              <span class="timeline-winner-label">👑 Canción Inmortal</span>
+              <div class="timeline-song-name">${winnerTitle}</div>
+              <div class="timeline-song-artist">${winnerArtist}</div>
+            </div>
+            
+            <div class="timeline-votes">
+              Total de votos: <strong>${event.totalVotes || 0}</strong>
+            </div>
+          </div>
+        `;
+
+        timelineContainer.appendChild(item);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', loadTimeline);
+  </script>
+</body>
+</html>

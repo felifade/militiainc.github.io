@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="La Canción Inmortal — Tú decides qué canción interpretará Militia Inc. en vivo esta noche.">
+  <title>La Canción Inmortal | Militia Inc.</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../css/inmortal.css">
+</head>
+<body class="inmortal-body">
+
+  <div class="inmortal-lightning" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="inmortal-header">
+    <a href="../index.html">
+      <img src="../images/logo.png" alt="Militia Inc. Logo" class="logo-img">
+    </a>
+    <h1>LA CANCIÓN <span>INMORTAL</span></h1>
+  </header>
+
+  <!-- Main Container -->
+  <main class="inmortal-container">
+    
+    <!-- Cargando State -->
+    <div id="loading-view" class="inmortal-card" style="text-align: center; padding: 40px;">
+      <p style="font-family: var(--f-display); color: var(--color-gold); font-size: 0.9rem; letter-spacing: 0.1em; margin: 0 0 15px;">Conectando con el concierto...</p>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0;">Espera un momento, estamos preparando la votación en vivo.</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-view" class="inmortal-card" style="display: none; text-align: center; padding: 40px;">
+      <div style="font-size: 3rem; color: var(--color-red); margin-bottom: 15px;">⚡</div>
+      <h2 style="font-family: var(--f-head); font-size: 2rem; margin: 0 0 10px;">¡Ups! Algo salió mal</h2>
+      <p id="error-message" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px;">No pudimos encontrar ningún concierto activo en este momento.</p>
+      <a href="../index.html" class="btn btn-ghost">Ir a la página principal</a>
+    </div>
+
+    <!-- Voting View -->
+    <section id="voting-view" class="inmortal-card" style="display: none;">
+      
+      <!-- Event Info -->
+      <div class="event-info-box">
+        <span class="event-tag" id="event-tag">Concierto Activo</span>
+        <h2 class="event-title" id="event-title">Militia Inc. Live</h2>
+        <div class="event-meta">
+          <span id="event-date">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Cargando fecha...
+          </span>
+          <span id="event-location">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            Cargando lugar...
+          </span>
+        </div>
+        
+        <img id="event-flyer" src="" alt="Flyer Oficial" class="event-flyer" style="display: none;">
+        
+        <p class="event-slogan">“Tú decides qué canción quedará para la historia esta noche.”</p>
+      </div>
+
+      <!-- Voting Options -->
+      <div id="voting-options-container">
+        <h3 style="font-family: var(--f-display); font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-gold); margin-bottom: 15px; text-align: center;">Elige tu canción:</h3>
+        
+        <div class="songs-grid" id="songs-grid">
+          <!-- Dinámico -->
+        </div>
+
+        <div style="margin-top: 25px;">
+          <button id="submit-vote-btn" class="btn btn-primary btn-block glow" disabled>
+            Votar Ahora
+          </button>
+        </div>
+      </div>
+
+      <!-- Voting Closed State -->
+      <div id="voting-closed-container" style="display: none; text-align: center; padding: 20px 0;">
+        <div style="font-size: 2.5rem; color: var(--color-gold); margin-bottom: 15px;">👑</div>
+        <h3 style="font-family: var(--f-head); font-size: 2rem; margin: 0 0 10px;">¡Votaciones Cerradas!</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px;">El tiempo ha terminado y los dados están echados. Los votos han sido contabilizados y la canción ganadora ha quedado elegida.</p>
+        
+        <div id="winner-reveal-box" style="background-color: var(--bg-darker); border: 1px solid var(--border-gold); padding: 20px; border-radius: 4px; display: none;">
+          <span class="timeline-winner-label" style="justify-content: center; margin-bottom: 8px;">★ Canción Inmortal Ganadora ★</span>
+          <div class="timeline-song-name" id="winner-song-name" style="font-size: 1.4rem;">Cargando...</div>
+          <div class="timeline-song-artist" id="winner-song-artist">Cargando...</div>
+        </div>
+        
+        <a href="../index.html" class="btn btn-ghost" style="margin-top: 25px; width: 100%; justify-content: center;">Regresar al sitio</a>
+      </div>
+
+    </section>
+
+    <!-- Leads Section (Opcional) -->
+    <section id="lead-view" class="inmortal-card lead-section">
+      <h2>¡Voto Emitido!</h2>
+      <p class="lead-description">Tu voto ha sido procesado con éxito. Ahora, te invitamos a unirte a nosotros:</p>
+      
+      <div style="background-color: rgba(200, 169, 81, 0.05); border: 1px solid var(--border-gold); border-radius: 2px; padding: 15px; margin-bottom: 25px;">
+        <p style="margin: 0; font-size: 0.95rem; line-height: 1.5; color: #fff;">
+          <strong>“Únete a la comunidad Militia Inc. para enterarte de próximos conciertos.”</strong>
+        </p>
+      </div>
+
+      <form id="lead-form" novalidate>
+        <div class="form-group">
+          <label for="voter-name">Nombre completo</label>
+          <input type="text" id="voter-name" class="form-control" placeholder="Ej. Felipe López" autocomplete="name">
+        </div>
+        
+        <div class="form-group">
+          <label for="voter-email">Correo Electrónico</label>
+          <input type="email" id="voter-email" class="form-control" placeholder="Ej. tu@correo.com" autocomplete="email">
+        </div>
+        
+        <div class="form-group">
+          <label for="voter-phone">Número de WhatsApp</label>
+          <input type="tel" id="voter-phone" class="form-control" placeholder="Ej. 771 123 4567" autocomplete="tel">
+        </div>
+
+        <div class="form-actions-row">
+          <button type="button" id="skip-lead-btn" class="btn btn-ghost">Omitir</button>
+          <button type="submit" class="btn btn-primary">Unirme</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Confirmation View -->
+    <section id="confirm-view" class="inmortal-card confirm-section">
+      <div class="confirm-icon">✓</div>
+      <h2>¡Voto Registrado!</h2>
+      <p class="confirm-text">
+        ¡Gracias por formar parte de Militia Inc.!<br>
+        Esta noche descubriremos cuál será <strong>La Canción Inmortal</strong>.
+      </p>
+
+      <div class="social-title">Sigue a la banda en redes</div>
+      <div class="social-buttons">
+        <a href="https://www.facebook.com/militiaincpachuca" target="_blank" class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          Facebook
+        </a>
+        <a href="https://www.instagram.com/" target="_blank" class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051C.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          Instagram
+        </a>
+      </div>
+
+      <a href="../index.html" class="btn btn-primary btn-block">Ir a la página de inicio</a>
+    </section>
+
+  </main>
+
+  <footer style="text-align: center; padding: 25px 20px; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color); z-index: 2;">
+    <p>&copy; 2026 Militia Inc. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Lógica de Enrutamiento y Firebase -->
+  <script type="module">
+    import { 
+      getActiveEvent, 
+      getEventBySlug, 
+      voteForSong, 
+      subscribeToResults 
+    } from '../js/firebase-config.js';
+
+    // Elementos DOM
+    const loadingView = document.getElementById('loading-view');
+    const errorView = document.getElementById('error-view');
+    const errorMessage = document.getElementById('error-message');
+    const votingView = document.getElementById('voting-view');
+    const leadView = document.getElementById('lead-view');
+    const confirmView = document.getElementById('confirm-view');
+    
+    const eventTitle = document.getElementById('event-title');
+    const eventDate = document.getElementById('event-date');
+    const eventLocation = document.getElementById('event-location');
+    const eventFlyer = document.getElementById('event-flyer');
+    
+    const songsGrid = document.getElementById('songs-grid');
+    const submitVoteBtn = document.getElementById('submit-vote-btn');
+    
+    const votingOptionsContainer = document.getElementById('voting-options-container');
+    const votingClosedContainer = document.getElementById('voting-closed-container');
+    const winnerRevealBox = document.getElementById('winner-reveal-box');
+    const winnerSongName = document.getElementById('winner-song-name');
+    const winnerSongArtist = document.getElementById('winner-song-artist');
+    
+    const leadForm = document.getElementById('lead-form');
+    const skipLeadBtn = document.getElementById('skip-lead-btn');
+
+    let currentEvent = null;
+    let selectedSongId = null;
+    let unsubscribeResults = null;
+
+    // 1. Inicialización y Rutas
+    async function init() {
+      const urlParams = new URLSearchParams(window.location.search);
+      let slug = urlParams.get('p');
+
+      if (slug) {
+        // Limpiar URL eliminando el parámetro '?p=...' para que se vea limpio: /inmortal/slug
+        const cleanPath = window.location.pathname.replace('index.html', '') + encodeURIComponent(slug);
+        window.history.replaceState(null, null, cleanPath);
+      } else {
+        // Intentar leer el slug directo de la URL si no viene por redirect 404 (ej: si se accede a index.html?p=... directamente)
+        // O si no hay path extra, buscar el evento activo por defecto
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        // Si la ruta termina en /inmortal/evento-slug, el último segmento es el slug
+        if (pathSegments.length > 1 && pathSegments[pathSegments.length - 2] === 'inmortal') {
+          slug = pathSegments[pathSegments.length - 1];
+        }
+      }
+
+      try {
+        if (slug) {
+          currentEvent = await getEventBySlug(slug);
+        } else {
+          // No hay slug en la URL, redirigir al evento activo
+          currentEvent = await getActiveEvent();
+          if (currentEvent) {
+            const cleanPath = window.location.pathname.replace('index.html', '') + encodeURIComponent(currentEvent.id);
+            window.history.replaceState(null, null, cleanPath);
+          }
+        }
+
+        if (!currentEvent) {
+          showError("No hay ningún concierto activo configurado en este momento.");
+          return;
+        }
+
+        renderEventData(currentEvent);
+        
+        // Verificar si el usuario ya votó por este evento
+        if (localStorage.getItem(`voted_${currentEvent.id}`) === 'true') {
+          // Ir directo a confirmación (o pedir datos de comunidad si no se han pedido)
+          showConfirmView();
+        } else {
+          showVotingView();
+        }
+
+      } catch (err) {
+        console.error("Error al inicializar la página de votación:", err);
+        showError("Hubo un problema de conexión al cargar la votación en vivo.");
+      }
+    }
+
+    // 2. Renderizar Datos del Evento
+    function renderEventData(event) {
+      eventTitle.textContent = event.name;
+      
+      // Formatear Fecha
+      try {
+        const dateObj = new Date(event.date);
+        // Verificar fecha válida
+        if (!isNaN(dateObj)) {
+          const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+          eventDate.innerHTML = `
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            ${dateObj.toLocaleDateString('es-MX', options)}
+          `;
+        } else {
+          eventDate.innerHTML = `
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect></svg>
+            ${event.date}
+          `;
+        }
+      } catch (e) {
+        eventDate.innerHTML = `
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect></svg>
+          ${event.date}
+        `;
+      }
+      
+      eventLocation.innerHTML = `
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        ${event.location}
+      `;
+
+      if (event.flyerUrl) {
+        eventFlyer.src = event.flyerUrl;
+        eventFlyer.style.display = 'block';
+      }
+
+      // Manejar estado de votación abierta o cerrada
+      if (event.closed) {
+        votingOptionsContainer.style.display = 'none';
+        votingClosedContainer.style.display = 'block';
+        
+        if (event.winnerSongId) {
+          const winner = event.songs.find(s => s.id === event.winnerSongId);
+          if (winner) {
+            winnerSongName.textContent = winner.title;
+            winnerSongArtist.textContent = winner.artist;
+            winnerRevealBox.style.display = 'block';
+          }
+        }
+      } else {
+        votingOptionsContainer.style.display = 'block';
+        votingClosedContainer.style.display = 'none';
+        renderSongs(event.songs);
+      }
+    }
+
+    // 3. Renderizar Canciones
+    function renderSongs(songs) {
+      songsGrid.innerHTML = '';
+      songs.forEach(song => {
+        const card = document.createElement('div');
+        card.className = 'song-card';
+        card.dataset.songId = song.id;
+        
+        card.innerHTML = `
+          <div class="song-details">
+            <span class="song-title">${song.title}</span>
+            <span class="song-artist">${song.artist}</span>
+          </div>
+          <div class="song-radio"></div>
+        `;
+        
+        card.addEventListener('click', () => selectSong(song.id));
+        songsGrid.appendChild(card);
+      });
+    }
+
+    // Seleccionar canción
+    function selectSong(songId) {
+      selectedSongId = songId;
+      document.querySelectorAll('.song-card').forEach(card => {
+        if (card.dataset.songId === songId) {
+          card.classList.add('selected');
+        } else {
+          card.classList.remove('selected');
+        }
+      });
+      submitVoteBtn.disabled = false;
+    }
+
+    // 4. Vistas auxiliares
+    function showVotingView() {
+      loadingView.style.display = 'none';
+      errorView.style.display = 'none';
+      votingView.style.display = 'block';
+      leadView.style.display = 'none';
+      confirmView.style.display = 'none';
+    }
+
+    function showLeadView() {
+      loadingView.style.display = 'none';
+      votingView.style.display = 'none';
+      leadView.style.display = 'block';
+      confirmView.style.display = 'none';
+    }
+
+    function showConfirmView() {
+      loadingView.style.display = 'none';
+      votingView.style.display = 'none';
+      leadView.style.display = 'none';
+      confirmView.style.display = 'block';
+      
+      // Suscribir a resultados para ver si se cierra en tiempo real
+      if (currentEvent && !unsubscribeResults) {
+        unsubscribeResults = subscribeToResults(currentEvent.id, (updatedEvent) => {
+          if (updatedEvent.closed && updatedEvent.winnerSongId) {
+            // Si el admin cierra la votación, podemos notificar al usuario de la ganadora
+            console.log("El evento ha sido cerrado. Canción ganadora:", updatedEvent.winnerSongId);
+          }
+        });
+      }
+    }
+
+    function showError(msg) {
+      loadingView.style.display = 'none';
+      errorView.style.display = 'block';
+      errorMessage.textContent = msg;
+    }
+
+    // 5. Event Listeners
+    submitVoteBtn.addEventListener('click', async () => {
+      if (!currentEvent || !selectedSongId) return;
+      
+      submitVoteBtn.disabled = true;
+      submitVoteBtn.textContent = 'Enviando voto...';
+      
+      try {
+        // Enviar voto sin datos de lead inicialmente
+        await voteForSong(currentEvent.id, selectedSongId, null);
+        
+        // Cargar vista de lead (opcional)
+        showLeadView();
+      } catch (err) {
+        console.error("Error al votar:", err);
+        alert("No se pudo registrar tu voto en este momento. Inténtalo de nuevo.");
+        submitVoteBtn.disabled = false;
+        submitVoteBtn.textContent = 'Votar Ahora';
+      }
+    });
+
+    // Enviar Formulario de Leads
+    leadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('voter-name').value.trim();
+      const email = document.getElementById('voter-email').value.trim();
+      const whatsapp = document.getElementById('voter-phone').value.trim();
+      
+      if (!name && !email && !whatsapp) {
+        showConfirmView();
+        return;
+      }
+
+      const submitBtn = leadForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Guardando...';
+
+      try {
+        // Re-enviar voto con los datos del participante para guardarlo en la misma transacción o colección
+        // Nota: El voto ya se registró anteriormente, esto simplemente agrega los datos del participante vinculados al voto.
+        await voteForSong(currentEvent.id, selectedSongId, { name, email, whatsapp });
+        showConfirmView();
+      } catch (err) {
+        console.error("Error guardando datos de contacto:", err);
+        // Continuamos de todos modos a la confirmación ya que el voto inicial sí fue exitoso
+        showConfirmView();
+      }
+    });
+
+    // Omitir Leads
+    skipLeadBtn.addEventListener('click', () => {
+      showConfirmView();
+    });
+
+    // Inicializar al cargar
+    window.addEventListener('DOMContentLoaded', init);
+
+    // Limpieza al salir de la página
+    window.addEventListener('beforeunload', () => {
+      if (unsubscribeResults) unsubscribeResults();
+    });
+  </script>
+</body>
+</html>

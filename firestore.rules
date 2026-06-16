@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Reglas para Conciertos y Eventos
+    match /events/{eventSlug} {
+      // Cualquier persona puede ver los detalles de los conciertos e historial
+      allow read: if true;
+      
+      // Solo el administrador autenticado puede crear, modificar o eliminar eventos
+      allow write: if request.auth != null;
+    }
+    
+    // Reglas para los Votos Registrados (coincide con la subida del voto)
+    match /votes/{voteId} {
+      // Solo el administrador autenticado puede ver el listado de votos/participantes
+      allow read: if request.auth != null;
+      
+      // Cualquier usuario puede crear un voto, siempre y cuando proporcione los campos mínimos requeridos
+      // y la votación para el evento esté activa (esto se puede validar al crear)
+      allow create: if request.resource.data.eventId != null 
+                    && request.resource.data.songId != null;
+      
+      // Nadie puede actualizar ni borrar un voto una vez emitido
+      allow update, delete: if false;
+    }
+    
+    // Colección adicional si se separan los contactos de la comunidad
+    match /participants/{participantId} {
+      allow read: if request.auth != null;
+      allow create: if request.resource.data.email != null || request.resource.data.whatsapp != null;
+      allow update, delete: if false;
+    }
+  }
+}

@@ -208,14 +208,23 @@
       if (slug) {
         // Limpiar URL eliminando el parámetro '?p=...' para que se vea limpio: /inmortal/slug
         const cleanPath = window.location.pathname.replace('index.html', '') + encodeURIComponent(slug);
-        window.history.replaceState(null, null, cleanPath);
+        try {
+          if (window.location.protocol !== 'file:') {
+            window.history.replaceState(null, null, cleanPath);
+          }
+        } catch (e) {
+          console.warn("Reemplazo de URL omitido en entorno local.");
+        }
       } else {
         // Intentar leer el slug directo de la URL si no viene por redirect 404 (ej: si se accede a index.html?p=... directamente)
         // O si no hay path extra, buscar el evento activo por defecto
         const pathSegments = window.location.pathname.split('/').filter(Boolean);
         // Si la ruta termina en /inmortal/evento-slug, el último segmento es el slug
         if (pathSegments.length > 1 && pathSegments[pathSegments.length - 2] === 'inmortal') {
-          slug = pathSegments[pathSegments.length - 1];
+          const lastSegment = pathSegments[pathSegments.length - 1];
+          if (lastSegment !== 'index.html' && !lastSegment.endsWith('.html')) {
+            slug = lastSegment;
+          }
         }
       }
 
@@ -227,7 +236,13 @@
           currentEvent = await getActiveEvent();
           if (currentEvent) {
             const cleanPath = window.location.pathname.replace('index.html', '') + encodeURIComponent(currentEvent.id);
-            window.history.replaceState(null, null, cleanPath);
+            try {
+              if (window.location.protocol !== 'file:') {
+                window.history.replaceState(null, null, cleanPath);
+              }
+            } catch (e) {
+              console.warn("Reemplazo de URL omitido en entorno local.");
+            }
           }
         }
 

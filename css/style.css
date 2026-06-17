@@ -303,7 +303,7 @@ ul { list-style: none; }
 .hero-bg {
   position: absolute;
   inset: 0;
-  background: url('../images/background.jpg') center center / cover no-repeat;
+  background: url('../images/background-premium.png') center center / cover no-repeat;
   transform-origin: center bottom;
   will-change: transform;
 }

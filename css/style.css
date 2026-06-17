@@ -478,11 +478,14 @@ ul { list-style: none; }
 }
 
 /* === TIMELINE (NUESTRA HISTORIA) === */
+.sec-history {
+  padding: 80px 0;
+}
 .history-timeline {
   position: relative;
-  max-width: 800px;
-  margin: 60px auto 0;
-  padding: 20px 0;
+  max-width: 700px;
+  margin: 40px auto 0;
+  padding: 10px 0;
 }
 .history-timeline::after {
   content: '';
@@ -494,20 +497,23 @@ ul { list-style: none; }
 
 .timeline-node {
   display: flex;
-  margin-bottom: 60px;
+  margin-bottom: 30px;
   position: relative;
   width: 100%;
+}
+.timeline-node:last-child {
+  margin-bottom: 0;
 }
 .timeline-node:nth-child(even) {
   flex-direction: row-reverse;
 }
 .timeline-content-box {
   width: 45%;
-  padding: 28px;
+  padding: 18px 20px;
   background: var(--bg-3);
   border: 1px solid var(--border);
   border-radius: 4px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
   position: relative;
   transition: transform var(--ease), border-color var(--ease);
 }
@@ -520,55 +526,56 @@ ul { list-style: none; }
   content: '★';
   position: absolute;
   left: 50%;
-  top: 24px;
+  top: 18px;
   transform: translate(-50%, -20%);
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: var(--bg);
   border: 1px solid var(--accent);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.6rem;
+  font-size: 0.5rem;
   color: var(--gold);
   z-index: 2;
-  box-shadow: 0 0 10px rgba(200, 169, 81, 0.3);
+  box-shadow: 0 0 8px rgba(200, 169, 81, 0.3);
 }
 .timeline-year {
   font-family: var(--f-display);
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   color: var(--gold);
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   display: block;
 }
 .timeline-node-title {
   font-family: var(--f-head);
-  font-size: 1.6rem;
+  font-size: 1.15rem;
   color: #fff;
-  margin-bottom: 10px;
-  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
 }
 .timeline-text {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: var(--steel-light);
-  line-height: 1.7;
+  line-height: 1.55;
 }
 
 @media (max-width: 768px) {
   .history-timeline::after {
-    left: 20px;
+    left: 16px;
   }
   .timeline-node {
     flex-direction: row !important;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
   .timeline-node::after {
-    left: 20px;
+    left: 16px;
   }
   .timeline-content-box {
-    width: calc(100% - 50px);
-    margin-left: 50px;
+    width: calc(100% - 44px);
+    margin-left: 44px;
+    padding: 14px 16px;
   }
 }
 

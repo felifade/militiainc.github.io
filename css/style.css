@@ -15,7 +15,7 @@
   --steel:        #8e8e93;      /* Acero cepillado */
   --steel-light:  #dcdcdc;      /* Acero brillante */
   --text:         #ececee;
-  --text-muted:   #8a8a8e;
+  --text-muted:   #a8a8ad;      /* Mejorado para legibilidad */
   --border:       rgba(200, 169, 81, 0.12); /* Bordes dorados translúcidos */
   --border-steel: rgba(255, 255, 255, 0.06);
   --nav-h:        70px;
@@ -94,7 +94,8 @@ ul { list-style: none; }
   font-family: var(--f-subhead);
   font-style: italic;
   font-size: 1.25rem;
-  color: var(--text-muted);
+  color: var(--steel);
+  line-height: 1.7;
 }
 
 /* === Reveal animation === */
@@ -549,9 +550,9 @@ ul { list-style: none; }
   letter-spacing: 0.05em;
 }
 .timeline-text {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.6;
+  font-size: 0.95rem;
+  color: var(--steel-light);
+  line-height: 1.7;
 }
 
 @media (max-width: 768px) {
@@ -643,9 +644,9 @@ ul { list-style: none; }
   margin-bottom: 12px;
 }
 .editorial-member-role {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  line-height: 1.5;
+  font-size: 0.9rem;
+  color: var(--steel);
+  line-height: 1.6;
 }
 
 /* === REPERTOIRE VINYL COLLECTION === */

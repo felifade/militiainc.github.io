@@ -1332,3 +1332,55 @@ ul { list-style: none; }
 .footer-bottom .heart {
   color: var(--accent);
 }
+
+/* === SCROLL TO TOP === */
+.scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 45px;
+  height: 45px;
+  background: var(--bg-3);
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all var(--ease);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.scroll-to-top:hover {
+  background: var(--gold);
+  color: var(--bg);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(200, 169, 81, 0.4);
+}
+@media (max-width: 768px) {
+  .scroll-to-top {
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+/* === VIDEOS EN VIVO ENHANCEMENT === */
+.video-item iframe {
+  border-radius: 8px;
+  border: 1px solid var(--border-steel);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  transition: border-color var(--ease), box-shadow var(--ease);
+}
+.video-item:hover iframe {
+  border-color: var(--accent);
+  box-shadow: 0 8px 30px rgba(200, 169, 81, 0.15);
+}

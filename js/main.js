@@ -9,10 +9,16 @@ const navbar = document.getElementById('navbar');
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 const navLinks = document.querySelectorAll('.nav-link');
+const scrollToTopBtn = document.getElementById('scrollToTop');
 
 function onScroll() {
   /* Scrolled class for background blur */
   navbar.classList.toggle('scrolled', window.scrollY > 60);
+
+  /* Scroll to Top visibility */
+  if (scrollToTopBtn) {
+    scrollToTopBtn.classList.toggle('visible', window.scrollY > 300);
+  }
 
   /* Active nav link based on current section */
   let current = '';
@@ -27,6 +33,13 @@ function onScroll() {
 
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll(); // run once on load
+
+/* --- Scroll to Top Click --- */
+if (scrollToTopBtn) {
+  scrollToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
 
 /* --- Mobile menu toggle --- */
 navToggle.addEventListener('click', () => {

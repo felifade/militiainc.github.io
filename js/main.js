@@ -67,8 +67,8 @@ const revealObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 /* --- Stagger delays for grid children --- */
-document.querySelectorAll('.members-grid, .photo-grid, .videos-grid, .rep-list, .contact-channels').forEach(grid => {
-  grid.querySelectorAll('.reveal, .member-card, .photo-item, .video-item, .rep-band, .channel-link').forEach((item, i) => {
+document.querySelectorAll('.members-grid, .band-editorial-grid, .repertoire-vinyl-grid, .history-timeline, .photo-grid, .videos-grid, .rep-list, .contact-channels').forEach(grid => {
+  grid.querySelectorAll('.reveal, .member-card, .editorial-member-card, .vinyl-card, .timeline-node, .photo-item, .video-item, .rep-band, .channel-link').forEach((item, i) => {
     if (!item.style.transitionDelay) {
       item.style.transitionDelay = `${i * 0.07}s`;
     }

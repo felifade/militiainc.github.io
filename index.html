@@ -7,7 +7,7 @@
   <title>Militia Inc. | Rock desde Pachuca</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
@@ -16,7 +16,7 @@
   <nav class="navbar" id="navbar">
     <div class="nav-container">
       <a href="#inicio" class="nav-logo">
-        <img src="images/logo.png" alt="Militia Inc.">
+        <img src="images/Logo Nuevo.jpeg" alt="Militia Inc.">
       </a>
       <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
         <span></span>
@@ -25,12 +25,13 @@
       </button>
       <ul class="nav-menu" id="navMenu">
         <li><a href="#inicio"    class="nav-link">Inicio</a></li>
-        <li><a href="#biografia" class="nav-link">Biografía</a></li>
+        <li><a href="#historia"  class="nav-link">Historia</a></li>
+        <li><a href="#integrantes" class="nav-link">Integrantes</a></li>
         <li><a href="#fechas"    class="nav-link">Fechas</a></li>
         <li><a href="canciones-inmortales/index.html" class="nav-link">Canciones Inmortales</a></li>
         <li><a href="inmortal/index.html" class="nav-link" style="color: var(--gold);">★ Votar en Vivo</a></li>
         <li><a href="#galeria"   class="nav-link">Galería</a></li>
-        <li><a href="#musica"    class="nav-link">Música</a></li>
+        <li><a href="#repertorio" class="nav-link">Repertorio</a></li>
         <li><a href="#contacto"  class="nav-link nav-cta">Contrátanos</a></li>
       </ul>
     </div>
@@ -40,20 +41,19 @@
   <section id="inicio" class="hero">
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
-    <div class="lightning" aria-hidden="true"></div>
     <div class="hero-content">
-      <img src="images/logo.png" alt="Militia Inc. Logo" class="hero-logo">
+      <img src="images/Logo Nuevo.jpeg" alt="Militia Inc. Logo" class="hero-logo">
       <div class="hero-rule"></div>
       <h1 class="hero-title">MILITIA INC.</h1>
-      <p class="hero-tagline">Rock sin compromiso &mdash; Pachuca, Hidalgo</p>
-      <p class="hero-sub">Más de 20 años haciendo vibrar cada escenario</p>
+      <p class="hero-tagline">20 Años de Rock &mdash; Pachuca, Hidalgo</p>
+      <p class="hero-sub">El soundtrack de generaciones</p>
       <div class="hero-actions">
         <a href="#fechas"   class="btn btn-primary">Ver Fechas</a>
         <a href="#galeria"  class="btn btn-ghost">Ver Galería</a>
         <a href="#contacto" class="btn btn-outline">Contrátanos</a>
       </div>
     </div>
-    <a href="#biografia" class="scroll-indicator" aria-label="Desplazarse hacia abajo">
+    <a href="#historia" class="scroll-indicator" aria-label="Desplazarse hacia abajo">
       <div class="scroll-dot"></div>
     </a>
   </section>
@@ -80,87 +80,114 @@
         <span class="stat-num">&#x221E;</span>
         <span class="stat-lbl">Energía en el escenario</span>
       </div>
-    </div>
-  </div>
-
-  <!-- ===== BIOGRAPHY ===== -->
-  <section id="biografia" class="section sec-bio">
+  <!-- ===== HISTORIA ===== -->
+  <section id="historia" class="section sec-history">
     <div class="container">
       <div class="sec-header reveal">
-        <span class="sec-tag">Nuestra Historia</span>
-        <h2 class="sec-title">Biografía</h2>
+        <span class="sec-tag">Trayectoria</span>
+        <h2 class="sec-title">Nuestra Historia</h2>
         <div class="sec-rule"></div>
+        <p class="sec-desc">Veinte años recorriendo escenarios, riff tras riff, construyendo una leyenda musical.</p>
       </div>
 
-      <div class="bio-layout">
-        <div class="bio-text reveal">
-          <p>
-            Militia Inc. nace de la pasión por el rock y la hermandad entre cuatro músicos que llevan más de
-            <strong>20 años compartiendo escenarios</strong>, riffs, sueños y una sola misión:
-            hacer vibrar a la audiencia con clásicos del rock en inglés y español.
-          </p>
-          <p>
-            Nuestra trayectoria está marcada por la energía de bandas como
-            <em>Metallica, U2, Héroes del Silencio, Caifanes, Iron Maiden,
-            Guns N' Roses, Soda Stereo, The Doors, Black Sabbath</em> y <em>Deep Purple</em>.
-          </p>
-          <p>
-            A lo largo de estas dos décadas, hemos compartido escenario con amigos y colegas que
-            han dejado huella en cada acorde, en cada grito, en cada nota.
-            Militia Inc. no solo es una banda: <strong>es una familia sonora que sigue creciendo.</strong>
-          </p>
-          <a href="#contacto" class="btn btn-primary">Solicitar Información</a>
-        </div>
-
-        <div class="members-wrap reveal">
-          <h3 class="members-heading">Los Integrantes</h3>
-          <div class="members-grid">
-
-            <div class="member-card">
-              <div class="member-photo">
-                <img src="images/fernando.jpg" alt="Fernando López Salazar — Bajista" loading="lazy">
-                <div class="member-hover"><span>Bajo Eléctrico</span></div>
-              </div>
-              <div class="member-info">
-                <h4>Fernando López Salazar</h4>
-                <p>Bajo Eléctrico</p>
-              </div>
-            </div>
-
-            <div class="member-card">
-              <div class="member-photo">
-                <img src="images/marco.jpg" alt="Marco Antonio Aguado Acosta — Baterista" loading="lazy">
-                <div class="member-hover"><span>Batería</span></div>
-              </div>
-              <div class="member-info">
-                <h4>Marco Antonio Aguado Acosta</h4>
-                <p>Batería</p>
-              </div>
-            </div>
-
-            <div class="member-card">
-              <div class="member-photo">
-                <img src="images/alfonso.jpg" alt="Alfonso Aguado Acosta — Guitarrista" loading="lazy">
-                <div class="member-hover"><span>Guitarra &amp; Voz</span></div>
-              </div>
-              <div class="member-info">
-                <h4>Alfonso Aguado Acosta</h4>
-                <p>Guitarra y Voz</p>
-              </div>
-            </div>
-
-            <div class="member-card">
-              <div class="member-photo">
-                <img src="images/felipe.jpg" alt="Felipe López Salazar — Guitarrista" loading="lazy">
-                <div class="member-hover"><span>Guitarra &amp; Voz</span></div>
-              </div>
-              <div class="member-info">
-                <h4>Felipe López Salazar</h4>
-                <p>Guitarra y Voz</p>
-              </div>
-            </div>
-
+      <div class="history-timeline reveal">
+        <div class="timeline-node">
+          <div class="timeline-content-box">
+            <span class="timeline-year">2005</span>
+            <h3 class="timeline-node-title">Incepción</h3>
+            <p class="timeline-text">El nacimiento del proyecto en Pachuca, Hidalgo. Una hermandad de cuatro músicos apasionados se une con la firme visión de interpretar y mantener vivos los grandes himnos de la historia del rock clásico.</p>
           </div>
+        </div>
+        <div class="timeline-node">
+          <div class="timeline-content-box">
+            <span class="timeline-year">2006</span>
+            <h3 class="timeline-node-title">Primeros Escenarios</h3>
+            <p class="timeline-text">Consolidación rítmica en la escena local. La banda comienza a recorrer los escenarios de Hidalgo, ganando una audiencia leal y entregando shows enérgicos e inolvidables.</p>
+          </div>
+        </div>
+        <div class="timeline-node">
+          <div class="timeline-content-box">
+            <span class="timeline-year">2011</span>
+            <h3 class="timeline-node-title">Expansión del Repertorio</h3>
+            <p class="timeline-text">Incorporación de una amplia variedad de himnos clásicos tanto en inglés como en español. El repertorio se diversifica con grandes temas, desde el heavy metal hasta el rock alternativo.</p>
+          </div>
+        </div>
+        <div class="timeline-node">
+          <div class="timeline-content-box">
+            <span class="timeline-year">2019</span>
+            <h3 class="timeline-node-title">Compartiendo el Legado</h3>
+            <p class="timeline-text">Colaboraciones con destacados músicos y presentaciones en festivales de la región, consolidando la reputación de la banda como referente de profesionalismo y elegancia rockera.</p>
+          </div>
+        </div>
+        <div class="timeline-node">
+          <div class="timeline-content-box">
+            <span class="timeline-year">Presente</span>
+            <h3 class="timeline-node-title">La Canción Inmortal</h3>
+            <p class="timeline-text">La era digital conecta directamente con el público. Con sistemas de votación interactivos en vivo, los asistentes deciden la canción que cerrará cada show, haciendo de cada concierto una experiencia interactiva única.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INTEGRANTES ===== -->
+  <section id="integrantes" class="section sec-band sec-dark">
+    <div class="container">
+      <div class="sec-header reveal">
+        <span class="sec-tag">Los Músicos</span>
+        <h2 class="sec-title">La Banda</h2>
+        <div class="sec-rule"></div>
+        <p class="sec-desc">Cuatro músicos apasionados comprometidos con la excelencia sonora y la energía del rock clásico premium.</p>
+      </div>
+
+      <div class="band-editorial-grid reveal">
+        <!-- Fernando -->
+        <div class="editorial-member-card">
+          <div class="editorial-member-img-wrap">
+            <img src="images/fernando.jpg" alt="Fernando López Salazar — Bajista" loading="lazy">
+          </div>
+          <div class="editorial-member-info">
+            <h4 class="editorial-member-name">Fernando López Salazar</h4>
+            <div class="editorial-member-instrument">Bajo Eléctrico</div>
+            <p class="editorial-member-role">El motor rítmico y cofundador, definiendo la base sólida y potente del sonido de Militia Inc. durante más de dos décadas.</p>
+          </div>
+        </div>
+        <!-- Marco -->
+        <div class="editorial-member-card">
+          <div class="editorial-member-img-wrap">
+            <img src="images/marco.jpg" alt="Marco Antonio Aguado Acosta — Baterista" loading="lazy">
+          </div>
+          <div class="editorial-member-info">
+            <h4 class="editorial-member-name">Marco Antonio Aguado Acosta</h4>
+            <div class="editorial-member-instrument">Batería</div>
+            <p class="editorial-member-role">Precisión y potencia en cada compás. Su pulso inquebrantable guía la energía y la dinámica de la banda en vivo.</p>
+          </div>
+        </div>
+        <!-- Alfonso -->
+        <div class="editorial-member-card">
+          <div class="editorial-member-img-wrap">
+            <img src="images/alfonso.jpg" alt="Alfonso Aguado Acosta — Guitarrista & Voz" loading="lazy">
+          </div>
+          <div class="editorial-member-info">
+            <h4 class="editorial-member-name">Alfonso Aguado Acosta</h4>
+            <div class="editorial-member-instrument">Guitarra y Voz</div>
+            <p class="editorial-member-role">Riffs emblemáticos y voz apasionada. Transmite la fuerza cruda del rock clásico directo al corazón de la audiencia.</p>
+          </div>
+        </div>
+        <!-- Felipe -->
+        <div class="editorial-member-card">
+          <div class="editorial-member-img-wrap">
+            <img src="images/felipe.jpg" alt="Felipe López Salazar — Guitarrista & Voz" loading="lazy">
+          </div>
+          <div class="editorial-member-info">
+            <h4 class="editorial-member-name">Felipe López Salazar</h4>
+            <div class="editorial-member-instrument">Guitarra y Voz</div>
+            <p class="editorial-member-role">Texturas melódicas y solos electrizantes. Su versatilidad en las cuerdas define la firma sonora sofisticada del grupo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
         </div>
       </div>
     </div>
@@ -286,155 +313,155 @@
     </div>
   </section>
 
-  <!-- ===== MUSIC / REPERTOIRE ===== -->
-  <section id="musica" class="section sec-music sec-dark">
+  <!-- ===== REPERTORIO ===== -->
+  <section id="repertorio" class="section sec-repertoire">
     <div class="container">
       <div class="sec-header reveal">
         <span class="sec-tag">Nuestro Sonido</span>
         <h2 class="sec-title">Repertorio</h2>
         <div class="sec-rule"></div>
-        <p class="sec-desc">Tocamos los más grandes clásicos del rock en español e inglés. Dos idiomas, una sola pasión.</p>
+        <p class="sec-desc">Tocamos los más grandes clásicos de bandas legendarias que definieron la historia del rock.</p>
       </div>
 
-      <div class="repertoire-cols">
-        <div class="rep-col reveal">
-          <h3 class="rep-col-title">Rock en Español</h3>
-          <ul class="rep-list">
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Héroes del Silencio</strong><small>Rock alternativo español</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Caifanes</strong><small>Rock mexicano</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Soda Stereo</strong><small>Rock argentino</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Enanitos Verdes</strong><small>Rock argentino</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Vilma Palma e Vampiros</strong><small>Rock latino</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>La Unión</strong><small>Rock español</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Hombres G</strong><small>Pop rock</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Bunbury</strong><small>Rock alternativo</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Timbiriche</strong><small>Pop rock</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Los Bunkers</strong><small>Rock chileno</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Amantes de Lola</strong><small>Rock mexicano</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Miguel Mateos</strong><small>Rock latino</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Rostros Ocultos</strong><small>Rock mexicano</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Molotov</strong><small>Rock alternativo</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Maldita Vecindad</strong><small>Rock / Ska</small></div>
-            </li>
-          </ul>
+      <div class="repertoire-vinyl-grid reveal">
+        <!-- Metallica -->
+        <div class="vinyl-card">
+          <div class="vinyl-disc-wrap">
+            <div class="vinyl-cover" style="background: linear-gradient(135deg, #151515, #000);">
+              <div class="vinyl-cover-overlay">
+                <div class="vinyl-cover-text">Metallica</div>
+              </div>
+            </div>
+            <div class="vinyl-disc"></div>
+          </div>
+          <h4 class="vinyl-card-title">Metallica</h4>
+          <p class="vinyl-card-genre">Heavy Metal</p>
         </div>
 
-        <div class="rep-col reveal">
-          <h3 class="rep-col-title">Rock en Inglés</h3>
-          <ul class="rep-list">
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Metallica</strong><small>Heavy Metal</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Iron Maiden</strong><small>Heavy Metal británico</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Guns N' Roses</strong><small>Hard Rock</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>U2</strong><small>Rock alternativo</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>The Doors</strong><small>Rock psicodélico</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Black Sabbath</strong><small>Heavy Metal</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Deep Purple</strong><small>Hard Rock / Heavy Metal</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Creedence</strong><small>Classic Rock</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Green Day</strong><small>Punk Rock</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Sonata Arctica</strong><small>Power Metal</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Queen</strong><small>Classic Rock</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Radiohead</strong><small>Alternative Rock</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>The Beatles</strong><small>Classic Rock</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Bon Jovi</strong><small>Hard Rock</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>R.E.M.</strong><small>Alternative Rock</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Nirvana</strong><small>Grunge</small></div>
-            </li>
-            <li class="rep-band">
-              <span class="rep-dot"></span>
-              <div><strong>Rolling Stones</strong><small>Classic Rock</small></div>
-            </li>
-          </ul>
+        <!-- Deep Purple -->
+        <div class="vinyl-card">
+          <div class="vinyl-disc-wrap">
+            <div class="vinyl-cover" style="background: linear-gradient(135deg, #3b2050, #12091c);">
+              <div class="vinyl-cover-overlay">
+                <div class="vinyl-cover-text">Deep Purple</div>
+              </div>
+            </div>
+            <div class="vinyl-disc"></div>
+          </div>
+          <h4 class="vinyl-card-title">Deep Purple</h4>
+          <p class="vinyl-card-genre">Hard Rock</p>
+        </div>
+
+        <!-- Bon Jovi -->
+        <div class="vinyl-card">
+          <div class="vinyl-disc-wrap">
+            <div class="vinyl-cover" style="background: linear-gradient(135deg, #444, #111);">
+              <div class="vinyl-cover-overlay">
+                <div class="vinyl-cover-text">Bon Jovi</div>
+              </div>
+            </div>
+            <div class="vinyl-disc"></div>
+          </div>
+          <h4 class="vinyl-card-title">Bon Jovi</h4>
+          <p class="vinyl-card-genre">Hard Rock</p>
+        </div>
+
+        <!-- Héroes del Silencio -->
+        <div class="vinyl-card">
+          <div class="vinyl-disc-wrap">
+            <div class="vinyl-cover" style="background: linear-gradient(135deg, #222, #050505);">
+              <div class="vinyl-cover-overlay">
+                <div class="vinyl-cover-text">Héroes del Silencio</div>
+              </div>
+            </div>
+            <div class="vinyl-disc"></div>
+          </div>
+          <h4 class="vinyl-card-title">Héroes del Silencio</h4>
+          <p class="vinyl-card-genre">Rock en Español</p>
+        </div>
+
+        <!-- Caifanes -->
+        <div class="vinyl-card">
+          <div class="vinyl-disc-wrap">
+            <div class="vinyl-cover" style="background: linear-gradient(135deg, #1c2630, #090c10);">
+              <div class="vinyl-cover-overlay">
+                <div class="vinyl-cover-text">Caifanes</div>
+              </div>
+            </div>
+            <div class="vinyl-disc"></div>
+          </div>
+          <h4 class="vinyl-card-title">Caifanes</h4>
+          <p class="vinyl-card-genre">Rock en Español</p>
+        </div>
+
+        <!-- Soda Stereo -->
+        <div class="vinyl-card">
+          <div class="vinyl-disc-wrap">
+            <div class="vinyl-cover" style="background: linear-gradient(135deg, #0e1e2d, #02060c);">
+              <div class="vinyl-cover-overlay">
+                <div class="vinyl-cover-text">Soda Stereo</div>
+              </div>
+            </div>
+            <div class="vinyl-disc"></div>
+          </div>
+          <h4 class="vinyl-card-title">Soda Stereo</h4>
+          <p class="vinyl-card-genre">Rock Argentino</p>
+        </div>
+
+        <!-- Creedence -->
+        <div class="vinyl-card">
+          <div class="vinyl-disc-wrap">
+            <div class="vinyl-cover" style="background: linear-gradient(135deg, #3d2f25, #140f0c);">
+              <div class="vinyl-cover-overlay">
+                <div class="vinyl-cover-text">Creedence</div>
+              </div>
+            </div>
+            <div class="vinyl-disc"></div>
+          </div>
+          <h4 class="vinyl-card-title">Creedence</h4>
+          <p class="vinyl-card-genre">Classic Rock</p>
+        </div>
+
+        <!-- DLD -->
+        <div class="vinyl-card">
+          <div class="vinyl-disc-wrap">
+            <div class="vinyl-cover" style="background: linear-gradient(135deg, #2a2c2e, #0f1011);">
+              <div class="vinyl-cover-overlay">
+                <div class="vinyl-cover-text">DLD</div>
+              </div>
+            </div>
+            <div class="vinyl-disc"></div>
+          </div>
+          <h4 class="vinyl-card-title">DLD</h4>
+          <p class="vinyl-card-genre">Rock Mexicano</p>
+        </div>
+
+        <!-- Fobia -->
+        <div class="vinyl-card">
+          <div class="vinyl-disc-wrap">
+            <div class="vinyl-cover" style="background: linear-gradient(135deg, #3c1414, #140505);">
+              <div class="vinyl-cover-overlay">
+                <div class="vinyl-cover-text">Fobia</div>
+              </div>
+            </div>
+            <div class="vinyl-disc"></div>
+          </div>
+          <h4 class="vinyl-card-title">Fobia</h4>
+          <p class="vinyl-card-genre">Rock en Español</p>
+        </div>
+
+        <!-- Audioslave -->
+        <div class="vinyl-card">
+          <div class="vinyl-disc-wrap">
+            <div class="vinyl-cover" style="background: linear-gradient(135deg, #2b3a4a, #0c121a);">
+              <div class="vinyl-cover-overlay">
+                <div class="vinyl-cover-text">Audioslave</div>
+              </div>
+            </div>
+            <div class="vinyl-disc"></div>
+          </div>
+          <h4 class="vinyl-card-title">Audioslave</h4>
+          <p class="vinyl-card-genre">Alternative Rock</p>
         </div>
       </div>
 
@@ -543,19 +570,20 @@
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <img src="images/logo.png" alt="Militia Inc." class="footer-logo">
-            <p>Rock sin compromiso desde Pachuca, Hidalgo.<br>Más de 20 años haciendo vibrar cada escenario.</p>
+            <img src="images/Logo Nuevo.jpeg" alt="Militia Inc." class="footer-logo">
+            <p>Rock clásico premium desde Pachuca, Hidalgo.<br>Más de 20 años de trayectoria impecable.</p>
           </div>
           <div class="footer-links">
             <h4>Navegación</h4>
             <ul>
               <li><a href="#inicio">Inicio</a></li>
-              <li><a href="#biografia">Biografía</a></li>
+              <li><a href="#historia">Historia</a></li>
+              <li><a href="#integrantes">Integrantes</a></li>
               <li><a href="#fechas">Fechas</a></li>
               <li><a href="canciones-inmortales/index.html">Canciones Inmortales</a></li>
               <li><a href="inmortal/index.html">Votar en Vivo (La Canción Inmortal)</a></li>
               <li><a href="#galeria">Galería</a></li>
-              <li><a href="#musica">Música</a></li>
+              <li><a href="#repertorio">Repertorio</a></li>
               <li><a href="#contacto">Contacto</a></li>
             </ul>
           </div>

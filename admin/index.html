@@ -299,6 +299,10 @@
         loginView.style.display = 'none';
         dashboardView.style.display = 'block';
         userDisplay.textContent = `Conectado como: ${user.email}`;
+        
+        // Cargar eventos
+        if (unsubEvents) unsubEvents();
+        unsubEvents = subscribeToAllEvents(renderEventsList);
         initDashboard();
       } else {
         // Usuario no autenticado

@@ -3,6 +3,7 @@
 // Configuración híbrida (Firebase real + fallback de pruebas local)
 // ========================================================
 
+(function() {
 // Configura aquí tus credenciales de Firebase en producción
 const firebaseConfig = {
   apiKey: "TU_API_KEY",
@@ -536,3 +537,4 @@ window.MilitiaDb = {
   logoutAdmin: logoutAdmin,
   checkAuthState: checkAuthState
 };
+})();

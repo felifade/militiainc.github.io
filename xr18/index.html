@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Militia Hub">
+  <title>Militia Hub — En Vivo XR18 & Mi Kit Musical</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg-main: #020617;
+      --bg-card: #0f172a;
+      --bg-pill: #1e293b;
+      --border-col: rgba(148, 163, 184, 0.16);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --canvas-bg: #020617;
+    }
+    html.light {
+      --bg-main: #f1f5f9;
+      --bg-card: #ffffff;
+      --bg-pill: #e2e8f0;
+      --border-col: rgba(15, 23, 42, 0.12);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --canvas-bg: #0f172a;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      -webkit-tap-highlight-color: transparent;
+      padding-bottom: calc(4.8rem + env(safe-area-inset-bottom));
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .theme-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-col);
+      transition: all 0.2s ease;
+    }
+    .theme-pill {
+      background-color: var(--bg-pill);
+      border: 1px solid var(--border-col);
+      color: var(--text-main);
+      transition: all 0.18s ease;
+    }
+    .theme-muted {
+      color: var(--text-muted);
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .capsule-card:active {
+      transform: scale(0.985);
+    }
+    .bottom-nav {
+      padding-bottom: env(safe-area-inset-bottom);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    html.light .bottom-nav {
+      background-color: rgba(255, 255, 255, 0.88);
+      border-top: 1px solid rgba(15, 23, 42, 0.1);
+    }
+    html.dark .bottom-nav {
+      background-color: rgba(15, 23, 42, 0.88);
+      border-top: 1px solid rgba(148, 163, 184, 0.15);
+    }
+    html.light .top-bar {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+    }
+    html.dark .top-bar {
+      background-color: rgba(15, 23, 42, 0.9);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    }
+
+    *, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; }
+    .hidden { display: none !important; }
+    .block { display: block; }
+    .flex { display: flex; }
+    .inline-flex { display: inline-flex; }
+    .grid { display: grid; }
+    .flex-col { flex-direction: column; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-1 { flex: 1 1 0%; }
+    .shrink-0 { flex-shrink: 0; }
+    .items-center { align-items: center; }
+    .items-start { align-items: flex-start; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .gap-1 { gap: 0.25rem; }
+    .gap-1\.5 { gap: 0.375rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-2\.5 { gap: 0.625rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-3\.5 { gap: 0.875rem; }
+    .space-y-1 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.25rem; }
+    .space-y-1\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.375rem; }
+    .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem; }
+    .space-y-2\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.625rem; }
+    .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.75rem; }
+    .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; }
+    .space-y-5 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.25rem; }
+    .w-full { width: 100%; }
+    .w-9 { width: 2.25rem; } .h-9 { height: 2.25rem; }
+    .w-11 { width: 2.75rem; } .h-11 { height: 2.75rem; }
+    .w-12 { width: 3rem; } .h-12 { height: 3rem; }
+    .w-2 { width: 0.5rem; } .h-2 { height: 0.5rem; }
+    .h-1\.5 { height: 0.375rem; }
+    .h-44 { height: 11rem; }
+    .h-full { height: 100%; }
+    .min-h-screen { min-height: 100vh; }
+    .min-w-0 { min-width: 0px; }
+    .max-w-3xl { max-width: 48rem; }
+    .max-w-md { max-width: 28rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .p-2 { padding: 0.5rem; }
+    .p-2\.5 { padding: 0.625rem; }
+    .p-3 { padding: 0.75rem; }
+    .p-3\.5 { padding: 0.875rem; }
+    .p-4 { padding: 1rem; }
+    .p-5 { padding: 1.25rem; }
+    .px-1 { padding-left: 0.25rem; padding-right: 0.25rem; }
+    .px-1\.5 { padding-left: 0.375rem; padding-right: 0.375rem; }
+    .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+    .px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
+    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .px-3\.5 { padding-left: 0.875rem; padding-right: 0.875rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+    .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    .py-1\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+    .pt-1 { padding-top: 0.25rem; } .pt-2 { padding-top: 0.5rem; } .pt-3 { padding-top: 0.75rem; } .pt-4 { padding-top: 1rem; }
+    .pb-1 { padding-bottom: 0.25rem; } .pb-2 { padding-bottom: 0.5rem; } .pb-3\.5 { padding-bottom: 0.875rem; }
+    .mt-1 { margin-top: 0.25rem; } .mt-3 { margin-top: 0.75rem; } .mt-3\.5 { margin-top: 0.875rem; }
+    .mb-0\.5 { margin-bottom: 0.125rem; } .mb-2 { margin-bottom: 0.5rem; }
+    .rounded { border-radius: 0.25rem; }
+    .rounded-md { border-radius: 0.375rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .rounded-2xl { border-radius: 1rem; }
+    .rounded-3xl { border-radius: 1.5rem; }
+    .rounded-full { border-radius: 9999px; }
+    .border { border-width: 1px; }
+    .border-t { border-top-width: 1px; }
+    .border-l-4 { border-left-width: 4px; }
+    .border-l-amber-500 { border-left-color: #f59e0b !important; }
+    .border-l-emerald-500 { border-left-color: #10b981 !important; }
+    .border-l-cyan-500 { border-left-color: #06b6d4 !important; }
+    .border-l-purple-500 { border-left-color: #a855f7 !important; }
+    .border-l-rose-500 { border-left-color: #f43f5e !important; }
+    .bg-amber-500 { background-color: #f59e0b !important; }
+    .bg-emerald-500 { background-color: #10b981 !important; }
+    .bg-rose-500 { background-color: #f43f5e !important; }
+    .bg-slate-950 { background-color: #020617 !important; }
+    .bg-slate-950\/60 { background-color: rgba(2, 6, 23, 0.6); }
+    .bg-amber-500\/10 { background-color: rgba(245, 158, 11, 0.1); }
+    .bg-amber-500\/15 { background-color: rgba(245, 158, 11, 0.15); }
+    .bg-amber-500\/20 { background-color: rgba(245, 158, 11, 0.2); }
+    .bg-emerald-500\/10 { background-color: rgba(16, 185, 129, 0.1); }
+    .bg-emerald-500\/15 { background-color: rgba(16, 185, 129, 0.15); }
+    .bg-emerald-500\/20 { background-color: rgba(16, 185, 129, 0.2); }
+    .bg-cyan-500\/10 { background-color: rgba(6, 182, 212, 0.1); }
+    .bg-cyan-500\/15 { background-color: rgba(6, 182, 212, 0.15); }
+    .bg-purple-500\/10 { background-color: rgba(168, 85, 247, 0.1); }
+    .bg-purple-500\/15 { background-color: rgba(168, 85, 247, 0.15); }
+    .bg-rose-500\/15 { background-color: rgba(244, 63, 94, 0.15); }
+    .bg-rose-500\/20 { background-color: rgba(244, 63, 94, 0.2); }
+    .bg-gradient-to-br { background-image: linear-gradient(to bottom right, #f59e0b, #d97706); }
+    .text-slate-950 { color: #020617 !important; }
+    .text-amber-400 { color: #fbbf24; }
+    .text-amber-500 { color: #f59e0b; }
+    .text-emerald-400 { color: #34d399; }
+    .text-cyan-400 { color: #22d3ee; }
+    .text-purple-400 { color: #c084fc; }
+    .text-rose-400 { color: #fb7185; }
+    .text-slate-400 { color: #94a3b8; }
+    .text-xs { font-size: 0.75rem; line-height: 1rem; }
+    .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .text-base { font-size: 1rem; line-height: 1.5rem; }
+    .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+    .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+    .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+    .text-\[9px\] { font-size: 9px; }
+    .text-\[10px\] { font-size: 10px; }
+    .text-\[11px\] { font-size: 11px; }
+    .text-\[95px\] { font-size: 95px; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .font-black { font-weight: 900; }
+    .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .uppercase { text-transform: uppercase; }
+    .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .text-left { text-align: left; }
+    .text-center { text-align: center; }
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .fixed { position: fixed; }
+    .sticky { position: sticky; }
+    .top-0 { top: 0px; } .bottom-0 { bottom: 0px; } .left-0 { left: 0px; } .right-0 { right: 0px; }
+    .top-1\.5 { top: 0.375rem; } .right-6 { right: 1.5rem; } .-right-4 { right: -1rem; } .-bottom-6 { bottom: -1.5rem; }
+    .z-10 { z-index: 10; } .z-50 { z-index: 50; }
+    .overflow-hidden { overflow: hidden; }
+    .opacity-5 { opacity: 0.05; } .opacity-75 { opacity: 0.75; } .opacity-80 { opacity: 0.8; }
+    .pointer-events-none { pointer-events: none; }
+    .select-none { user-select: none; }
+    button { cursor: pointer; background: transparent; color: inherit; }
+    input, select { color: inherit; }
+    @media (min-width: 640px) {
+      .sm\:inline { display: inline; }
+      .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .sm\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .sm\:h-52 { height: 13rem; }
+      .sm\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
+      .sm\:text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    }
+
+  </style>
+</head>
+<body class="min-h-screen antialiased">
+
+  <!-- ===================================================================== -->
+  <!-- STICKY TOP BAR (iOS STYLE WITH HOME & LIGHT/DARK BUTTON)             -->
+  <!-- ===================================================================== -->
+  <header class="top-bar sticky top-0 z-50 backdrop-blur-md px-3.5 py-2.5">
+    <div class="max-w-3xl mx-auto flex items-center justify-between gap-2">
+      <button onclick="switchScreen('home')" class="flex items-center gap-2.5 text-left group">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-slate-950 font-black text-sm shadow-md shadow-amber-500/20">
+          M
+        </div>
+        <div>
+          <div class="text-xs font-black tracking-tight uppercase flex items-center gap-1.5">
+            <span>MILITIA HUB</span>
+            <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-500 border border-amber-500/30">PRO</span>
+          </div>
+          <div class="text-[10px] theme-muted font-mono">Phil • Poncho • Fer • Marco</div>
+        </div>
+      </button>
+
+      <div class="flex items-center gap-1.5">
+        <button onclick="switchScreen('home')" id="top-btn-home" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold theme-pill">
+          🏠 Portada
+        </button>
+        <button onclick="toggleTheme()" id="theme-toggle-btn" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold theme-pill flex items-center gap-1" aria-label="Cambiar tema claro/oscuro">
+          <span id="theme-icon">☀️</span>
+          <span id="theme-label" class="hidden sm:inline">Claro</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN CONTAINER (OPTIMIZED FOR IPHONE & IPAD)                          -->
+  <!-- ===================================================================== -->
+  <main class="max-w-3xl mx-auto px-3.5 pt-4 space-y-5">
+
+    <!-- =================================================================== -->
+    <!-- SCREEN 1: PORTADA INICIAL (LAUNCHER CON ACCESOS Y CÁPSULAS RÁPIDAS) -->
+    <!-- =================================================================== -->
+    <section id="screen-home" class="space-y-4">
+
+      <!-- Hero Compacto -->
+      <div class="theme-card rounded-3xl p-5 relative overflow-hidden shadow-lg">
+        <div class="absolute -right-4 -bottom-6 text-[95px] font-black opacity-5 pointer-events-none select-none text-amber-500">
+          XR18
+        </div>
+        <div class="relative z-10 space-y-2">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/15 text-amber-500 border border-amber-500/30">
+            ⚡ CENTRO DE MANDOS MUSICAL
+          </span>
+          <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-tight">
+            ¿Qué vamos a configurar hoy, Phil?
+          </h1>
+          <p class="text-xs theme-muted leading-relaxed">
+            Selecciona una tarjeta para abrir las <strong>curvas de ecualización en vivo</strong> o revisar el <strong>estado de tus cuerdas y tu kit</strong>.
+          </p>
+        </div>
+      </div>
+
+      <!-- DOS BOTONES GIGANTES DE PORTADA (BANDA EN VIVO VS MI KIT) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+
+        <!-- Gran Tarjeta 1: Banda En Vivo & Ecualizador XR18 -->
+        <button onclick="switchScreen('live')" class="capsule-card theme-card rounded-3xl p-5 text-left relative overflow-hidden border-l-4 border-l-amber-500 shadow-md hover:shadow-xl group">
+          <div class="flex items-start justify-between gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-2xl shrink-0">
+              🎛️
+            </div>
+            <span class="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-amber-500 text-slate-950">
+              Abrir EQ ➔
+            </span>
+          </div>
+          <h2 class="text-lg font-black mt-3.5">1. Banda en Vivo (XR18)</h2>
+          <p class="text-xs theme-muted mt-1 leading-relaxed">
+            Gráficas rápidas por músico (<strong>Phil, Poncho, Fer, Marco</strong>), Buses Estéreo (1/3 y 5/6), Subs 18" y Patch 1–16.
+          </p>
+          <div class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-slate-500/15 text-[10px] font-mono">
+            <span class="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-500">Ch 4/6 Phil</span>
+            <span class="px-2 py-0.5 rounded-md bg-purple-500/10 text-purple-400">Ch 9/10 Poncho</span>
+            <span class="px-2 py-0.5 rounded-md bg-cyan-500/10 text-cyan-400">Ch 7 Fer</span>
+            <span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400">Ch 8/14-15 Marco</span>
+          </div>
+        </button>
+
+        <!-- Gran Tarjeta 2: Mi Kit & Cambio de Cuerdas -->
+        <button onclick="switchScreen('gear')" class="capsule-card theme-card rounded-3xl p-5 text-left relative overflow-hidden border-l-4 border-l-emerald-500 shadow-md hover:shadow-xl group">
+          <div class="flex items-start justify-between gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-2xl shrink-0">
+              🎸
+            </div>
+            <span id="home-gear-pill" class="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-emerald-500 text-slate-950">
+              Ver Mi Kit ➔
+            </span>
+          </div>
+          <h2 class="text-lg font-black mt-3.5">2. Mi Kit & Cuerdas</h2>
+          <p class="text-xs theme-muted mt-1 leading-relaxed">
+            Cápsulas de avance de tus <strong>5 Guitarras</strong>, alertas de cambio de cuerdas y registro de tu <strong>Bocina In-Ear + PA</strong>.
+          </p>
+          <div class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-slate-500/15 text-[10px] font-mono">
+            <span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400">3 Eléctricas OK</span>
+            <span class="px-2 py-0.5 rounded-md bg-rose-500/15 text-rose-400">Yamaha Nylon Pend.</span>
+            <span class="px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-400">Takamine</span>
+          </div>
+        </button>
+
+      </div>
+
+      <!-- Gran Tarjeta 3: Estudio 3D (Fuel, Fade To Black, Wherever) -->
+      <button onclick="switchScreen('studio')" class="w-full capsule-card theme-card rounded-3xl p-4 text-left flex items-center justify-between gap-3 border-l-4 border-l-cyan-500 shadow-sm">
+        <div class="flex items-center gap-3.5">
+          <div class="w-11 h-11 rounded-2xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-xl shrink-0">
+            🔥
+          </div>
+          <div>
+            <div class="text-sm font-black">3. Recetas Estudio 3D & Canciones</div>
+            <div class="text-xs theme-muted">Curvas quirúrgicas V3 de <strong>Fuel</strong>, <strong>Fade To Black</strong> y <strong>Wherever I May Roam</strong>.</div>
+          </div>
+        </div>
+        <span class="text-xs font-mono font-bold text-cyan-400 shrink-0">Abrir ➔</span>
+      </button>
+
+      <!-- VISTA RÁPIDA EN PORTADA: MINI CÁPSULAS DE AVANCE DE CUERDAS -->
+      <div class="theme-card rounded-3xl p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
+            <span>⏱️</span> Resumen Rápido: Vida de Cuerdas
+          </div>
+          <button onclick="switchScreen('gear')" class="text-[11px] font-bold text-amber-500">
+            Toque una cápsula para abrir ➔
+          </button>
+        </div>
+        <div id="home-strings-capsules" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- VISTA RÁPIDA EN PORTADA: ACCESO DIRECTO A INSTRUMENTOS EN VIVO -->
+      <div class="theme-card rounded-3xl p-4 space-y-3">
+        <div class="text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
+          <span>🎚️</span> Ir Directo a Gráfica EQ de un Canal
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <button onclick="openLiveInstrument('phil-gtr')" class="capsule-card theme-pill rounded-2xl p-2.5 text-left flex items-center gap-2">
+            <span class="text-lg">🎸</span>
+            <div>
+              <div class="text-xs font-bold leading-tight">Phil Guitarra</div>
+              <div class="text-[10px] theme-muted font-mono">Ch 4 • NAM</div>
+            </div>
+          </button>
+          <button onclick="openLiveInstrument('phil-voz')" class="capsule-card theme-pill rounded-2xl p-2.5 text-left flex items-center gap-2">
+            <span class="text-lg">🎤</span>
+            <div>
+              <div class="text-xs font-bold leading-tight">Phil Voz</div>
+              <div class="text-[10px] theme-muted font-mono">Ch 6 • Líder/Coro</div>
+            </div>
+          </button>
+          <button onclick="openLiveInstrument('poncho-gtr')" class="capsule-card theme-pill rounded-2xl p-2.5 text-left flex items-center gap-2">
+            <span class="text-lg">🎸</span>
+            <div>
+              <div class="text-xs font-bold leading-tight">Poncho Guit.</div>
+              <div class="text-[10px] theme-muted font-mono">Ch 10 • R 65%</div>
+            </div>
+          </button>
+          <button onclick="openLiveInstrument('poncho-voz')" class="capsule-card theme-pill rounded-2xl p-2.5 text-left flex items-center gap-2">
+            <span class="text-lg">🎤</span>
+            <div>
+              <div class="text-xs font-bold leading-tight">Poncho Voz</div>
+              <div class="text-[10px] theme-muted font-mono">Ch 9 • Bus 2</div>
+            </div>
+          </button>
+          <button onclick="openLiveInstrument('fer-bajo')" class="capsule-card theme-pill rounded-2xl p-2.5 text-left flex items-center gap-2">
+            <span class="text-lg">⚡</span>
+            <div>
+              <div class="text-xs font-bold leading-tight">Fer Bajo</div>
+              <div class="text-[10px] theme-muted font-mono">Ch 7 • Subs 18"</div>
+            </div>
+          </button>
+          <button onclick="openLiveInstrument('marco-bat')" class="capsule-card theme-pill rounded-2xl p-2.5 text-left flex items-center gap-2">
+            <span class="text-lg">🥁</span>
+            <div>
+              <div class="text-xs font-bold leading-tight">Marco Batería</div>
+              <div class="text-[10px] theme-muted font-mono">Ch 8/14-15 • Bus 1/3</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SCREEN 2: BANDA EN VIVO (XR18 CON CÁPSULAS TÁCTILES Y GRÁFICO EQ)   -->
+    <!-- =================================================================== -->
+    <section id="screen-live" class="hidden space-y-4">
+
+      <!-- Selector horizontal de cápsulas (Pills) pensado para pulgar en iPhone -->
+      <div class="theme-card rounded-2xl p-3 space-y-2">
+        <div class="flex items-center justify-between px-1">
+          <span class="text-[10px] font-mono uppercase font-bold text-amber-500">Selecciona Canal / Músico:</span>
+          <span class="text-[10px] theme-muted font-mono">Toca una cápsula 👇</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <button onclick="selectLivePill('phil-gtr')" id="pill-phil-gtr" class="live-pill px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 bg-amber-500 text-slate-950 shadow">
+            <span>🎸</span>
+            <div class="text-left leading-tight">
+              <div>Phil Guit.</div>
+              <div class="text-[9px] opacity-80 font-mono">Ch 4 • NAM</div>
+            </div>
+          </button>
+          <button onclick="selectLivePill('phil-voz')" id="pill-phil-voz" class="live-pill px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 theme-pill">
+            <span>🎤</span>
+            <div class="text-left leading-tight">
+              <div>Phil Voz</div>
+              <div class="text-[9px] opacity-75 font-mono">Ch 6 • Bus 5/6</div>
+            </div>
+          </button>
+          <button onclick="selectLivePill('poncho-gtr')" id="pill-poncho-gtr" class="live-pill px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 theme-pill">
+            <span>🎸</span>
+            <div class="text-left leading-tight">
+              <div>Poncho Guit.</div>
+              <div class="text-[9px] opacity-75 font-mono">Ch 10 • R 65%</div>
+            </div>
+          </button>
+          <button onclick="selectLivePill('poncho-voz')" id="pill-poncho-voz" class="live-pill px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 theme-pill">
+            <span>🎤</span>
+            <div class="text-left leading-tight">
+              <div>Poncho Voz</div>
+              <div class="text-[9px] opacity-75 font-mono">Ch 9 • Bus 2</div>
+            </div>
+          </button>
+          <button onclick="selectLivePill('fer-bajo')" id="pill-fer-bajo" class="live-pill px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 theme-pill">
+            <span>⚡</span>
+            <div class="text-left leading-tight">
+              <div>Fer Bajo</div>
+              <div class="text-[9px] opacity-75 font-mono">Ch 7 • Bus 4</div>
+            </div>
+          </button>
+          <button onclick="selectLivePill('marco-kick')" id="pill-marco-kick" class="live-pill px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 theme-pill">
+            <span>🥁</span>
+            <div class="text-left leading-tight">
+              <div>Marco Bombo</div>
+              <div class="text-[9px] opacity-75 font-mono">Ch 8 • Subs 18"</div>
+            </div>
+          </button>
+          <button onclick="selectLivePill('marco-oh')" id="pill-marco-oh" class="live-pill px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 theme-pill">
+            <span>✨</span>
+            <div class="text-left leading-tight">
+              <div>Marco Aéreos</div>
+              <div class="text-[9px] opacity-75 font-mono">Ch 14-15 • Bus 1/3</div>
+            </div>
+          </button>
+          <button onclick="selectLivePill('buses-patch')" id="pill-buses-patch" class="live-pill px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 theme-pill">
+            <span>🔌</span>
+            <div class="text-left leading-tight">
+              <div>Patch & Buses</div>
+              <div class="text-[9px] opacity-75 font-mono">Mapa 1-16 & Aux</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel Gráfico Dinámico del Instrumento Seleccionado -->
+      <div id="live-eq-view" class="theme-card rounded-3xl p-4 space-y-4 shadow-md">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div id="live-subtitle" class="text-[10px] font-mono font-bold text-amber-500 uppercase">CANAL 04 • MODELADOR NAM • PANEO L 65%</div>
+            <h2 id="live-title" class="text-lg font-black">Guitarra Eléctrica Phil (Ch 4)</h2>
+          </div>
+          <!-- Sub-toggle para Voz Líder / Coro cuando se elige un micrófono -->
+          <div id="live-voice-subtoggle" class="hidden flex gap-1.5">
+            <button onclick="setVoiceSubMode('lead')" id="subbtn-lead" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950">
+              🎤 Modo Líder
+            </button>
+            <button onclick="setVoiceSubMode('back')" id="subbtn-back" class="px-2.5 py-1 rounded-lg text-[11px] font-bold theme-pill">
+              👥 Modo Coros
+            </button>
+          </div>
+        </div>
+
+        <!-- Gráfico de Curva EQ Optimizado para Móvil -->
+        <div class="rounded-2xl overflow-hidden border border-slate-700/60 bg-slate-950 p-2">
+          <div class="flex justify-between items-center px-2 pb-1">
+            <span id="live-canvas-caption" class="text-[10px] font-mono font-bold text-amber-400">Curva PEQ 4-Bandas en XR18</span>
+            <span class="text-[10px] font-mono text-slate-400">20 Hz — 20 kHz</span>
+          </div>
+          <canvas id="canvasLiveEQ" width="760" height="220" class="w-full h-44 sm:h-52 rounded-xl bg-slate-950"></canvas>
+        </div>
+
+        <!-- Cápsulas de Frecuencia (Cero scroll horizontal en iPhone) -->
+        <div>
+          <div class="text-[11px] font-bold uppercase tracking-wider theme-muted mb-2">
+            Ajustes punto por punto en la XR18:
+          </div>
+          <div id="live-bands-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Caja de Ruteo & Monitoreo del Canal -->
+        <div id="live-routing-box" class="rounded-2xl p-3.5 bg-amber-500/10 border border-amber-500/30 text-xs space-y-1">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Vista del Mapa de Patch & Buses (cuando se toca la cápsula Patch & Buses) -->
+      <div id="live-patch-view" class="hidden space-y-4">
+        <div class="theme-card rounded-3xl p-4 space-y-3">
+          <h3 class="text-base font-black flex items-center gap-2">
+            <span>🔊</span> Ruteo de los 6 Buses de Salida (Aux 1 al 6)
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+            <div class="theme-pill rounded-2xl p-3.5 border-l-4 border-l-emerald-500">
+              <div class="flex justify-between font-mono font-bold text-emerald-400">
+                <span>AUX 1 & AUX 3 (BUS 1 y 3)</span>
+                <span>ESTÉREO</span>
+              </div>
+              <div class="font-bold mt-1">🥁 Monitoreo Estéreo de Marco (Batería)</div>
+              <p class="theme-muted mt-1 text-[11px]">Aux 1 (L) y Aux 3 (R): Jamzone con click L/R, Bajo de Fer al centro, Phil (L) y Poncho (R).</p>
+            </div>
+            <div class="theme-pill rounded-2xl p-3.5 border-l-4 border-l-purple-500">
+              <div class="flex justify-between font-mono font-bold text-purple-400">
+                <span>AUX 2 (BUS 2)</span>
+                <span>MONO</span>
+              </div>
+              <div class="font-bold mt-1">🎸 Monitoreo de Poncho</div>
+              <p class="theme-muted mt-1 text-[11px]">Prioridad en su Voz (Ch 9) y Guitarra (Ch 10) + referencia de Phil, Bajo y Bombo.</p>
+            </div>
+            <div class="theme-pill rounded-2xl p-3.5 border-l-4 border-l-amber-500">
+              <div class="flex justify-between font-mono font-bold text-amber-500">
+                <span>AUX 4 (BUS 4)</span>
+                <span>SUBS 18" DAISY-CHAIN</span>
+              </div>
+              <div class="font-bold mt-1">💣 Subwoofers de 18" en Cadena</div>
+              <p class="theme-muted mt-1 text-[11px]"><strong>¡Solo enviar Ch 7 (Bajo Fer) y Ch 8 (Bombo Marco)!</strong> Voces y guitarras en CERO.</p>
+            </div>
+            <div class="theme-pill rounded-2xl p-3.5 border-l-4 border-l-cyan-500">
+              <div class="flex justify-between font-mono font-bold text-cyan-400">
+                <span>AUX 5 & AUX 6 (BUS 5/6)</span>
+                <span>STEREO LINK</span>
+              </div>
+              <div class="font-bold mt-1">🎧 Monitoreo Estéreo de Phil & Hermano</div>
+              <p class="theme-muted mt-1 text-[11px]">Alimenta tu monitor / bocina recién comprada e In-Ears con imagen estéreo real.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="theme-card rounded-3xl p-4 space-y-2.5">
+          <h3 class="text-base font-black flex items-center gap-2">
+            <span>📋</span> Cápsulas de Entradas Físicas (Ch 1 al 15)
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <div class="theme-pill rounded-xl p-2.5 flex justify-between items-center">
+              <span><strong class="font-mono text-amber-500">CH 01-02:</strong> Jamzone Tracks</span>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400">Stereo L/R</span>
+            </div>
+            <div class="theme-pill rounded-xl p-2.5 flex justify-between items-center">
+              <span><strong class="font-mono text-amber-500">CH 04:</strong> Guitarra NAM (Phil)</span>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-amber-500/15 text-amber-400">Paneo L 65%</span>
+            </div>
+            <div class="theme-pill rounded-xl p-2.5 flex justify-between items-center">
+              <span><strong class="font-mono text-amber-500">CH 06:</strong> Voz Micrófono (Phil)</span>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-slate-500/20">Centro (C)</span>
+            </div>
+            <div class="theme-pill rounded-xl p-2.5 flex justify-between items-center">
+              <span><strong class="font-mono text-cyan-400">CH 07:</strong> Bajo Eléctrico (Fer)</span>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-400">Centro + Bus 4</span>
+            </div>
+            <div class="theme-pill rounded-xl p-2.5 flex justify-between items-center">
+              <span><strong class="font-mono text-emerald-400">CH 08:</strong> Bombo Kick (Marco)</span>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400">Centro + Bus 4</span>
+            </div>
+            <div class="theme-pill rounded-xl p-2.5 flex justify-between items-center">
+              <span><strong class="font-mono text-purple-400">CH 09:</strong> Voz Micrófono (Poncho)</span>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-slate-500/20">Centro (C)</span>
+            </div>
+            <div class="theme-pill rounded-xl p-2.5 flex justify-between items-center">
+              <span><strong class="font-mono text-purple-400">CH 10:</strong> Guitarra (Poncho)</span>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-purple-500/15 text-purple-400">Paneo R 65%</span>
+            </div>
+            <div class="theme-pill rounded-xl p-2.5 flex justify-between items-center">
+              <span><strong class="font-mono text-emerald-400">CH 14-15:</strong> Overheads (Marco)</span>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400">L 75% / R 75%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SCREEN 3: ESTUDIO 3D & CANCIONES (FUEL / FADE TO BLACK / WHEREVER)  -->
+    <!-- =================================================================== -->
+    <section id="screen-studio" class="hidden space-y-4">
+      <div class="theme-card rounded-3xl p-4 space-y-3">
+        <div class="text-[10px] font-mono font-bold text-cyan-400 uppercase">RECETAS DE MASTERIZACIÓN V3 • MILITIA INC.</div>
+        <h2 class="text-lg font-black">Curvas Quirúrgicas 3D & Setlist</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <button onclick="setStudioPill('v30')" id="stpill-v30" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950">
+            🎸 Guitarras V30
+          </button>
+          <button onclick="setStudioPill('hetfield')" id="stpill-hetfield" class="px-3 py-2 rounded-xl text-xs font-bold theme-pill">
+            🎤 Voz Hetfield 3D
+          </button>
+          <button onclick="setStudioPill('newsted')" id="stpill-newsted" class="px-3 py-2 rounded-xl text-xs font-bold theme-pill">
+            ⚡ Bajo Black Album
+          </button>
+          <button onclick="setStudioPill('ulrich')" id="stpill-ulrich" class="px-3 py-2 rounded-xl text-xs font-bold theme-pill">
+            🥁 Batería Lars
+          </button>
+        </div>
+
+        <div class="rounded-2xl overflow-hidden border border-slate-700/60 bg-slate-950 p-2">
+          <div class="flex justify-between items-center px-2 pb-1">
+            <span id="studio-canvas-label" class="text-[10px] font-mono font-bold text-amber-400">Curva Quirúrgica V3</span>
+            <span class="text-[10px] font-mono text-slate-400">Estudio / XR18</span>
+          </div>
+          <canvas id="canvasStudioEQ" width="760" height="220" class="w-full h-44 sm:h-52 rounded-xl bg-slate-950"></canvas>
+        </div>
+
+        <div id="studio-bands-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Cápsulas de Canciones -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <div class="theme-card rounded-2xl p-4 border-l-4 border-l-amber-500 space-y-1.5">
+          <div class="font-black text-sm text-amber-500">🔥 01. FUEL</div>
+          <p class="theme-muted text-[11px] leading-relaxed">
+            <strong>LPF 6.2 kHz</strong> en guitarras + notches en <strong>3.35 kHz y 4.55 kHz (-4.5 dB)</strong> + cuerpo en <strong>700 Hz (+2.5 dB)</strong>. Voz con Doubler Haas (11/17 ms).
+          </p>
+        </div>
+        <div class="theme-card rounded-2xl p-4 border-l-4 border-l-cyan-500 space-y-1.5">
+          <div class="font-black text-sm text-cyan-400">❄️ 02. FADE TO BLACK</div>
+          <p class="theme-muted text-[11px] leading-relaxed">
+            Abrir <strong>LPF a 10.5 kHz (+1.5 dB @ 8 kHz)</strong> para conservar el brillo de la acústica de 12 cuerdas. Bombo con <strong>-3.5 dB pre-EQ</strong> para cero clipping.
+          </p>
+        </div>
+        <div class="theme-card rounded-2xl p-4 border-l-4 border-l-emerald-500 space-y-1.5">
+          <div class="font-black text-sm text-emerald-400">🐍 03. WHEREVER I MAY ROAM</div>
+          <p class="theme-muted text-[11px] leading-relaxed">
+            Rescate de Bajo (<strong>+4.5 dB @ 85 Hz y +3.5 dB @ 1.8 kHz</strong>). Cortar bola grave en guitarra (<strong>-3.5 dB @ 175 Hz</strong>) y subir Toms (<strong>+4 dB @ 110 Hz</strong>).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SCREEN 4: MI KIT & CAMBIO DE CUERDAS (CÁPSULAS COMPACTAS CLICABLES) -->
+    <!-- =================================================================== -->
+    <section id="screen-gear" class="hidden space-y-4">
+
+      <!-- Encabezado Compacto con Indicadores Rápidos -->
+      <div class="theme-card rounded-3xl p-4 space-y-3 shadow-md">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-[10px] font-mono font-bold text-emerald-400 uppercase">MI ARSENAL & MANTENIMIENTO</div>
+            <h2 class="text-lg font-black">Mis Guitarras & Kit de Audio</h2>
+          </div>
+          <button onclick="resetDefaultGearData()" class="px-2.5 py-1 rounded-xl text-[10px] font-bold theme-pill">
+            ↺ Reset Base
+          </button>
+        </div>
+
+        <!-- Mini Píldoras de Resumen -->
+        <div class="grid grid-cols-3 gap-2 text-center">
+          <div class="theme-pill rounded-2xl p-2.5">
+            <div id="kpi-ok-guitars" class="text-lg font-black text-emerald-400">3</div>
+            <div class="text-[10px] theme-muted font-mono">Al 100%</div>
+          </div>
+          <div class="theme-pill rounded-2xl p-2.5">
+            <div id="kpi-due-guitars" class="text-lg font-black text-rose-400">2</div>
+            <div class="text-[10px] theme-muted font-mono">Por Cambiar</div>
+          </div>
+          <div class="theme-pill rounded-2xl p-2.5">
+            <div id="kpi-total-gear" class="text-lg font-black text-amber-500">7</div>
+            <div class="text-[10px] theme-muted font-mono">Equipos Kit</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN A: CÁPSULAS COMPACTAS DE GUITARRAS (TOCA PARA ABRIR/CERRAR) -->
+      <div class="space-y-2.5">
+        <div class="flex items-center justify-between px-1">
+          <h3 class="text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
+            <span>🎸</span> Mis 5 Guitarras — Avance de Cuerdas
+          </h3>
+          <span class="text-[10px] theme-muted font-mono">Toca una cápsula para abrir 👇</span>
+        </div>
+
+        <div id="guitars-capsules-list" class="space-y-2.5">
+          <!-- Rendered by JS as compact capsules that expand on tap -->
+        </div>
+      </div>
+
+      <!-- SECCIÓN B: CÁPSULAS COMPACTAS DE MI KIT DE AUDIO (BOCINA IN-EAR, XR18, PA) -->
+      <div class="space-y-2.5 pt-2">
+        <div class="flex items-center justify-between px-1">
+          <h3 class="text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
+            <span>🔊</span> Mi Kit de Audio & Monitoreo
+          </h3>
+          <span class="text-[10px] theme-muted font-mono">Toca para ver/editar 👇</span>
+        </div>
+
+        <div id="kit-capsules-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <!-- Rendered by JS as compact capsules that expand on tap -->
+        </div>
+      </div>
+
+      <!-- Botón Desplegable para Agregar Nuevo Instrumento o Equipo -->
+      <div class="theme-card rounded-2xl p-3.5">
+        <button onclick="document.getElementById('add-gear-form').classList.toggle('hidden')" class="w-full flex items-center justify-between text-xs font-bold text-emerald-400">
+          <span>➕ Agregar otra guitarra, pedal o equipo al Kit</span>
+          <span class="font-mono text-[10px]">Abrir formulario ▾</span>
+        </button>
+        <div id="add-gear-form" class="hidden mt-3 pt-3 border-t border-slate-500/20 grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
+          <input id="new-gear-name" type="text" placeholder="Nombre (ej. Guitarra / Pedal)" class="theme-pill rounded-xl px-3 py-2 focus:outline-none">
+          <input id="new-gear-model" type="text" placeholder="Modelo o Calibre" class="theme-pill rounded-xl px-3 py-2 focus:outline-none">
+          <select id="new-gear-type" class="theme-pill rounded-xl px-3 py-2 focus:outline-none">
+            <option value="guitar">🎸 Guitarra (con cuerdas)</option>
+            <option value="kit">🔊 Equipo de Audio / Kit</option>
+          </select>
+          <button onclick="addNewCustomItem()" class="bg-emerald-500 text-slate-950 font-black rounded-xl px-4 py-2">
+            Guardar
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- FLOATING BOTTOM TAB BAR (NATIVE iOS EXPERIENCE)                       -->
+  <!-- ===================================================================== -->
+  <nav class="bottom-nav fixed bottom-0 left-0 right-0 z-50 px-3 pt-2 pb-2">
+    <div class="max-w-md mx-auto grid grid-cols-4 gap-1.5">
+      <button onclick="switchScreen('home')" id="bnav-home" class="bnav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl bg-amber-500 text-slate-950 font-bold">
+        <span class="text-base leading-none">🏠</span>
+        <span class="text-[10px] mt-1">Portada</span>
+      </button>
+      <button onclick="switchScreen('live')" id="bnav-live" class="bnav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl theme-muted font-semibold">
+        <span class="text-base leading-none">🎛️</span>
+        <span class="text-[10px] mt-1">En Vivo EQ</span>
+      </button>
+      <button onclick="switchScreen('studio')" id="bnav-studio" class="bnav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl theme-muted font-semibold">
+        <span class="text-base leading-none">🔥</span>
+        <span class="text-[10px] mt-1">Estudio 3D</span>
+      </button>
+      <button onclick="switchScreen('gear')" id="bnav-gear" class="bnav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl theme-muted font-semibold relative">
+        <span class="text-base leading-none">🎸</span>
+        <span class="text-[10px] mt-1">Mi Kit</span>
+        <span id="bnav-gear-dot" class="w-2 h-2 rounded-full bg-rose-500 absolute top-1.5 right-6"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT ENGINE                                                     -->
+  <!-- ===================================================================== -->
+  <script>
+    // -----------------------------------------------------------------------
+    // 1. LIGHT / DARK THEME ENGINE
+    // -----------------------------------------------------------------------
+    const STORAGE_KEY_THEME = 'militia_hub_theme_v2';
+
+    function applyTheme(theme) {
+      const root = document.documentElement;
+      const icon = document.getElementById('theme-icon');
+      const label = document.getElementById('theme-label');
+      if (theme === 'light') {
+        root.classList.remove('dark');
+        root.classList.add('light');
+        if (icon) icon.innerText = '🌙';
+        if (label) label.innerText = 'Oscuro';
+      } else {
+        root.classList.remove('light');
+        root.classList.add('dark');
+        if (icon) icon.innerText = '☀️';
+        if (label) label.innerText = 'Claro';
+      }
+      localStorage.setItem(STORAGE_KEY_THEME, theme);
+    }
+
+    function toggleTheme() {
+      const isLight = document.documentElement.classList.contains('light');
+      applyTheme(isLight ? 'dark' : 'light');
+    }
+
+    // -----------------------------------------------------------------------
+    // 2. SCREEN NAVIGATION (HOME / LIVE / STUDIO / GEAR)
+    // -----------------------------------------------------------------------
+    let currentScreen = 'home';
+    let currentLiveInstrument = 'phil-gtr';
+    let currentVoiceSubMode = 'lead';
+    let currentStudioMode = 'v30';
+    let expandedGuitarIndex = null;
+    let expandedKitIndex = null;
+
+    function switchScreen(screenId) {
+      currentScreen = screenId;
+      ['home', 'live', 'studio', 'gear'].forEach(s => {
+        const sec = document.getElementById('screen-' + s);
+        const bbtn = document.getElementById('bnav-' + s);
+        if (sec) sec.classList.toggle('hidden', s !== screenId);
+        if (bbtn) {
+          if (s === screenId) {
+            bbtn.className = 'bnav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl bg-amber-500 text-slate-950 font-bold relative shadow';
+          } else {
+            bbtn.className = 'bnav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl theme-muted font-semibold relative';
+          }
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (screenId === 'live') {
+        setTimeout(() => selectLivePill(currentLiveInstrument), 30);
+      } else if (screenId === 'studio') {
+        setTimeout(() => setStudioPill(currentStudioMode), 30);
+      } else if (screenId === 'gear' || screenId === 'home') {
+        renderGearDashboard();
+      }
+    }
+
+    function openLiveInstrument(instId) {
+      currentLiveInstrument = instId;
+      switchScreen('live');
+    }
+
+    // -----------------------------------------------------------------------
+    // 3. CANVAS EQ ENGINE
+    // -----------------------------------------------------------------------
+    function initCanvas(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return null;
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width;
+      const height = canvas.height;
+      const zeroY = height / 2;
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(0, 0, width, height);
+
+      [-12, -6, 0, 6, 12].forEach(db => {
+        const y = zeroY - (db / 15) * (height / 2 - 20);
+        ctx.strokeStyle = db === 0 ? 'rgba(148, 163, 184, 0.45)' : 'rgba(51, 65, 85, 0.45)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(42, y);
+        ctx.lineTo(width - 15, y);
+        ctx.stroke();
+
+        ctx.fillStyle = db === 0 ? '#cbd5e1' : '#64748b';
+        ctx.font = '10px monospace';
+        ctx.fillText((db > 0 ? '+' : '') + db + 'dB', 6, y + 3);
+      });
+
+      [
+        { f: 50, label: '50' },
+        { f: 100, label: '100' },
+        { f: 250, label: '250' },
+        { f: 500, label: '500' },
+        { f: 1000, label: '1k' },
+        { f: 3000, label: '3k' },
+        { f: 6800, label: '6.8k' },
+        { f: 10000, label: '10k' }
+      ].forEach(item => {
+        const x = freqToX(item.f, width);
+        ctx.strokeStyle = 'rgba(51, 65, 85, 0.45)';
+        ctx.beginPath();
+        ctx.moveTo(x, 14);
+        ctx.lineTo(x, height - 20);
+        ctx.stroke();
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '10px monospace';
+        ctx.fillText(item.label, x - 10, height - 6);
+      });
+
+      return { ctx, width, height, zeroY };
+    }
+
+    function freqToX(freq, width) {
+      const minLog = Math.log10(20);
+      const maxLog = Math.log10(20000);
+      const margin = 42;
+      const usableWidth = width - margin - 20;
+      const fLog = Math.log10(Math.max(20, Math.min(20000, freq)));
+      return margin + ((fLog - minLog) / (maxLog - minLog)) * usableWidth;
+    }
+
+    function dbToY(db, zeroY, height) {
+      const scale = (height / 2 - 20) / 15;
+      return zeroY - (db * scale);
+    }
+
+    function drawPoint(ctx, x, y, color, text) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = 'bold 10px monospace';
+      ctx.fillText(text, Math.max(44, Math.min(x - 24, 650)), y > 110 ? y - 10 : y + 16);
+    }
+
+    // -----------------------------------------------------------------------
+    // 4. LIVE XR18 INSTRUMENTS DATA & RENDERER
+    // -----------------------------------------------------------------------
+    const LIVE_PRESETS = {
+      'phil-gtr': {
+        subtitle: 'CANAL 04 • MODELADOR NAM • PANEO L 65% • BUS 5/6 ESTÉREO',
+        title: '🎸 Phil: Guitarra NAM (Ch 4)',
+        caption: 'Curva Ch 4: Filtro Anti-Avispa 6.8 kHz + Mordida 1.2 kHz',
+        color: '#f59e0b',
+        isVoice: false,
+        routing: '<strong>Paneo Main:</strong> L 65% (pareja con Poncho R 65%) • <strong>Envío a Bus 4 (Subs 18"):</strong> En CERO / MUTE • <strong>Monitoreo Phil:</strong> Bus 5 y 6 en Estéreo hacia tu bocina/In-Ear.',
+        bands: [
+          { name: 'Low Cut (HPF)', freq: '95 Hz', gain: '12 dB/oct', q: '-', desc: 'Limpia graves para no chocar con el bajo de Fer (Ch 7).' },
+          { name: 'Banda 1 (Palm-Mute)', freq: '250 Hz', gain: '-3.0 dB', q: '1.4', desc: 'Quita la bola grave al mutear cuerdas estilo Metallica.' },
+          { name: 'Banda 2 (Mordida)', freq: '1.2 kHz', gain: '+2.0 dB', q: '1.2', desc: 'Presencia líder para solos y riffs de Phil.' },
+          { name: 'High Cut (LPF)', freq: '6.8 kHz', gain: 'Corte', q: '-', desc: 'Filtro Anti-Avispa NAM: quita el filo digital en las JBL.' }
+        ],
+        points: [
+          { f: 95, db: -3, c: '#f59e0b', t: 'HPF 95Hz' },
+          { f: 250, db: -3, c: '#f43f5e', t: '-3dB 250Hz' },
+          { f: 1200, db: 2, c: '#10b981', t: '+2dB 1.2kHz' },
+          { f: 6800, db: -3, c: '#f59e0b', t: 'LPF 6.8kHz' }
+        ],
+        curveFn: (freq) => {
+          let g = 0;
+          if (freq < 95) g -= Math.min(15, Math.pow(95 / freq, 2) * 3);
+          g += -3.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(250)) / 0.22, 2));
+          g += 2.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(1200)) / 0.26, 2));
+          g += -2.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(3800)) / 0.18, 2));
+          if (freq > 6800) g -= Math.min(15, Math.pow(freq / 6800, 2) * 3);
+          return g;
+        }
+      },
+      'poncho-gtr': {
+        subtitle: 'CANAL 10 • PEDALERA / AMP DI • PANEO R 65% • MONITOR BUS 2',
+        title: '🎸 Poncho: Guitarra Eléctrica (Ch 10)',
+        caption: 'Curva Ch 10: Cuerpo Rítmico 850 Hz + Hueco Voz 3 kHz',
+        color: '#a855f7',
+        isVoice: false,
+        routing: '<strong>Paneo Main:</strong> R 65% • <strong>Envío a Bus 4 (Subs 18"):</strong> En CERO / MUTE • <strong>Monitoreo Poncho:</strong> Salida Aux 2 (Bus 2 Mono).',
+        bands: [
+          { name: 'Low Cut (HPF)', freq: '95 Hz', gain: '12 dB/oct', q: '-', desc: 'Despeja los subgraves para el bajo de Fer.' },
+          { name: 'Banda 1 (Cuerpo)', freq: '850 Hz', gain: '+2.5 dB', q: '1.3', desc: 'Pared rítmica gorda que complementa el 1.2 kHz de Phil.' },
+          { name: 'Banda 2 (Espacio Voz)', freq: '3.0 kHz', gain: '-2.0 dB', q: '1.5', desc: 'Abre espacio para que las voces se entiendan claro.' },
+          { name: 'High Cut (LPF)', freq: '7.0 kHz', gain: 'Corte', q: '-', desc: 'Domina el brillo áspero de distorsión en los tops JBL.' }
+        ],
+        points: [
+          { f: 95, db: -3, c: '#a855f7', t: 'HPF 95Hz' },
+          { f: 850, db: 2.5, c: '#10b981', t: '+2.5dB 850Hz' },
+          { f: 3000, db: -2, c: '#f43f5e', t: '-2dB 3kHz' },
+          { f: 7000, db: -3, c: '#a855f7', t: 'LPF 7kHz' }
+        ],
+        curveFn: (freq) => {
+          let g = 0;
+          if (freq < 95) g -= Math.min(15, Math.pow(95 / freq, 2) * 3);
+          g += 2.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(850)) / 0.25, 2));
+          g += -2.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(3000)) / 0.22, 2));
+          if (freq > 7000) g -= Math.min(15, Math.pow(freq / 7000, 2) * 3);
+          return g;
+        }
+      },
+      'fer-bajo': {
+        subtitle: 'CANAL 07 • BAJO ELÉCTRICO • CENTRO + ENVÍO A BUS 4 (SUBS 18")',
+        title: '⚡ Fer: Bajo Eléctrico (Ch 7)',
+        caption: 'Curva Ch 7: Hueco Bombo 65 Hz + Peso 120 Hz + Ataque 2.5 kHz',
+        color: '#06b6d4',
+        isVoice: false,
+        routing: '<strong>Envío a Bus 4 (Subs 18"):</strong> SÍ, en <strong>0 dB (Post-Fader)</strong> • <strong>Compresor XR18:</strong> Ratio 4:1, Attack 30ms, Release 120ms.',
+        bands: [
+          { name: 'Low Cut (HPF)', freq: '40 Hz', gain: '18 dB/oct', q: '-', desc: 'Protege las bobinas de los subwoofers de 18".' },
+          { name: 'Banda 1 (Hueco Kick)', freq: '65 Hz', gain: '-3.5 dB', q: '1.8', desc: 'Deja libre los 60 Hz para el golpe del bombo de Marco.' },
+          { name: 'Banda 2 (Peso Bajo)', freq: '120 Hz', gain: '+2.5 dB', q: '1.4', desc: 'Nota redonda y sólida que llena el escenario.' },
+          { name: 'Banda 3 y 4 (Ataque)', freq: '450Hz (-3dB) / 2.5kHz (+3.5dB)', gain: 'Definición', q: '1.5', desc: 'Limpia cartón en 450 Hz y da ataque Steve Harris/Newsted en 2.5 kHz.' }
+        ],
+        points: [
+          { f: 40, db: -3, c: '#06b6d4', t: 'HPF 40Hz' },
+          { f: 65, db: -3.5, c: '#f43f5e', t: '-3.5dB 65Hz' },
+          { f: 120, db: 2.5, c: '#10b981', t: '+2.5dB 120Hz' },
+          { f: 2500, db: 3.5, c: '#06b6d4', t: '+3.5dB 2.5kHz' }
+        ],
+        curveFn: (freq) => {
+          let g = 0;
+          if (freq < 40) g -= Math.min(15, Math.pow(40 / freq, 2) * 3);
+          g += -3.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(65)) / 0.18, 2));
+          g += 2.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(120)) / 0.22, 2));
+          g += -3.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(450)) / 0.25, 2));
+          g += 3.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(2500)) / 0.22, 2));
+          if (freq > 6000) g -= Math.min(15, Math.pow(freq / 6000, 2) * 2.5);
+          return g;
+        }
+      },
+      'marco-kick': {
+        subtitle: 'CANAL 08 • BOMBO DE MARCO • ENVÍO +2 dB A BUS 4 (SUBS 18")',
+        title: '🥁 Marco: Bombo / Kick (Ch 8)',
+        caption: 'Curva Ch 8: Pegada 60 Hz + Anti-Cartón 350 Hz + Clic 4 kHz',
+        color: '#10b981',
+        isVoice: false,
+        routing: '<strong>Envío a Bus 4 (Subs 18"):</strong> SÍ, en <strong>+2 dB</strong> • <strong>Monitoreo Marco:</strong> Aux 1 (L) y Aux 3 (R) en Estéreo • <strong>Gate:</strong> Attack 1ms, Hold 45ms, Release 120ms.',
+        bands: [
+          { name: 'Pegada Sub (Subs 18")', freq: '60 Hz', gain: '+3.5 dB', q: '1.4', desc: 'Golpe en el pecho en los dos subwoofers de 18".' },
+          { name: 'Corte Anti-Cartón', freq: '350 Hz', gain: '-5.0 dB', q: '1.5', desc: 'Imprescindible: elimina el sonido a caja de cartón.' },
+          { name: 'Clic de Maza (Lars)', freq: '4.0 kHz', gain: '+4.0 dB', q: '1.8', desc: 'Ataque metálico para escucharse entre las guitarras.' },
+          { name: 'High Cut (LPF)', freq: '9.0 kHz', gain: 'Corte', q: '-', desc: 'Evita que se metan los platillos al micrófono del bombo.' }
+        ],
+        points: [
+          { f: 60, db: 3.5, c: '#10b981', t: '+3.5dB 60Hz' },
+          { f: 350, db: -5, c: '#f43f5e', t: '-5dB 350Hz' },
+          { f: 4000, db: 4, c: '#10b981', t: '+4dB 4kHz' },
+          { f: 9000, db: -3, c: '#f59e0b', t: 'LPF 9kHz' }
+        ],
+        curveFn: (freq) => {
+          let g = 0;
+          if (freq < 30) g -= Math.min(15, Math.pow(30 / freq, 2) * 3);
+          g += 3.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(60)) / 0.22, 2));
+          g += -5.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(350)) / 0.25, 2));
+          g += 4.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(4000)) / 0.2, 2));
+          if (freq > 9000) g -= Math.min(15, Math.pow(freq / 9000, 2) * 3);
+          return g;
+        }
+      },
+      'marco-oh': {
+        subtitle: 'CANALES 14 & 15 • OVERHEADS MARCO (+48V) • PANEO L 75% / R 75%',
+        title: '✨ Marco: Overheads / Aéreos (Ch 14 y 15)',
+        caption: 'Curva Ch 14-15: HPF 380 Hz + Tarola 1.8 kHz + Aire 10 kHz',
+        color: '#a855f7',
+        isVoice: false,
+        routing: '<strong>Phantom Power (+48V):</strong> Activado en Ch 14 y 15 • <strong>Envío a Bus 4 (Subs):</strong> En CERO / MUTE • <strong>Monitoreo Marco:</strong> Bus 1 (L) y Bus 3 (R) en Estéreo.',
+        bands: [
+          { name: 'Low Cut (HPF Alto)', freq: '380 Hz', gain: '18 dB/oct', q: '-', desc: 'Vital en vivo: evita que recojan retumbe de los subs de 18".' },
+          { name: 'Ataque Tarola/Toms', freq: '1.8 kHz', gain: '+2.0 dB', q: '1.2', desc: 'Definición de la tarola y golpes de baqueta de Marco.' },
+          { name: 'Suavizar Platos', freq: '4.5 kHz', gain: '-2.5 dB', q: '2.0', desc: 'Quita la dureza lastimosa de los crashes.' },
+          { name: 'Brillo & Hi-Hat', freq: '10 kHz', gain: '+2.0 dB', q: 'Shelf', desc: 'Aire cristalino abierto en estéreo L75% / R75%.' }
+        ],
+        points: [
+          { f: 380, db: -3, c: '#a855f7', t: 'HPF 380Hz' },
+          { f: 1800, db: 2, c: '#10b981', t: '+2dB 1.8kHz' },
+          { f: 4500, db: -2.5, c: '#f43f5e', t: '-2.5dB 4.5kHz' },
+          { f: 10000, db: 2, c: '#a855f7', t: '+2dB 10kHz' }
+        ],
+        curveFn: (freq) => {
+          let g = 0;
+          if (freq < 380) g -= Math.min(15, Math.pow(380 / freq, 2) * 2.5);
+          g += 2.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(1800)) / 0.25, 2));
+          g += -2.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(4500)) / 0.18, 2));
+          if (freq > 7000) g += 2.0 * Math.min(1, (freq - 7000) / 4000);
+          return g;
+        }
+      }
+    };
+
+    function getVoicePreset(singerLabel, chNum, busInfo, subMode) {
+      if (subMode === 'lead') {
+        return {
+          subtitle: `CANAL ${chNum} • VOZ LÍDER ${singerLabel.toUpperCase()} • CENTRO • ${busInfo}`,
+          title: `🎤 ${singerLabel}: Voz en Modo LÍDER (Ch ${chNum})`,
+          caption: `Curva Voz Líder: Corte de Presencia +2.5 dB @ 3.5 kHz`,
+          color: '#10b981',
+          isVoice: true,
+          routing: `<strong>Envío a Bus 4 (Subs 18"):</strong> En CERO / MUTE (Cero acoples graves) • <strong>FX 1 Reverb:</strong> Rich Plate (Decay 1.5s) • <strong>Monitoreo:</strong> ${busInfo}.`,
+          bands: [
+            { name: 'Low Cut (HPF)', freq: '110 Hz', gain: '12 dB/oct', q: '-', desc: 'Elimina golpes de atril y "popeo" sin quitar cuerpo.' },
+            { name: 'Limpieza Proximidad', freq: '280 Hz', gain: '-1.5 dB', q: '1.4', desc: 'Quita lo encajonado al pegarse al micrófono.' },
+            { name: 'Presencia Metal', freq: '3.5 kHz', gain: '+2.5 dB', q: '1.2', desc: 'Atraviesa el muro de guitarras sin tener que forzar la garganta.' },
+            { name: 'Aire (High Shelf)', freq: '10 kHz', gain: '+1.5 dB', q: 'Shelf', desc: 'Brillo abierto de estudio en las bocinas JBL.' }
+          ],
+          points: [
+            { f: 110, db: -3, c: '#10b981', t: 'HPF 110Hz' },
+            { f: 280, db: -1.5, c: '#f43f5e', t: '-1.5dB 280Hz' },
+            { f: 3500, db: 2.5, c: '#10b981', t: '+2.5dB 3.5kHz' },
+            { f: 10000, db: 1.5, c: '#10b981', t: '+1.5dB 10kHz' }
+          ],
+          curveFn: (freq) => {
+            let g = 0;
+            if (freq < 110) g -= Math.min(15, Math.pow(110 / freq, 2) * 3);
+            g += -1.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(280)) / 0.25, 2));
+            g += 2.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(3500)) / 0.25, 2));
+            if (freq > 7000) g += 1.5 * Math.min(1, (freq - 7000) / 4000);
+            return g;
+          }
+        };
+      } else {
+        return {
+          subtitle: `CANAL ${chNum} • VOZ COROS ${singerLabel.toUpperCase()} • DETRÁS DEL LÍDER`,
+          title: `👥 ${singerLabel}: Voz en Modo COROS (Ch ${chNum})`,
+          caption: `Curva Coros: Hueco -2 dB @ 3 kHz para dejar brillar al Líder`,
+          color: '#f59e0b',
+          isVoice: true,
+          routing: `<strong>Clave en Coros:</strong> Al recortar 3 kHz en el coro, la voz principal resalta al frente sin subir volumen.`,
+          bands: [
+            { name: 'Low Cut (HPF)', freq: '150 Hz', gain: '12 dB/oct', q: '-', desc: 'Despeja todo el grave para el bajo y la voz líder.' },
+            { name: 'Corte de Barro', freq: '250 Hz', gain: '-3.0 dB', q: '1.0', desc: 'Evita que la suma de voces suene pastosa.' },
+            { name: 'Espacio al Líder', freq: '3.0 kHz', gain: '-2.0 dB', q: '1.2', desc: 'Cede el centro de presencia al cantante principal.' },
+            { name: 'Aire Suave', freq: '10 kHz', gain: '+1.0 dB', q: 'Shelf', desc: 'Empaste fino por arriba de las guitarras.' }
+          ],
+          points: [
+            { f: 150, db: -3, c: '#f59e0b', t: 'HPF 150Hz' },
+            { f: 250, db: -3, c: '#f43f5e', t: '-3dB 250Hz' },
+            { f: 3000, db: -2, c: '#f43f5e', t: '-2dB 3kHz' },
+            { f: 10000, db: 1, c: '#f59e0b', t: '+1dB 10kHz' }
+          ],
+          curveFn: (freq) => {
+            let g = 0;
+            if (freq < 150) g -= Math.min(15, Math.pow(150 / freq, 2) * 3);
+            g += -3.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(250)) / 0.3, 2));
+            g += -2.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(3000)) / 0.25, 2));
+            if (freq > 7000) g += 1.0 * Math.min(1, (freq - 7000) / 4000);
+            return g;
+          }
+        };
+      }
+    }
+
+    function setVoiceSubMode(mode) {
+      currentVoiceSubMode = mode;
+      const bL = document.getElementById('subbtn-lead');
+      const bB = document.getElementById('subbtn-back');
+      if (bL && bB) {
+        bL.className = 'px-2.5 py-1 rounded-lg text-[11px] font-bold ' + (mode === 'lead' ? 'bg-emerald-500 text-slate-950' : 'theme-pill');
+        bB.className = 'px-2.5 py-1 rounded-lg text-[11px] font-bold ' + (mode === 'back' ? 'bg-amber-500 text-slate-950' : 'theme-pill');
+      }
+      selectLivePill(currentLiveInstrument);
+    }
+
+    function selectLivePill(instId) {
+      if (instId === 'marco-bat') instId = 'marco-kick';
+      currentLiveInstrument = instId;
+
+      document.querySelectorAll('.live-pill').forEach(btn => {
+        btn.className = 'live-pill px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 theme-pill';
+      });
+      const activeBtn = document.getElementById('pill-' + instId);
+      if (activeBtn) {
+        activeBtn.className = 'live-pill px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 bg-amber-500 text-slate-950 shadow';
+      }
+
+      const eqView = document.getElementById('live-eq-view');
+      const patchView = document.getElementById('live-patch-view');
+
+      if (instId === 'buses-patch') {
+        eqView.classList.add('hidden');
+        patchView.classList.remove('hidden');
+        return;
+      }
+
+      eqView.classList.remove('hidden');
+      patchView.classList.add('hidden');
+
+      let preset;
+      if (instId === 'phil-voz') {
+        preset = getVoicePreset('Phil', '06', 'Bus 5/6 Estéreo', currentVoiceSubMode);
+      } else if (instId === 'poncho-voz') {
+        preset = getVoicePreset('Poncho', '09', 'Bus 2 Mono', currentVoiceSubMode);
+      } else {
+        preset = LIVE_PRESETS[instId] || LIVE_PRESETS['phil-gtr'];
+      }
+
+      document.getElementById('live-subtitle').innerText = preset.subtitle;
+      document.getElementById('live-title').innerText = preset.title;
+      document.getElementById('live-canvas-caption').innerText = preset.caption;
+      document.getElementById('live-voice-subtoggle').classList.toggle('hidden', !preset.isVoice);
+      document.getElementById('live-routing-box').innerHTML = preset.routing;
+
+      document.getElementById('live-bands-cards').innerHTML = preset.bands.map(b => `
+        <div class="theme-pill rounded-2xl p-3 space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-amber-500">${b.name}</span>
+            <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-950 text-emerald-400">${b.freq} • ${b.gain}</span>
+          </div>
+          <div class="text-[11px] theme-muted leading-snug">${b.desc}</div>
+        </div>
+      `).join('');
+
+      const setup = initCanvas('canvasLiveEQ');
+      if (!setup) return;
+      const { ctx, width, height, zeroY } = setup;
+
+      ctx.beginPath();
+      ctx.lineWidth = 3.2;
+      ctx.strokeStyle = preset.color;
+      for (let px = 42; px < width - 15; px++) {
+        const ratio = (px - 42) / (width - 57);
+        const freq = Math.pow(10, Math.log10(20) + ratio * (Math.log10(20000) - Math.log10(20)));
+        const y = dbToY(preset.curveFn(freq), zeroY, height);
+        if (px === 42) ctx.moveTo(px, y); else ctx.lineTo(px, y);
+      }
+      ctx.stroke();
+
+      preset.points.forEach(pt => {
+        drawPoint(ctx, freqToX(pt.f, width), dbToY(pt.db, zeroY, height), pt.c, pt.t);
+      });
+    }
+
+    // -----------------------------------------------------------------------
+    // 5. STUDIO 3D CURVES RENDERER
+    // -----------------------------------------------------------------------
+    function setStudioPill(mode) {
+      currentStudioMode = mode;
+      ['v30', 'hetfield', 'newsted', 'ulrich'].forEach(m => {
+        const el = document.getElementById('stpill-' + m);
+        if (el) {
+          el.className = 'px-3 py-2 rounded-xl text-xs font-bold ' + (m === mode ? 'bg-amber-500 text-slate-950 shadow' : 'theme-pill');
+        }
+      });
+
+      const setup = initCanvas('canvasStudioEQ');
+      if (!setup) return;
+      const { ctx, width, height, zeroY } = setup;
+      const label = document.getElementById('studio-canvas-label');
+      const cards = document.getElementById('studio-bands-cards');
+
+      let color = '#f59e0b';
+      let fn = () => 0;
+      let pts = [];
+      let items = [];
+
+      if (mode === 'v30') {
+        label.innerText = 'Curva V3: Guitarras Anti-Abejas (Estilo Celestion V30)';
+        color = '#f59e0b';
+        items = [
+          { t: 'Corte Palm-Mute', v: '175–250 Hz (-3 dB)', d: 'Quita retumbe grave para dejar tronar el bombo.' },
+          { t: 'Cuerpo Bulbos', v: '700 Hz (+2.5 dB)', d: 'Da peso real estilo Mesa Boogie / Marshall.' },
+          { t: 'Notches Anti-Abejas', v: '3.35k & 4.55k (-4.5 dB)', d: 'Elimina por completo el chisporroteo digital.' },
+          { t: 'Filtro LPF', v: '6.2 kHz (o 10.5 kHz)', d: '6.2 kHz en temas pesados; 10.5 kHz con acústica de 12 cuerdas.' }
+        ];
+        fn = (freq) => {
+          let g = 0;
+          if (freq < 95) g -= Math.min(15, Math.pow(95 / freq, 2) * 3);
+          g += -3.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(200)) / 0.2, 2));
+          g += 2.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(700)) / 0.22, 2));
+          g += -4.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(3350)) / 0.1, 2));
+          g += -4.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(4550)) / 0.1, 2));
+          if (freq > 6500) g -= Math.min(15, Math.pow(freq / 6500, 2) * 3);
+          return g;
+        };
+        pts = [
+          { f: 200, db: -3, c: '#f43f5e', t: '-3dB 200Hz' },
+          { f: 700, db: 2.5, c: '#10b981', t: '+2.5dB 700Hz' },
+          { f: 3350, db: -4.5, c: '#f43f5e', t: '-4.5dB 3.35k/4.55k' },
+          { f: 6500, db: -3, c: '#f59e0b', t: 'LPF 6.5kHz' }
+        ];
+      } else if (mode === 'hetfield') {
+        label.innerText = 'Curva V3: Voz Hetfield 3D (Presencia + Haas Cero Desfase)';
+        color = '#10b981';
+        items = [
+          { t: 'Centrado Tonal', v: '250 Hz & 420 Hz (-3 dB)', d: 'Quita sonido nasal/encajonado para centrar la afinación.' },
+          { t: 'Ataque Vocal', v: '2.85–3.2 kHz (+3.5 dB)', d: 'Dicción cristalina por encima de las guitarras.' },
+          { t: 'Aire de Estudio', v: '9.5–10.5 kHz (+3 dB)', d: 'Abre micrófonos dinámicos oscuros.' },
+          { t: 'Haas Doubler 3D', v: '11 ms (L) / 17 ms (R)', d: 'Engrosa la voz en estéreo con 0.000 ms de desfase.' }
+        ];
+        fn = (freq) => {
+          let g = 0;
+          if (freq < 95) g -= Math.min(15, Math.pow(95 / freq, 2) * 3);
+          g += -3.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(250)) / 0.18, 2));
+          g += -3.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(420)) / 0.14, 2));
+          g += 3.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(3000)) / 0.22, 2));
+          if (freq > 8000) g += 3.0 * Math.min(1, (freq - 8000) / 3500);
+          return g;
+        };
+        pts = [
+          { f: 420, db: -3, c: '#f43f5e', t: '-3dB 420Hz' },
+          { f: 3000, db: 3.5, c: '#10b981', t: '+3.5dB 3kHz' },
+          { f: 10000, db: 3, c: '#10b981', t: '+3dB Aire' }
+        ];
+      } else if (mode === 'newsted') {
+        label.innerText = 'Curva V3: Bajo Black Album (Sub 85 Hz + Mordida 1.8 kHz)';
+        color = '#06b6d4';
+        items = [
+          { t: 'Cimiento Sub', v: '85 Hz (+4.5 dB)', d: 'Abraza el golpe de 58 Hz del bombo.' },
+          { t: 'Corte de Fango', v: '250 Hz (-3.5 dB)', d: 'Limpia el barro con las guitarras rítmicas.' },
+          { t: 'Gruñido Medio', v: '750 Hz (+2.5 dB)', d: 'Presencia de nota en cualquier bocina.' },
+          { t: 'Mordida Newsted', v: '1.8 kHz (+3.5 dB)', d: 'Ataque metálico de púa + Compresión 4:1.' }
+        ];
+        fn = (freq) => {
+          let g = 0;
+          if (freq < 35) g -= Math.min(15, Math.pow(35 / freq, 2) * 3);
+          g += 4.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(85)) / 0.22, 2));
+          g += -3.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(250)) / 0.2, 2));
+          g += 2.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(750)) / 0.2, 2));
+          g += 3.5 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(1800)) / 0.2, 2));
+          if (freq > 4800) g -= Math.min(15, Math.pow(freq / 4800, 2) * 3);
+          return g;
+        };
+        pts = [
+          { f: 85, db: 4.5, c: '#10b981', t: '+4.5dB 85Hz' },
+          { f: 250, db: -3.5, c: '#f43f5e', t: '-3.5dB 250Hz' },
+          { f: 1800, db: 3.5, c: '#06b6d4', t: '+3.5dB 1.8kHz' }
+        ];
+      } else {
+        label.innerText = 'Curva V3: Batería Lars (Kick 58 Hz + Caja 185 Hz + Click 3.9 kHz)';
+        color = '#a855f7';
+        items = [
+          { t: 'Headroom Pre-EQ', v: '-3.5 dB Input', d: 'Evita clipping interno al empujar los subgraves.' },
+          { t: 'Sub Bombo', v: '58 Hz (+5.0 dB)', d: 'Golpe profundo de estadio.' },
+          { t: 'Cuerpo Tarola', v: '185 Hz (+3.5 dB)', d: 'Peso gordo de la caja estilo Black Album.' },
+          { t: 'Anti-Cartón & Click', v: '340Hz (-5dB) / 3.9kHz (+4dB)', d: 'Quita sonido hueco y resalta el golpe de maza.' }
+        ];
+        fn = (freq) => {
+          let g = 0;
+          if (freq < 30) g -= Math.min(15, Math.pow(30 / freq, 2) * 3);
+          g += 5.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(58)) / 0.2, 2));
+          g += 3.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(185)) / 0.16, 2));
+          g += -5.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(340)) / 0.2, 2));
+          g += 4.0 * Math.exp(-Math.pow((Math.log10(freq) - Math.log10(3900)) / 0.2, 2));
+          return g;
+        };
+        pts = [
+          { f: 58, db: 5, c: '#10b981', t: '+5dB 58Hz' },
+          { f: 185, db: 3, c: '#a855f7', t: '+3.5dB 185Hz' },
+          { f: 340, db: -5, c: '#f43f5e', t: '-5dB 340Hz' },
+          { f: 3900, db: 4, c: '#10b981', t: '+4dB 3.9kHz' }
+        ];
+      }
+
+      cards.innerHTML = items.map(it => `
+        <div class="theme-pill rounded-2xl p-3 space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-amber-500">${it.t}</span>
+            <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-950 text-emerald-400">${it.v}</span>
+          </div>
+          <div class="text-[11px] theme-muted">${it.d}</div>
+        </div>
+      `).join('');
+
+      ctx.beginPath();
+      ctx.lineWidth = 3.2;
+      ctx.strokeStyle = color;
+      for (let px = 42; px < width - 15; px++) {
+        const ratio = (px - 42) / (width - 57);
+        const freq = Math.pow(10, Math.log10(20) + ratio * (Math.log10(20000) - Math.log10(20)));
+        const y = dbToY(fn(freq), zeroY, height);
+        if (px === 42) ctx.moveTo(px, y); else ctx.lineTo(px, y);
+      }
+      ctx.stroke();
+
+      pts.forEach(pt => drawPoint(ctx, freqToX(pt.f, width), dbToY(pt.db, zeroY, height), pt.c, pt.t));
+    }
+
+    // -----------------------------------------------------------------------
+    // 6. MI KIT & CAMBIO DE CUERDAS (COMPACT CAPSULES WITH EXPAND ON TAP)
+    // -----------------------------------------------------------------------
+    const STORAGE_KEY_GUITARS = 'militia_phil_guitars_v1';
+    const STORAGE_KEY_KIT = 'militia_phil_kit_v1';
+
+    const DEFAULT_GUITARS = [
+      {
+        id: 'g-negra-main',
+        name: 'Eléctrica Negra (Principal)',
+        model: 'Titular En Vivo & Estudio (Modelo editable)',
+        strings: 'Elixir Nanoweb (.009 - .042)',
+        role: '🎸 Titular En Vivo (Ch 4 NAM)',
+        lastChange: '2026-11-07',
+        cycleDays: 60,
+        statusOverride: null,
+        notes: 'Cambiadas el 7 de noviembre de 2026. Guitarra principal de trabajo.'
+      },
+      {
+        id: 'g-azul-ibanez',
+        name: 'Eléctrica Azul Ibanez (Ensayos)',
+        model: 'Ibanez Azul (Modelo editable)',
+        strings: 'Nickel / Elixir (.009 - .042)',
+        role: '⚡ Guitarra de Ensayos',
+        lastChange: '2026-11-07',
+        cycleDays: 65,
+        statusOverride: null,
+        notes: 'Cambiadas el sábado de la semana pasada. Lista para ensayos.'
+      },
+      {
+        id: 'g-negra-ibanez',
+        name: 'Eléctrica Negra Ibanez',
+        model: 'Ibanez Negra (Modelo editable)',
+        strings: 'Nickel / Elixir (.009 - .042)',
+        role: '🔥 Segunda Eléctrica',
+        lastChange: '2026-11-16',
+        cycleDays: 90,
+        statusOverride: null,
+        notes: '¡Recién encordada ayer (16 de noviembre de 2026)! Al 100%.'
+      },
+      {
+        id: 'g-yamaha-nylon',
+        name: 'Yamaha Acústica (Nylon)',
+        model: 'Yamaha Acústica Clásica de Nylon',
+        strings: 'Nylon D\'Addario Pro-Arte EJ45',
+        role: '🎼 Acústica Nylon',
+        lastChange: '',
+        cycleDays: 150,
+        statusOverride: 'pending',
+        notes: 'Pendiente de cambio de cuerdas. Toca "✓ Cambié HOY" cuando la encuerdes.'
+      },
+      {
+        id: 'g-takamine',
+        name: 'Takamine Electroacústica',
+        model: 'Takamine Acústica de Acero/Bronce',
+        strings: 'Elixir Phosphor Bronze (.011 - .052)',
+        role: '✨ Acústica Acero (Poco uso)',
+        lastChange: '2026-05-15',
+        cycleDays: 180,
+        statusOverride: 'check_age',
+        notes: 'Aunque casi no se toca, el bronce normal se oxida en 6 meses. Con Elixir recubiertas dura 1 año entero.'
+      }
+    ];
+
+    const DEFAULT_KIT = [
+      {
+        id: 'k-bocina-inear',
+        icon: '🎧',
+        category: 'Monitoreo Personal / In-Ear',
+        name: 'Bocina / Monitor Personal (Recién Comprada)',
+        model: 'Recomendada para Monitoreo Personal (Toca para anotar modelo)',
+        routing: 'Conectada a Bus 5 / Bus 6 (Estéreo Phil)',
+        dateInfo: 'Nov 2026',
+        notes: 'Tu bocina/monitor recién comprada por nuestra recomendación para escucharte con total claridad.'
+      },
+      {
+        id: 'k-xr18',
+        icon: '🎛️',
+        category: 'Consola Digital',
+        name: 'Behringer X-Air XR18',
+        model: '18 Canales + Interfaz USB 18x18',
+        routing: 'Cerebro PA y Monitoreo (Buses 1 al 6)',
+        dateInfo: 'Rack Principal',
+        notes: '10 canales activos en vivo y envío de subwoofers separado por Bus 4.'
+      },
+      {
+        id: 'k-nam',
+        icon: '⚡',
+        category: 'Modelado High-Gain',
+        name: 'Neural Amp Modeler (NAM)',
+        model: 'Perfiles Mesa Boogie / Marshall + V30',
+        routing: 'Entrada CH 04 (Paneo L 65%)',
+        dateInfo: 'LPF 6.8 kHz',
+        notes: 'Tono principal de guitarra de Phil.'
+      },
+      {
+        id: 'k-jbl',
+        icon: '🔊',
+        category: 'Tops P.A.',
+        name: '2x Bocinas JBL EON615 (15")',
+        model: 'JBL EON615 1000W (Serie P1391-111828)',
+        routing: 'Main L / Main R (HPF 85–90 Hz)',
+        dateInfo: 'Factura 07/Ene/2018',
+        notes: 'Voces y guitarras nítidas arriba de 90 Hz.'
+      },
+      {
+        id: 'k-subs',
+        icon: '💣',
+        category: 'Subwoofers 18"',
+        name: '2x Subwoofers Activos 18"',
+        model: 'Conexión en Cadena (Daisy-Chain)',
+        routing: 'Aux 4 (Bus 4) — Solo Bombo y Bajo',
+        dateInfo: 'Anti-Acople',
+        notes: 'Impacto subgrave puro para Ch 7 y Ch 8.'
+      },
+      {
+        id: 'k-vox',
+        icon: '📻',
+        category: 'Amp Guitarra',
+        name: 'Amplificador VOX AV60',
+        model: 'VOX Analog Valve 60W (Serie 002438)',
+        routing: 'Backline / Ensayo',
+        dateInfo: 'Factura 07/Ene/2018',
+        notes: '8 circuitos analógicos de preamplificación con bulbo.'
+      },
+      {
+        id: 'k-bass-amp',
+        icon: '🎸',
+        category: 'Amp Bajo & Stock',
+        name: 'Amplificador Bajo 500W + Packs Elixir',
+        model: 'Combo 500W (3612300) + Elixir .009-.042',
+        routing: 'Escenario Bajo (Ch 7)',
+        dateInfo: 'Factura 02/Dic/2017',
+        notes: 'Refuerzo en escenario junto con Bus 4.'
+      }
+    ];
+
+    function loadGuitars() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_GUITARS);
+        return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_GUITARS));
+      } catch (e) {
+        return JSON.parse(JSON.stringify(DEFAULT_GUITARS));
+      }
+    }
+
+    function saveGuitars(list) {
+      localStorage.setItem(STORAGE_KEY_GUITARS, JSON.stringify(list));
+      renderGearDashboard();
+    }
+
+    function loadKit() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_KIT);
+        return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_KIT));
+      } catch (e) {
+        return JSON.parse(JSON.stringify(DEFAULT_KIT));
+      }
+    }
+
+    function saveKit(list) {
+      localStorage.setItem(STORAGE_KEY_KIT, JSON.stringify(list));
+      renderGearDashboard();
+    }
+
+    function resetDefaultGearData() {
+      localStorage.removeItem(STORAGE_KEY_GUITARS);
+      localStorage.removeItem(STORAGE_KEY_KIT);
+      expandedGuitarIndex = null;
+      expandedKitIndex = null;
+      renderGearDashboard();
+    }
+
+    function formatDateES(dateStr) {
+      if (!dateStr) return 'Pendiente';
+      const parts = dateStr.split('-');
+      if (parts.length !== 3) return dateStr;
+      const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+      return `${parts[2]}/${months[parseInt(parts[1], 10) - 1] || parts[1]}/${parts[0]}`;
+    }
+
+    function addDays(dateStr, days) {
+      const parts = dateStr.split('-');
+      const dt = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+      dt.setDate(dt.getDate() + Number(days));
+      return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+    }
+
+    function computeGuitarStatus(g) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (!g.lastChange || g.statusOverride === 'pending') {
+        return {
+          state: 'due',
+          shortLabel: '🔴 Pendiente hoy',
+          badgeClass: 'bg-rose-500/20 text-rose-400 border-rose-500/40',
+          borderLeft: 'border-l-4 border-l-rose-500',
+          daysElapsed: null,
+          daysRemaining: 0,
+          nextDateStr: null,
+          usedPct: 100,
+          healthPct: 0,
+          barColor: 'bg-rose-500'
+        };
+      }
+
+      const parts = g.lastChange.split('-');
+      const lastDt = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+      const daysElapsed = Math.max(0, Math.round((today - lastDt) / (1000 * 60 * 60 * 24)));
+      const cycle = Number(g.cycleDays) || 60;
+      const daysRemaining = cycle - daysElapsed;
+      const nextDateStr = addDays(g.lastChange, cycle);
+      const usedPct = Math.min(100, Math.max(4, Math.round((daysElapsed / cycle) * 100)));
+      const healthPct = Math.max(0, 100 - usedPct);
+
+      if (daysRemaining <= 0) {
+        return {
+          state: 'due',
+          shortLabel: `🔴 Vencida (${daysElapsed}d)`,
+          badgeClass: 'bg-rose-500/20 text-rose-400 border-rose-500/40',
+          borderLeft: 'border-l-4 border-l-rose-500',
+          daysElapsed,
+          daysRemaining,
+          nextDateStr,
+          usedPct: 100,
+          healthPct: 0,
+          barColor: 'bg-rose-500'
+        };
+      } else if (daysRemaining <= 15 || g.statusOverride === 'check_age') {
+        return {
+          state: 'soon',
+          shortLabel: `🟡 Revisar (${daysRemaining}d rest.)`,
+          badgeClass: 'bg-amber-500/20 text-amber-400 border-amber-500/40',
+          borderLeft: 'border-l-4 border-l-amber-500',
+          daysElapsed,
+          daysRemaining,
+          nextDateStr,
+          usedPct,
+          healthPct,
+          barColor: 'bg-amber-500'
+        };
+      } else {
+        return {
+          state: 'ok',
+          shortLabel: `🟢 ${daysElapsed}d uso (${daysRemaining}d rest.)`,
+          badgeClass: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40',
+          borderLeft: 'border-l-4 border-l-emerald-500',
+          daysElapsed,
+          daysRemaining,
+          nextDateStr,
+          usedPct,
+          healthPct,
+          barColor: 'bg-emerald-500'
+        };
+      }
+    }
+
+    function toggleGuitarCapsule(idx) {
+      expandedGuitarIndex = (expandedGuitarIndex === idx) ? null : idx;
+      renderGearDashboard();
+    }
+
+    function toggleKitCapsule(idx) {
+      expandedKitIndex = (expandedKitIndex === idx) ? null : idx;
+      renderGearDashboard();
+    }
+
+    function openGuitarFromHome(idx) {
+      expandedGuitarIndex = idx;
+      switchScreen('gear');
+    }
+
+    function markChangedToday(index, event) {
+      if (event) event.stopPropagation();
+      const guitars = loadGuitars();
+      const now = new Date();
+      guitars[index].lastChange = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      guitars[index].statusOverride = null;
+      saveGuitars(guitars);
+    }
+
+    function updateGuitarField(index, field, value) {
+      const guitars = loadGuitars();
+      guitars[index][field] = field === 'cycleDays' ? Number(value) : value;
+      if (field === 'lastChange' && value) guitars[index].statusOverride = null;
+      saveGuitars(guitars);
+    }
+
+    function updateKitField(index, field, value) {
+      const kit = loadKit();
+      kit[index][field] = value;
+      saveKit(kit);
+    }
+
+    function downloadCalendarICS(index, event) {
+      if (event) event.stopPropagation();
+      const guitars = loadGuitars();
+      const g = guitars[index];
+      const st = computeGuitarStatus(g);
+      const targetDate = st.nextDateStr || (() => {
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      })();
+      const cleanDate = targetDate.replace(/-/g, '');
+      const icsContent = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Militia Inc//Gear Tracker//ES',
+        'BEGIN:VEVENT',
+        `DTSTART;VALUE=DATE:${cleanDate}`,
+        `DTEND;VALUE=DATE:${cleanDate}`,
+        `SUMMARY:🎸 Cambio de Cuerdas: ${g.name}`,
+        `DESCRIPTION:Calibre: ${g.strings}. Modelo: ${g.model}. Notas: ${g.notes}`,
+        'BEGIN:VALARM',
+        'TRIGGER:-PT9H',
+        'ACTION:DISPLAY',
+        'DESCRIPTION:Recordatorio Cambio de Cuerdas Militia Inc.',
+        'END:VALARM',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+
+      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Cambio_Cuerdas_${g.id}.ics`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function addNewCustomItem() {
+      const nameEl = document.getElementById('new-gear-name');
+      const modelEl = document.getElementById('new-gear-model');
+      const typeEl = document.getElementById('new-gear-type');
+      const name = (nameEl.value || '').trim();
+      const model = (modelEl.value || '').trim();
+      if (!name) return;
+
+      if (typeEl.value === 'guitar') {
+        const guitars = loadGuitars();
+        const now = new Date();
+        guitars.push({
+          id: 'g-custom-' + Date.now(),
+          name,
+          model: model || 'Modelo personalizado',
+          strings: '.009 - .042',
+          role: '🎸 Guitarra Adicional',
+          lastChange: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`,
+          cycleDays: 90,
+          statusOverride: null,
+          notes: 'Agregada desde el Dashboard.'
+        });
+        saveGuitars(guitars);
+      } else {
+        const kit = loadKit();
+        kit.unshift({
+          id: 'k-custom-' + Date.now(),
+          icon: '🔥',
+          category: 'Equipo / Accesorio',
+          name,
+          model: model || 'Especificación personalizada',
+          routing: 'Set Live / Estudio',
+          dateInfo: 'Nuevo',
+          notes: 'Agregado desde el Dashboard.'
+        });
+        saveKit(kit);
+      }
+      nameEl.value = '';
+      modelEl.value = '';
+      document.getElementById('add-gear-form').classList.add('hidden');
+    }
+
+    function renderGearDashboard() {
+      const guitars = loadGuitars();
+      const kit = loadKit();
+
+      let okCount = 0;
+      let dueCount = 0;
+
+      // 1. Mini cápsulas en la Portada (Home)
+      const homeCapsulesEl = document.getElementById('home-strings-capsules');
+      const gListEl = document.getElementById('guitars-capsules-list');
+      const kListEl = document.getElementById('kit-capsules-list');
+
+      const homeHtml = [];
+      const gearHtml = [];
+
+      guitars.forEach((g, idx) => {
+        const st = computeGuitarStatus(g);
+        if (st.state === 'ok') okCount++;
+        else dueCount++;
+
+        const isOpen = (expandedGuitarIndex === idx);
+
+        // Mini cápsula para la portada
+        homeHtml.push(`
+          <button onclick="openGuitarFromHome(${idx})" class="capsule-card theme-pill rounded-2xl p-3 text-left space-y-1.5 ${st.borderLeft}">
+            <div class="flex items-center justify-between gap-1">
+              <span class="text-xs font-black truncate">${g.name}</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${st.badgeClass} shrink-0">
+                ${st.shortLabel}
+              </span>
+            </div>
+            <div class="w-full h-1.5 bg-slate-950/60 rounded-full overflow-hidden">
+              <div class="h-full ${st.barColor}" style="width: ${st.usedPct}%"></div>
+            </div>
+            <div class="flex justify-between text-[10px] theme-muted font-mono">
+              <span>Cambio: ${formatDateES(g.lastChange)}</span>
+              <span>Próx: ${st.nextDateStr ? formatDateES(st.nextDateStr) : '¡Hoy!'}</span>
+            </div>
+          </button>
+        `);
+
+        // Cápsula compacta con desplegable al hacer clic en pantalla Mi Kit
+        gearHtml.push(`
+          <div class="theme-card rounded-2xl overflow-hidden ${st.borderLeft} shadow-sm">
+            <!-- Encabezado compacto de la cápsula (Siempre visible) -->
+            <button onclick="toggleGuitarCapsule(${idx})" class="w-full p-3.5 text-left flex flex-col gap-2">
+              <div class="flex items-center justify-between gap-2">
+                <div class="min-w-0">
+                  <div class="text-[10px] font-mono text-amber-500 truncate">${g.role} • ${g.strings}</div>
+                  <div class="text-sm font-black truncate">${g.name}</div>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0">
+                  <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${st.badgeClass}">
+                    ${st.shortLabel}
+                  </span>
+                  <span class="text-xs theme-muted font-mono">${isOpen ? '▴' : '▾'}</span>
+                </div>
+              </div>
+
+              <!-- Barra de Avance de Desgaste de Cuerdas -->
+              <div class="space-y-1 w-full">
+                <div class="w-full h-2 bg-slate-950/60 rounded-full overflow-hidden">
+                  <div class="h-full ${st.barColor} transition-all" style="width: ${st.usedPct}%"></div>
+                </div>
+                <div class="flex justify-between text-[10px] theme-muted font-mono">
+                  <span>Último: <strong>${formatDateES(g.lastChange)}</strong> (${st.daysElapsed !== null ? st.daysElapsed + 'd' : 'Pend.'})</span>
+                  <span>Desgaste: <strong>${st.usedPct}%</strong> • Próx: <strong>${st.nextDateStr ? formatDateES(st.nextDateStr) : '¡Ya!'}</strong></span>
+                </div>
+              </div>
+            </button>
+
+            <!-- Detalle Desplegable (Solo se abre al tocar la cápsula) -->
+            <div class="${isOpen ? 'block' : 'hidden'} px-3.5 pb-3.5 pt-2 border-t border-slate-500/15 space-y-3 text-xs">
+              <p class="text-[11px] theme-muted leading-relaxed">${g.notes}</p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10px] font-mono theme-muted mb-0.5">Modelo Exacto (Editable):</label>
+                  <input type="text" value="${g.model.replace(/"/g, '&quot;')}"
+                    onchange="updateGuitarField(${idx}, 'model', this.value)"
+                    class="w-full theme-pill rounded-xl px-2.5 py-1.5 text-xs focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-mono theme-muted mb-0.5">Cuerdas / Calibre:</label>
+                  <input type="text" value="${g.strings.replace(/"/g, '&quot;')}"
+                    onchange="updateGuitarField(${idx}, 'strings', this.value)"
+                    class="w-full theme-pill rounded-xl px-2.5 py-1.5 text-xs focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-mono theme-muted mb-0.5">Fecha Último Cambio:</label>
+                  <input type="date" value="${g.lastChange}"
+                    onchange="updateGuitarField(${idx}, 'lastChange', this.value)"
+                    class="w-full theme-pill rounded-xl px-2.5 py-1.5 text-xs font-mono focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-mono theme-muted mb-0.5">Ciclo de Cambio:</label>
+                  <select onchange="updateGuitarField(${idx}, 'cycleDays', this.value)"
+                    class="w-full theme-pill rounded-xl px-2.5 py-1.5 text-xs font-mono focus:outline-none">
+                    <option value="45" ${g.cycleDays == 45 ? 'selected' : ''}>Cada 45 días (Uso rudo)</option>
+                    <option value="60" ${g.cycleDays == 60 ? 'selected' : ''}>Cada 60 días (2 meses - Show)</option>
+                    <option value="65" ${g.cycleDays == 65 ? 'selected' : ''}>Cada 65 días (Ensayos)</option>
+                    <option value="90" ${g.cycleDays == 90 ? 'selected' : ''}>Cada 90 días (3 meses - Elixir)</option>
+                    <option value="150" ${g.cycleDays == 150 ? 'selected' : ''}>Cada 150 días (5 meses - Nylon)</option>
+                    <option value="180" ${g.cycleDays == 180 ? 'selected' : ''}>Cada 180 días (6 meses - Poco uso)</option>
+                    <option value="365" ${g.cycleDays == 365 ? 'selected' : ''}>Cada 365 días (1 año - Elixir Acústica)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-2 pt-1">
+                <button onclick="markChangedToday(${idx}, event)" class="flex-1 py-2 px-3 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs text-center">
+                  ✓ Cambié cuerdas HOY
+                </button>
+                <button onclick="downloadCalendarICS(${idx}, event)" class="flex-1 py-2 px-3 rounded-xl bg-amber-500/20 text-amber-500 border border-amber-500/30 font-bold text-xs text-center">
+                  📅 Alerta iPhone (.ics)
+                </button>
+              </div>
+            </div>
+          </div>
+        `);
+      });
+
+      if (homeCapsulesEl) homeCapsulesEl.innerHTML = homeHtml.join('');
+      if (gListEl) gListEl.innerHTML = gearHtml.join('');
+
+      // 2. Cápsulas compactas del Kit de Audio
+      if (kListEl) {
+        kListEl.innerHTML = kit.map((item, idx) => {
+          const isOpen = (expandedKitIndex === idx);
+          const highlight = idx === 0 ? 'border-l-4 border-l-emerald-500' : 'border-l-4 border-l-amber-500';
+          return `
+            <div class="theme-card rounded-2xl overflow-hidden ${highlight} shadow-sm">
+              <button onclick="toggleKitCapsule(${idx})" class="w-full p-3.5 text-left flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <span class="text-xl shrink-0">${item.icon}</span>
+                  <div class="min-w-0">
+                    <div class="text-[10px] font-mono text-amber-500 uppercase truncate">${item.category} • ${item.dateInfo}</div>
+                    <div class="text-xs sm:text-sm font-black truncate">${item.name}</div>
+                  </div>
+                </div>
+                <span class="text-xs theme-muted font-mono shrink-0">${isOpen ? '▴' : '▾'}</span>
+              </button>
+
+              <div class="${isOpen ? 'block' : 'hidden'} px-3.5 pb-3.5 pt-2 border-t border-slate-500/15 space-y-2 text-xs">
+                <div>
+                  <label class="block text-[10px] font-mono theme-muted mb-0.5">Modelo / Serie (Editable):</label>
+                  <input type="text" value="${item.model.replace(/"/g, '&quot;')}"
+                    onchange="updateKitField(${idx}, 'model', this.value)"
+                    class="w-full theme-pill rounded-xl px-2.5 py-1.5 text-xs font-mono focus:outline-none">
+                </div>
+                <div class="text-[11px] font-mono text-cyan-400">🔌 ${item.routing}</div>
+                <p class="text-[11px] theme-muted leading-relaxed">${item.notes}</p>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      const okEl = document.getElementById('kpi-ok-guitars');
+      const dueEl = document.getElementById('kpi-due-guitars');
+      const totKEl = document.getElementById('kpi-total-gear');
+      const dotEl = document.getElementById('bnav-gear-dot');
+
+      if (okEl) okEl.innerText = okCount;
+      if (dueEl) dueEl.innerText = dueCount;
+      if (totKEl) totKEl.innerText = kit.length;
+      if (dotEl) dotEl.classList.toggle('hidden', dueCount === 0);
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem(STORAGE_KEY_THEME) || 'dark';
+      applyTheme(savedTheme);
+      renderGearDashboard();
+    });
+  </script>
+</body>
+</html>

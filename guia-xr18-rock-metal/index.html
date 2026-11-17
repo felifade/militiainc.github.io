@@ -331,9 +331,8 @@
             Cápsulas de avance de tus <strong>5 Guitarras</strong>, alertas de cambio de cuerdas y registro de tu <strong>Bocina In-Ear + PA</strong>.
           </p>
           <div class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-slate-500/15 text-[10px] font-mono">
-            <span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400">3 Eléctricas OK</span>
-            <span class="px-2 py-0.5 rounded-md bg-rose-500/15 text-rose-400">Yamaha Nylon Pend.</span>
-            <span class="px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-400">Takamine</span>
+            <span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400">4 Guitarras al 100%</span>
+            <span class="px-2 py-0.5 rounded-md bg-rose-500/15 text-rose-400">1 Pend: Yamaha Nylon</span>
           </div>
         </button>
 
@@ -698,11 +697,11 @@
         <!-- Mini Píldoras de Resumen -->
         <div class="grid grid-cols-3 gap-2 text-center">
           <div class="theme-pill rounded-2xl p-2.5">
-            <div id="kpi-ok-guitars" class="text-lg font-black text-emerald-400">3</div>
+            <div id="kpi-ok-guitars" class="text-lg font-black text-emerald-400">4</div>
             <div class="text-[10px] theme-muted font-mono">Al 100%</div>
           </div>
           <div class="theme-pill rounded-2xl p-2.5">
-            <div id="kpi-due-guitars" class="text-lg font-black text-rose-400">2</div>
+            <div id="kpi-due-guitars" class="text-lg font-black text-rose-400">1</div>
             <div class="text-[10px] theme-muted font-mono">Por Cambiar</div>
           </div>
           <div class="theme-pill rounded-2xl p-2.5">
@@ -1380,8 +1379,8 @@
     // -----------------------------------------------------------------------
     // 6. MI KIT & CAMBIO DE CUERDAS (COMPACT CAPSULES WITH EXPAND ON TAP)
     // -----------------------------------------------------------------------
-    const STORAGE_KEY_GUITARS = 'militia_phil_guitars_v1';
-    const STORAGE_KEY_KIT = 'militia_phil_kit_v1';
+    const STORAGE_KEY_GUITARS = 'militia_phil_guitars_v2';
+    const STORAGE_KEY_KIT = 'militia_phil_kit_v2';
 
     const DEFAULT_GUITARS = [
       {
@@ -1432,12 +1431,12 @@
         id: 'g-takamine',
         name: 'Takamine Electroacústica',
         model: 'Takamine Acústica de Acero/Bronce',
-        strings: 'Elixir Phosphor Bronze (.011 - .052)',
+        strings: 'Acero / Phosphor Bronze (.011 - .052)',
         role: '✨ Acústica Acero (Poco uso)',
-        lastChange: '2026-05-15',
-        cycleDays: 180,
-        statusOverride: 'check_age',
-        notes: 'Aunque casi no se toca, el bronce normal se oxida en 6 meses. Con Elixir recubiertas dura 1 año entero.'
+        lastChange: '2026-11-17',
+        cycleDays: 365,
+        statusOverride: null,
+        notes: 'Al 100% a partir de hoy (17/Nov/2026) por tener muy poco uso. Programada a 1 año (17/Nov/2027).'
       }
     ];
 

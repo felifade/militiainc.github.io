@@ -1,0 +1,30 @@
+{
+  "name": "Militia Hub — XR18, Cuerdas & Kit",
+  "short_name": "Militia Hub",
+  "description": "Centro de mandos en vivo Behringer XR18, control de cambio de cuerdas e inventario de equipo para Militia Inc.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020617",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

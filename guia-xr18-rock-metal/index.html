@@ -107,6 +107,7 @@
     .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
     .gap-1 { gap: 0.25rem; }
     .gap-1\.5 { gap: 0.375rem; }
     .gap-2 { gap: 0.5rem; }
@@ -264,6 +265,20 @@
     <!-- =================================================================== -->
     <section id="screen-home" class="space-y-3.5">
 
+      <!-- Banner Destacado: Próxima Tocada 4 Dic (Dracarys) -->
+      <button onclick="switchScreen('gig')" class="w-full tap-scale theme-card rounded-2xl p-3.5 text-left flex items-center justify-between gap-2 border-l-4 border-l-rose-500">
+        <div class="flex items-center gap-3 min-w-0">
+          <span class="text-xl shrink-0">🐉</span>
+          <div class="min-w-0">
+            <div class="text-[10px] font-mono font-bold text-rose-400 uppercase">VIERNES 4 DIC • 22:30 A 23:15 HRS</div>
+            <div class="text-xs font-black truncate mt-0.5">
+              Show Dracarys: 9 Temas • Gabinete OFF • Kit Ligero
+            </div>
+          </div>
+        </div>
+        <span class="text-xs font-mono font-bold text-amber-500 shrink-0">Abrir ➔</span>
+      </button>
+
       <!-- Banner Inteligente de Estado de Cuerdas (1 Toque lleva a Cuerdas) -->
       <button onclick="switchScreen('strings')" class="w-full tap-scale theme-card rounded-2xl p-3.5 text-left flex items-center justify-between gap-2 border-l-4 border-l-emerald-500">
         <div class="flex items-center gap-3 min-w-0">
@@ -328,8 +343,19 @@
         </button>
       </div>
 
-      <!-- Los 3 Módulos de Gestión (Cuerdas, Mi Kit, Estudio 3D) -->
+      <!-- Los 4 Módulos de Gestión (Show 4 Dic, Cuerdas, Mi Kit, Estudio 3D) -->
       <div class="space-y-2.5">
+        <button onclick="switchScreen('gig')" class="w-full tap-scale theme-card rounded-3xl p-4 text-left flex items-center justify-between gap-3 border-l-4 border-l-rose-500">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-11 h-11 rounded-2xl bg-rose-500/15 flex items-center justify-center text-xl shrink-0">🐉</div>
+            <div class="min-w-0">
+              <div class="text-sm font-black">Show 4 Dic: Dracarys & Setlist</div>
+              <div class="text-[11px] theme-muted truncate">Conexión a Fender 100 Microfoneado (Cab OFF), Setlist 9 temas y Checklist</div>
+            </div>
+          </div>
+          <span class="text-xs font-mono font-bold text-rose-400 shrink-0">Abrir ➔</span>
+        </button>
+
         <button onclick="switchScreen('strings')" class="w-full tap-scale theme-card rounded-3xl p-4 text-left flex items-center justify-between gap-3 border-l-4 border-l-emerald-500">
           <div class="flex items-center gap-3 min-w-0">
             <div class="w-11 h-11 rounded-2xl bg-emerald-500/15 flex items-center justify-center text-xl shrink-0">🎸</div>
@@ -596,32 +622,141 @@
       </div>
     </section>
 
+    <!-- =================================================================== -->
+    <!-- SCREEN 6: SHOW 4 DIC (DRACARYS) — SETLIST, CONEXIÓN Y CHECKLIST     -->
+    <!-- =================================================================== -->
+    <section id="screen-gig" class="hidden space-y-3.5">
+
+      <!-- Cabecera del Evento -->
+      <div class="theme-card rounded-3xl p-4 border-l-4 border-l-rose-500 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-mono font-bold text-rose-400 uppercase">VIERNES 4 DIC 2026 • LAS INOLVIDABLES (SAN JAVIER)</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-500 font-bold">$1,200 Viáticos</span>
+        </div>
+        <h2 class="text-base font-black">🐉 10° Aniversario Dracarys — Militia Inc.</h2>
+        <div class="grid grid-cols-3 gap-2 pt-1 text-center text-xs">
+          <div class="theme-pill rounded-xl p-2">
+            <div class="text-[10px] font-mono theme-muted">MONTAJE</div>
+            <div class="font-black text-amber-500">22:15 hrs</div>
+          </div>
+          <div class="theme-pill rounded-xl p-2 border border-rose-500/40">
+            <div class="text-[10px] font-mono text-rose-400 font-bold">SHOW MILITIA</div>
+            <div class="font-black text-emerald-400">22:30 - 23:15</div>
+          </div>
+          <div class="theme-pill rounded-xl p-2">
+            <div class="text-[10px] font-mono theme-muted">DURACIÓN</div>
+            <div class="font-black">49m 27s</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Regla de Conexión Ultraligera (Ampli Microfoneado = CAB SIM OFF) -->
+      <div class="theme-card rounded-3xl p-4 space-y-2.5 border-l-4 border-l-amber-500">
+        <div class="text-[10px] font-mono font-bold text-amber-500 uppercase">⚡ TU CONEXIÓN ULTRALIGERA EN ESCENARIO</div>
+        <h3 class="text-sm font-black">Ampli Fender 100 Microfoneado ➔ ¡DESACTIVA EL GABINETE!</h3>
+
+        <div class="theme-pill rounded-2xl p-3 space-y-1.5 text-xs">
+          <div class="font-black text-amber-400">🎸 1. Tu Guitarra (Felipe):</div>
+          <div class="text-[11px] leading-relaxed">
+            <strong>Ruta:</strong> Guitarra (Inalámbrico TX) ➔ Receptor RX en Entrada Interfaz ➔ iPhone ➔ Salida Interfaz (Cable 1/4") ➔ <strong>Combo Fender 100 (Microfoneado)</strong>.
+          </div>
+          <div class="p-2 rounded-xl bg-rose-500/15 border border-rose-500/40 text-[11px] font-bold text-rose-400">
+            ❌ EN TU IPHONE: APAGA EL GABINETE (CAB SIM / IR = OFF).
+          </div>
+          <div class="text-[11px] theme-muted">
+            Como el Fender 100 estará microfoneado, su bocina física de 12" ya es el gabinete real. Conéctate de preferencia atrás en <strong>PWR IN / FX RETURN</strong>; si entras por el <strong>INPUT frontal</strong>, ponlo en canal <strong>Clean</strong> plano (Bass 5, Mid 6, Treble 5, Reverb 0).
+          </div>
+        </div>
+
+        <div class="theme-pill rounded-2xl p-3 space-y-1.5 text-xs">
+          <div class="font-black text-cyan-400">⚡ 2. Bajo de Fernando (Hermano):</div>
+          <div class="text-[11px] leading-relaxed">
+            <strong>Ruta:</strong> Bajo ➔ Interfaz + iPhone ➔ <strong>Combo Bajo Peavey 200</strong> (y línea XLR Direct Out a la consola Soundcraft Ui16 para el Sub de 18").
+          </div>
+          <div class="p-2 rounded-xl bg-cyan-500/15 border border-cyan-500/40 text-[11px] font-bold text-cyan-400">
+            ❌ EN EL IPHONE DE FER: GABINETE APAGADO (CAB SIM = OFF).
+          </div>
+          <div class="text-[11px] theme-muted">
+            Dejar activo solo su <strong>Compresor + Preamp/Drive</strong> en el iPhone y el EQ del Peavey 200 plano (0 dB).
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist Interactivo de Equipo Ligero de Felipe -->
+      <div class="theme-card rounded-3xl p-4 space-y-2.5 border-l-4 border-l-emerald-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-[10px] font-mono font-bold text-emerald-400 uppercase">MOCHILA LIGERA DE FELIPE (6 COSAS)</div>
+            <h3 class="text-sm font-black">Checklist Rápido para Salir al Show</h3>
+          </div>
+          <button onclick="resetGigChecklist()" class="px-2 py-1 rounded-xl text-[10px] font-bold theme-pill">↺ Limpiar</button>
+        </div>
+        <div id="gig-checklist-container" class="space-y-1.5 text-xs">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Setlist Oficial Militia Inc. (9 Canciones BandHelper) -->
+      <div class="theme-card rounded-3xl p-4 space-y-2.5 border-l-4 border-l-purple-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-[10px] font-mono font-bold text-purple-400 uppercase">BANDHELPER • 9 CANCIONES • 49:27 TOTAL</div>
+            <h3 class="text-sm font-black">🔥 Setlist Oficial Militia Inc. (Toca al terminar cada tema)</h3>
+          </div>
+        </div>
+
+        <div id="gig-setlist-container" class="space-y-2">
+          <!-- Rendered by JS -->
+        </div>
+
+        <div class="rounded-2xl p-3 bg-amber-500/10 border border-amber-500/30 text-[11px] leading-relaxed">
+          <strong>💡 Nota Estratégica:</strong> Los 4 primeros temas (<em>Héroes del Silencio</em>) suman <strong>18:21</strong> y los 5 himnos de <em>Iron Maiden + Metallica</em> suman <strong>31:06</strong> (Total: <strong>49:27</strong>). Pegando los inicios de los temas de Héroes entran perfecto en el bloque de 45–50 min.
+        </div>
+      </div>
+
+      <!-- Horarios Completos de la Noche -->
+      <div class="theme-card rounded-3xl p-4 space-y-2 text-xs">
+        <div class="text-[10px] font-mono font-bold text-amber-500 uppercase">CRONOGRAMA OFICIAL DE LA NOCHE</div>
+        <div class="theme-pill rounded-xl p-2.5 flex justify-between"><span><strong>19:00</strong> • Acceso Público</span><span class="font-mono theme-muted">60 min</span></div>
+        <div class="theme-pill rounded-xl p-2.5 flex justify-between"><span><strong>20:00 – 20:45</strong> • 1. Blown Fuse</span><span class="font-mono theme-muted">45 min</span></div>
+        <div class="theme-pill rounded-xl p-2.5 flex justify-between"><span><strong>21:00 – 21:15</strong> • 2. Dracarys c/ Alumnas</span><span class="font-mono theme-muted">15 min</span></div>
+        <div class="theme-pill rounded-xl p-2.5 flex justify-between"><span><strong>21:30 – 22:15</strong> • 3. Kaijus</span><span class="font-mono theme-muted">45 min</span></div>
+        <div class="theme-pill rounded-xl p-2.5 flex justify-between border border-rose-500/50"><span class="font-black text-amber-400"><strong>22:30 – 23:15</strong> • 4. MILITIA INC.</span><span class="font-mono font-bold text-emerald-400">45 min</span></div>
+        <div class="theme-pill rounded-xl p-2.5 flex justify-between"><span><strong>23:30 – 00:45</strong> • 5. Dracarys (Estelar)</span><span class="font-mono theme-muted">75 min</span></div>
+      </div>
+
+    </section>
+
   </main>
 
   <!-- ===================================================================== -->
-  <!-- 5-TAB NATIVE iOS BOTTOM BAR                                           -->
+  <!-- 6-TAB NATIVE iOS BOTTOM BAR                                           -->
   <!-- ===================================================================== -->
-  <nav class="bottom-nav fixed bottom-0 left-0 right-0 z-50 px-2 pt-1.5">
-    <div class="max-w-xl mx-auto grid grid-cols-5 gap-1">
+  <nav class="bottom-nav fixed bottom-0 left-0 right-0 z-50 px-1.5 pt-1.5">
+    <div class="max-w-xl mx-auto grid grid-cols-6 gap-1">
       <button onclick="switchScreen('home')" id="bnav-home" class="flex flex-col items-center justify-center py-1.5 rounded-2xl bg-amber-500 text-slate-950 font-black">
         <span class="text-sm leading-none">🏠</span>
-        <span class="text-[10px] mt-1">Inicio</span>
+        <span class="text-[9px] mt-1">Inicio</span>
+      </button>
+      <button onclick="switchScreen('gig')" id="bnav-gig" class="flex flex-col items-center justify-center py-1.5 rounded-2xl theme-muted font-semibold">
+        <span class="text-sm leading-none">🐉</span>
+        <span class="text-[9px] mt-1">4 Dic</span>
       </button>
       <button onclick="switchScreen('live')" id="bnav-live" class="flex flex-col items-center justify-center py-1.5 rounded-2xl theme-muted font-semibold">
         <span class="text-sm leading-none">🎛️</span>
-        <span class="text-[10px] mt-1">XR18 Vivo</span>
+        <span class="text-[9px] mt-1">XR18</span>
       </button>
       <button onclick="switchScreen('strings')" id="bnav-strings" class="flex flex-col items-center justify-center py-1.5 rounded-2xl theme-muted font-semibold relative">
         <span class="text-sm leading-none">🎸</span>
-        <span class="text-[10px] mt-1">Cuerdas</span>
+        <span class="text-[9px] mt-1">Cuerdas</span>
       </button>
       <button onclick="switchScreen('kit')" id="bnav-kit" class="flex flex-col items-center justify-center py-1.5 rounded-2xl theme-muted font-semibold">
         <span class="text-sm leading-none">🔊</span>
-        <span class="text-[10px] mt-1">Mi Kit</span>
+        <span class="text-[9px] mt-1">Mi Kit</span>
       </button>
       <button onclick="switchScreen('studio')" id="bnav-studio" class="flex flex-col items-center justify-center py-1.5 rounded-2xl theme-muted font-semibold">
         <span class="text-sm leading-none">🔥</span>
-        <span class="text-[10px] mt-1">Estudio 3D</span>
+        <span class="text-[9px] mt-1">Estudio</span>
       </button>
     </div>
   </nav>
@@ -679,10 +814,11 @@
     }
 
     // -----------------------------------------------------------------------
-    // 2. NAVIGATION ENGINE (5 SCREENS)
+    // 2. NAVIGATION ENGINE (6 SCREENS)
     // -----------------------------------------------------------------------
     const SCREEN_NAMES = {
       home: 'Portada Principal',
+      gig: 'Show 4 Dic — Dracarys & Setlist',
       live: 'Consola XR18 En Vivo',
       strings: 'Mis 5 Guitarras & Cuerdas',
       kit: 'Mi Kit de Audio & PA',
@@ -696,7 +832,7 @@
     let expandedKitId = null;
 
     function switchScreen(screenId) {
-      ['home', 'live', 'strings', 'kit', 'studio'].forEach(s => {
+      ['home', 'gig', 'live', 'strings', 'kit', 'studio'].forEach(s => {
         const sec = document.getElementById('screen-' + s);
         const bbtn = document.getElementById('bnav-' + s);
         if (sec) sec.classList.toggle('hidden', s !== screenId);
@@ -718,6 +854,8 @@
         setTimeout(() => selectMember(currentMember), 25);
       } else if (screenId === 'studio') {
         setTimeout(() => setStudioPill(currentStudioMode), 25);
+      } else if (screenId === 'gig') {
+        renderGigScreen();
       } else {
         renderGearDashboard();
       }
@@ -1780,7 +1918,102 @@
       const savedTheme = localStorage.getItem(STORAGE_KEY_THEME) || 'dark';
       applyTheme(savedTheme);
       renderGearDashboard();
+      renderGigScreen();
     });
+
+    // -----------------------------------------------------------------------
+    // 7. SHOW 4 DIC (DRACARYS) — SETLIST & CHECKLIST LIGERO
+    // -----------------------------------------------------------------------
+    const STORAGE_KEY_GIG_CHECK = 'militia_gig_4dic_check_v1';
+    const STORAGE_KEY_GIG_SONGS = 'militia_gig_4dic_songs_v1';
+
+    const GIG_CHECKLIST_ITEMS = [
+      { id: 'c1', icon: '🎸', title: 'Guitarra Eléctrica Titular + Tahalí y Plumillas', sub: 'Cuerdas al 100% y afinada' },
+      { id: 'c2', icon: '📱', title: 'iPhone + Cargador / Powerbank al 100%', sub: 'Con Gabinete DESACTIVADO (Cab Sim OFF) para entrar al Fender 100' },
+      { id: 'c3', icon: '🎛️', title: 'Interfaz de Audio + Adaptador a iPhone', sub: 'Receptor inalámbrico en entrada; cable plug en salida' },
+      { id: 'c4', icon: '📡', title: 'Sistema Inalámbrico de Guitarra (TX y RX)', sub: 'Cargados al 100% para moverte libre en el escenario' },
+      { id: 'c5', icon: '🔌', title: 'Cable Plug 1/4" de Instrumento', sub: 'De la salida de tu interfaz al FX Return / Input Clean del Fender 100' },
+      { id: 'c6', icon: '🎤', title: '1 Micrófono de Voz Alámbrico + Cable XLR (Por si acaso)', sub: 'Respaldo por si falla alguno de los 4 inalámbricos del lugar' }
+    ];
+
+    const GIG_SETLIST_DATA = [
+      { num: 1, title: 'El Estanque', band: 'Héroes del Silencio', key: 'Am', bpm: '49 bpm', dur: '3:30', note: 'Arranque hipnótico • Pegar directo con Deshacer El Mundo' },
+      { num: 2, title: 'Deshacer El Mundo 5', band: 'Héroes del Silencio', key: 'Em', bpm: '150 bpm', dur: '4:51', note: 'Sube energía • Arpegio limpio + punch en coro' },
+      { num: 3, title: 'Hechizo', band: 'Héroes del Silencio', key: 'C', bpm: '200 bpm', dur: '5:00', note: 'Ritmo constante y riff envolvente' },
+      { num: 4, title: 'Entre Dos Tierras', band: 'Héroes del Silencio', key: 'Bm', bpm: '83 bpm', dur: '5:00', note: 'Himno cierra-bloque español (18:21 acumulados)' },
+      { num: 5, title: 'Fear Of The Dark', band: 'Iron Maiden', key: 'A • 4/4', bpm: '80 bpm', dur: '7:00', note: 'Cambio a Heavy Metal • Intro a dos guitarras con Poncho' },
+      { num: 6, title: 'Enter Sandman', band: 'Metallica', key: 'Em', bpm: '123 bpm', dur: '5:36', note: '⚠️ Ojo: Dracarys trae un medley Seven Nation/Sandman a las 23:30' },
+      { num: 7, title: 'Wasted Years', band: 'Iron Maiden', key: 'Em', bpm: '70 bpm', dur: '5:00', note: 'Intro punteo agudo + coro melódico' },
+      { num: 8, title: 'Master Of Puppets', band: 'Metallica', key: 'Em', bpm: '212 bpm', dur: '8:00', note: 'Demolición pura • Downpicking e interludio limpio' },
+      { num: 9, title: 'Seek And Destroy', band: 'Metallica', key: 'Em', bpm: '140 bpm', dur: '5:30', note: 'Gran cierre de tanda a las 23:15 hrs (49:27 total)' }
+    ];
+
+    function toggleGigCheckItem(id) {
+      let state = {};
+      try { state = JSON.parse(localStorage.getItem(STORAGE_KEY_GIG_CHECK) || '{}'); } catch (e) {}
+      state[id] = !state[id];
+      localStorage.setItem(STORAGE_KEY_GIG_CHECK, JSON.stringify(state));
+      renderGigScreen();
+    }
+
+    function resetGigChecklist() {
+      localStorage.removeItem(STORAGE_KEY_GIG_CHECK);
+      localStorage.removeItem(STORAGE_KEY_GIG_SONGS);
+      renderGigScreen();
+    }
+
+    function toggleGigSongDone(num) {
+      let state = {};
+      try { state = JSON.parse(localStorage.getItem(STORAGE_KEY_GIG_SONGS) || '{}'); } catch (e) {}
+      state[num] = !state[num];
+      localStorage.setItem(STORAGE_KEY_GIG_SONGS, JSON.stringify(state));
+      renderGigScreen();
+    }
+
+    function renderGigScreen() {
+      const checkEl = document.getElementById('gig-checklist-container');
+      const setlistEl = document.getElementById('gig-setlist-container');
+      if (!checkEl || !setlistEl) return;
+
+      let checkState = {};
+      let songState = {};
+      try { checkState = JSON.parse(localStorage.getItem(STORAGE_KEY_GIG_CHECK) || '{}'); } catch (e) {}
+      try { songState = JSON.parse(localStorage.getItem(STORAGE_KEY_GIG_SONGS) || '{}'); } catch (e) {}
+
+      checkEl.innerHTML = GIG_CHECKLIST_ITEMS.map(item => {
+        const done = !!checkState[item.id];
+        return `
+          <button onclick="toggleGigCheckItem('${item.id}')" class="w-full tap-scale theme-pill rounded-2xl p-3 text-left flex items-center justify-between gap-2.5 ${done ? 'border border-emerald-500/50' : ''}">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="text-base shrink-0">${done ? '✅' : '⬜'}</span>
+              <div class="min-w-0">
+                <div class="text-xs font-black truncate ${done ? 'text-emerald-400' : ''}">${item.icon} ${item.title}</div>
+                <div class="text-[10px] theme-muted truncate">${item.sub}</div>
+              </div>
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      setlistEl.innerHTML = GIG_SETLIST_DATA.map(s => {
+        const played = !!songState[s.num];
+        return `
+          <button onclick="toggleGigSongDone(${s.num})" class="w-full tap-scale theme-pill rounded-2xl p-3 text-left flex items-center justify-between gap-2.5 ${played ? 'border border-emerald-500/50' : ''}">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-7 h-7 rounded-lg ${played ? 'bg-emerald-500 text-slate-950' : 'bg-slate-950 text-amber-500'} font-mono font-black text-xs flex items-center justify-center shrink-0">
+                ${played ? '✓' : s.num}
+              </div>
+              <div class="min-w-0">
+                <div class="text-sm font-black truncate ${played ? 'text-emerald-400' : ''}">${s.title}</div>
+                <div class="text-[10px] font-mono text-amber-500">${s.key} • ${s.bpm} • ${s.dur} <span class="theme-muted">(${s.band})</span></div>
+                <div class="text-[10px] theme-muted truncate mt-0.5">${s.note}</div>
+              </div>
+            </div>
+            <span class="text-xs font-mono font-bold ${played ? 'text-emerald-400' : 'theme-muted'} shrink-0">${s.dur}</span>
+          </button>
+        `;
+      }).join('');
+    }
   </script>
 </body>
 </html>

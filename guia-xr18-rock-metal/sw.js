@@ -1,4 +1,4 @@
-const CACHE_NAME = 'militia-hub-pwa-v3';
+const CACHE_NAME = 'militia-hub-pwa-v4';
 const ASSETS = [
   './',
   './index.html',
